@@ -27,6 +27,8 @@ project.xcworkspace
 *.iml
 .idea
 .gradle
+target
+output
 local.properties
 *.hprof
 
