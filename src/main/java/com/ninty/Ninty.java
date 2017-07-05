@@ -1,38 +1,32 @@
 package com.ninty;
 
-import org.apache.commons.cli.*;
+import com.ninty.startup.BootStartup;
+import com.ninty.startup.CommandLineInfo;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 
 /**
  * Created by ninty on 2017/7/4.
  */
 public class Ninty {
 
-    public static void main(String[] args){
-        Options options = new Options();
-        options.addOption("help", "show the help");
-        options.addOption("?", "show the help");
-        options.addOption("classpath", "classpath");
-        options.addOption("cp", "classpath");
-        options.addOption("version", "version");
+    public static void main(String[] args) {
+        new Ninty().resolveArgs(args);
+    }
 
-        CommandLineParser parser = new DefaultParser();
-        CommandLine commandLine;
-        try {
-            commandLine = parser.parse(options, args);
-        } catch (ParseException e) {
-            printUsage(options);
-            return;
-        }
-
-        if(commandLine.hasOption("version")){
+    private void resolveArgs(String[] args) {
+        CommandLineInfo cmd = new CommandLineInfo(args);
+        if (cmd.version) {
             System.out.println("ninty 1.0.0");
-        }else{
-            printUsage(options);
+        } else if (cmd.help || cmd.cls == null) {
+            cmd.printUsage();
+        } else {
+            new BootStartup(cmd.cp, cmd.cls);
         }
     }
 
-    private static void printUsage(Options options){
+    private void printUsage(Options options) {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("ninty", options);
+        formatter.printHelp("ninty [-options] class [args...]", options);
     }
 }
