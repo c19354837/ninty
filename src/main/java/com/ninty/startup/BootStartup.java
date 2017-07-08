@@ -1,5 +1,7 @@
 package com.ninty.startup;
 
+import com.ninty.classpath.ClassPath;
+
 /**
  * Created by ninty on 2017/7/5.
  */
@@ -8,16 +10,18 @@ public class BootStartup {
     /**
      * classpath
      */
-    private String cp;
-    private String cls;
+    private String className;
 
-    public BootStartup(String cp, String cls) {
-        this.cp = cp;
-        this.cls = cls;
+    private ClassPath cp;
+
+    public BootStartup(String userCP, String className) {
+        this.className = className;
+        cp = new ClassPath(null, userCP);
         resolveClass();
     }
 
     private void resolveClass() {
-        System.out.println("cp:" + cp + ", cls:" + cls);
+        System.out.println(cp.readClass(className).length);
     }
+
 }
