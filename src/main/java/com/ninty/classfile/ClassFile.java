@@ -13,14 +13,13 @@ public class ClassFile {
     int magic; //u4
     int minorVersion; //u2
     int majorVersion; //u2
-    ConstantPoolInfos constantPoolInfos;
+    ConstantPoolInfos cps;
     int accessFlags; //u2
-    int thisClass; // u2
-    int superClass; //u2
-    InterfaceInfo[] interfaceInfos;
+    String className;
+    String superClassName;
+    String[] interfaceNames;
     MemberInfo[] filedInfos;
     MemberInfo[] methodInfos;
-    AttributeInfo[] attributeInfos;
 
     public ClassFile(byte[] datas) {
         resolve(datas);
@@ -35,12 +34,11 @@ public class ClassFile {
         checkVersion();
         fillConstantPoll(bb);
         accessFlags = bb.getChar();
-        thisClass = bb.getChar();
-        superClass = bb.getChar();
+        className = cps.getClassName(bb.getChar());
+        superClassName = cps.getSuperClassName(bb.getChar());
         fillInterfaceInfos(bb);
         fillFiledInfos(bb);
         fillMethodInfos(bb);
-        fillAttributeInfo(bb);
     }
 
     private void checkMagic() {
@@ -68,12 +66,15 @@ public class ClassFile {
     }
 
     private void fillConstantPoll(ByteBuffer bb) {
-        constantPoolInfos = new ConstantPoolInfos(bb);
+        cps = new ConstantPoolInfos(bb);
     }
 
     private void fillInterfaceInfos(ByteBuffer bb) {
         int interfaceCount = bb.getChar();
-        interfaceInfos = new InterfaceInfo[interfaceCount];
+        interfaceNames = new String[interfaceCount];
+        for (int i = 0; i < interfaceCount; i++) {
+            interfaceNames[i] = cps.getClassName(bb.getChar());
+        }
     }
 
     private void fillFiledInfos(ByteBuffer bb) {
@@ -86,11 +87,6 @@ public class ClassFile {
         methodInfos = new MemberInfo[methodCount];
     }
 
-    private void fillAttributeInfo(ByteBuffer bb) {
-        int attributeCount = bb.getChar();
-        attributeInfos = new AttributeInfo[attributeCount];
-    }
-
     @Override
     public String toString() {
         return "ClassFile{" +
@@ -98,12 +94,11 @@ public class ClassFile {
                 ", minorVersion=" + minorVersion +
                 ", majorVersion=" + majorVersion +
                 ", accessFlags=" + accessFlags +
-                ", thisClass=" + thisClass +
-                ", superClass=" + superClass +
-                ", interfaceInfos=" + Arrays.toString(interfaceInfos) +
+                ", thisClass=" + className +
+                ", superClass=" + superClassName +
+                ", interfaceInfos=" + Arrays.toString(interfaceNames) +
                 ", filedInfos=" + Arrays.toString(filedInfos) +
                 ", methodInfos=" + Arrays.toString(methodInfos) +
-                ", attributeInfos=" + Arrays.toString(attributeInfos) +
                 '}';
     }
 }
