@@ -11,9 +11,9 @@ public class ConstantPoolInfos {
 
     public ConstantPoolInfos(ByteBuffer bb) {
         int len = bb.getChar();
-        cps = new ConstantInfo[len - 1];
+        cps = new ConstantInfo[len];
 
-        for (int i = 0; i < cps.length; i++) {
+        for (int i = 1; i < len; i++) {
             ConstantInfo cp = ConstantInfo.generate(this, bb);
             cps[i] = cp;
             if (cp instanceof ConstantInfo.CPFLong || cp instanceof ConstantInfo.CPDouble) {
@@ -22,12 +22,21 @@ public class ConstantPoolInfos {
         }
     }
 
-    public ConstantInfo get(int index) {
+    ConstantInfo get(int index) {
         ConstantInfo ci = cps[index];
         if (ci == null) {
             throw new NullPointerException("cannot find constant index:" + index);
         }
         return ci;
+    }
+
+    public String getClassName(int index){
+        return ((ConstantInfo.CPClass)get(index)).className();
+    }
+
+    public String getSuperClassName(int index){
+        //java.lang.Object has no super class
+        return index == 0 ? "" : getClassName(index);
     }
 
     public String getUtf8(int index) {
