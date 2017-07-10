@@ -43,6 +43,8 @@ public class ConstantInfo {
             case cp_interface_method:
                 cp = new CPMemeber(bb);
                 break;
+            default:
+                throw new ClassFormatException("unsupported constant poll type:" + type);
         }
         cp.type = type;
         cp.cps = cps;
