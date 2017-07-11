@@ -1,5 +1,6 @@
 package com.ninty.startup;
 
+import com.ninty.classfile.ClassFile;
 import com.ninty.classpath.ClassPath;
 
 /**
@@ -21,7 +22,7 @@ public class BootStartup {
     }
 
     private void resolveClass() {
-        System.out.println(cp.readClass(className).length);
+        System.out.println(new ClassFile(cp.readClass(className)));
     }
 
 }
