@@ -17,9 +17,6 @@ public class ConstantInfo {
         CPType type = CPType.get(bb.get());
         ConstantInfo cp = null;
         switch (type){
-            case cp_utf8:
-                cp = new CPUtf8(bb);
-                break;
             case cp_integer:
                 cp = new CPInteger(bb);
                 break;
@@ -31,6 +28,12 @@ public class ConstantInfo {
                 break;
             case cp_double:
                 cp = new CPDouble(bb);
+                break;
+            case cp_string:
+                cp = new CPString(bb);
+                break;
+            case cp_utf8:
+                cp = new CPUtf8(bb);
                 break;
             case cp_class:
                 cp = new CPClass(bb);
