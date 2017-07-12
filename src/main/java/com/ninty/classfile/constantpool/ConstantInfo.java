@@ -152,6 +152,7 @@ public class ConstantInfo {
         CPUtf8(ByteBuffer bb){
             int len = bb.getChar();
             byte[] datas = new byte[len];
+            bb.get(datas);
             try {
                 value = decodeMutf8(datas);
             } catch (IOException e) {
@@ -161,7 +162,7 @@ public class ConstantInfo {
         }
 
         private String decodeMutf8(byte[] bytes) throws IOException {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(bytes.length + 2);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(bytes.length);
             DataOutputStream dos = new DataOutputStream(baos);
             dos.writeShort(bytes.length);
             dos.write(bytes);
