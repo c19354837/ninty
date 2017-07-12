@@ -20,6 +20,7 @@ public class ClassFile {
     String[] interfaceNames;
     MemberInfo[] filedInfos;
     MemberInfo[] methodInfos;
+    AttributeInfo[] attributeInfos;
 
     public ClassFile(byte[] datas) {
         resolve(datas);
@@ -39,6 +40,7 @@ public class ClassFile {
         fillInterfaceInfos(bb);
         fillFiledInfos(bb);
         fillMethodInfos(bb);
+        fillAttributeInfos(bb);
     }
 
     private void checkMagic() {
@@ -80,11 +82,25 @@ public class ClassFile {
     private void fillFiledInfos(ByteBuffer bb) {
         int filedCount = bb.getChar();
         filedInfos = new MemberInfo[filedCount];
+        for (int i = 0; i < filedCount; i++) {
+            filedInfos[i] = new MemberInfo(cps, bb);
+        }
     }
 
     private void fillMethodInfos(ByteBuffer bb) {
         int methodCount = bb.getChar();
         methodInfos = new MemberInfo[methodCount];
+        for (int i = 0; i < methodCount; i++) {
+            methodInfos[i] = new MemberInfo(cps, bb);
+        }
+    }
+
+    private void fillAttributeInfos(ByteBuffer bb) {
+        int attrCount = bb.getChar();
+        attributeInfos = new AttributeInfo[attrCount];
+        for (int i = 0; i < attrCount; i++) {
+            attributeInfos[i] = AttributeInfo.generate(cps, bb);
+        }
     }
 
     @Override
