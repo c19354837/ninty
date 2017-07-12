@@ -64,6 +64,10 @@ public class CommandLineInfo {
         return commandLine;
     }
 
+    public void printVersion(){
+        System.out.println("ninty 1.0.0");
+    }
+
     public void printUsage() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("ninty [-options] class [args...]", options);
