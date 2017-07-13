@@ -8,6 +8,9 @@ public class LocalVars {
 
     LocalVars(int maxLocalSize) {
         slots = new Slot[maxLocalSize];
+        for (int i = 0; i < maxLocalSize; i++) {
+            slots[i] = new Slot();
+        }
     }
 
     int getInt(int index) {
@@ -16,16 +19,6 @@ public class LocalVars {
 
     void setInt(int index, int val) {
         slots[index].num = val;
-    }
-
-    float getFloat(int index) {
-        int num = getInt(index);
-        return Float.intBitsToFloat(num);
-    }
-
-    void setFloat(int index, float val){
-        int num = Float.floatToIntBits(val);
-        slots[index].num = num;
     }
 
     long getLong(int index){
@@ -38,6 +31,34 @@ public class LocalVars {
         int low = (int)val;
         int high = (int) (val>>>32);
         setInt(index, low);
-        setInt(index, high);
+        setInt(index+1, high);
+    }
+
+    float getFloat(int index) {
+        int num = getInt(index);
+        return Float.intBitsToFloat(num);
+    }
+
+    void setFloat(int index, float val){
+        int num = Float.floatToIntBits(val);
+        setInt(index, num);
+    }
+
+    double getDouble(int index){
+        long num = getLong(index);
+        return Double.longBitsToDouble(num);
+    }
+
+    void setDouble(int index, double val){
+        long num = Double.doubleToLongBits(val);
+        setLong(index, num);
+    }
+
+    Object getRef(int index){
+        return slots[index].ref;
+    }
+
+    void setRef(int index, Object ref){
+        slots[index].ref = ref;
     }
 }
