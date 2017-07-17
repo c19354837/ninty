@@ -14,55 +14,55 @@ public class OperandStack {
         }
     }
 
-    void pushInt(int val) {
+    public void pushInt(int val) {
         slots[size].num = val;
         size++;
     }
 
-    int popInt() {
+    public int popInt() {
         size--;
         return slots[size].num;
     }
 
-    void pushLong(long val) {
+    public void pushLong(long val) {
         int low = (int) val;
         int high = (int) (val >>> 32);
         pushInt(low);
         pushInt(high);
     }
 
-    long popLong() {
+    public long popLong() {
         long high = (popInt() & 0x00000000ffffffffL) << 32;
         long low = popInt() & 0x00000000ffffffffL;
         return high | low;
     }
 
-    void pushFloat(float val){
+    public void pushFloat(float val){
         int num = Float.floatToIntBits(val);
         pushInt(num);
     }
 
-    float popFloat(){
+    public float popFloat(){
         int num = popInt();
         return Float.intBitsToFloat(num);
     }
 
-    void pushDouble(double val){
+    public void pushDouble(double val){
         long num = Double.doubleToLongBits(val);
         pushLong(num);
     }
 
-    double popDouble(){
+    public double popDouble(){
         long num = popLong();
         return Double.longBitsToDouble(num);
     }
 
-    void pushRef(Object ref){
+    public void pushRef(Object ref){
         slots[size].ref = ref;
         size++;
     }
 
-    Object popRef(){
+    public Object popRef(){
         size--;
         Object ref = slots[size].ref;
         slots[size].ref = null;

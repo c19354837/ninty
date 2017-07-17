@@ -13,38 +13,38 @@ public class LocalVars {
         }
     }
 
-    int getInt(int index) {
+    public int getInt(int index) {
         return slots[index].num;
     }
 
-    void setInt(int index, int val) {
+    public void setInt(int index, int val) {
         slots[index].num = val;
     }
 
-    long getLong(int index){
+    public long getLong(int index){
         long low = (getInt(index) & 0x00000000ffffffffL) ;
         long high = (getInt(index+1) & 0x00000000ffffffffL) << 32;
         return high|low;
     }
 
-    void setLong(int index, long val){
+    public void setLong(int index, long val){
         int low = (int)val;
         int high = (int) (val>>>32);
         setInt(index, low);
         setInt(index+1, high);
     }
 
-    float getFloat(int index) {
+    public float getFloat(int index) {
         int num = getInt(index);
         return Float.intBitsToFloat(num);
     }
 
-    void setFloat(int index, float val){
+    public void setFloat(int index, float val){
         int num = Float.floatToIntBits(val);
         setInt(index, num);
     }
 
-    double getDouble(int index){
+    public double getDouble(int index){
         long num = getLong(index);
         return Double.longBitsToDouble(num);
     }
@@ -54,11 +54,11 @@ public class LocalVars {
         setLong(index, num);
     }
 
-    Object getRef(int index){
+    public Object getRef(int index){
         return slots[index].ref;
     }
 
-    void setRef(int index, Object ref){
+    public void setRef(int index, Object ref){
         slots[index].ref = ref;
     }
 }
