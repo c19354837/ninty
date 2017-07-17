@@ -13,4 +13,16 @@ public class NiFrame {
         localVars = new LocalVars(localVarsSize);
         operandStack = new OperandStack(operandStackSize);
     }
+
+    public NiFrame getPrevFrame() {
+        return prevFrame;
+    }
+
+    public LocalVars getLocalVars() {
+        return localVars;
+    }
+
+    public OperandStack getOperandStack() {
+        return operandStack;
+    }
 }
