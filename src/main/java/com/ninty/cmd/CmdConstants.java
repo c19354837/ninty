@@ -138,7 +138,7 @@ public class CmdConstants {
 
         @Override
         public void init(ByteBuffer bb) {
-            val = bb.getChar();
+            val = bb.getShort();
         }
 
         @Override
