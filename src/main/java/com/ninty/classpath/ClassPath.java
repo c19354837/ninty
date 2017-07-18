@@ -12,13 +12,13 @@ public class ClassPath {
     ClassEntry extClassPath;
     ClassEntry appClassPath;
 
-    public ClassPath(String javaHome, String classPath){
+    public ClassPath(String javaHome, String classPath) {
         initBootAndExt(javaHome);
         initApp(classPath);
     }
 
     private void initBootAndExt(String javaHome) {
-        if(VMUtils.isEmpty(javaHome)){
+        if (VMUtils.isEmpty(javaHome)) {
             javaHome = getJavaHome();
         }
         String bootPath = String.join(File.separator, javaHome, "lib", "*");
@@ -29,12 +29,12 @@ public class ClassPath {
     }
 
     private void initApp(String classPath) {
-        if(!VMUtils.isEmpty(classPath)){
+        if (!VMUtils.isEmpty(classPath)) {
             appClassPath = ClassEntryFactory.getEntry(classPath);
         }
     }
 
-    private String getJavaHome(){
+    private String getJavaHome() {
         String javaHome = System.getProperty("java.home");
         if (!new File(javaHome).exists()) {
             throw new Error("Cannot find jre path");
@@ -42,19 +42,19 @@ public class ClassPath {
         return javaHome;
     }
 
-    public byte[] readClass(String className){
+    public byte[] readClass(String className) {
         String realCN = convert(className);
         byte[] datas = bootClassPath.readClass(realCN);
-        if(datas == null ){
+        if (datas == null) {
             datas = extClassPath.readClass(realCN);
         }
-        if(datas == null && appClassPath != null){
+        if (datas == null && appClassPath != null) {
             datas = appClassPath.readClass(realCN);
         }
         return datas;
     }
 
-    private String convert(String className){
+    private String convert(String className) {
         return className.replace('.', File.separatorChar) + ".class";
     }
 }

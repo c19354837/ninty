@@ -30,17 +30,17 @@ public class ConstantPoolInfos {
         return ci;
     }
 
-    public String getClassName(int index){
-        return ((ConstantInfo.CPClass)get(index)).className();
+    public String getClassName(int index) {
+        return ((ConstantInfo.CPClass) get(index)).className();
     }
 
-    public String getSuperClassName(int index){
+    public String getSuperClassName(int index) {
         //java.lang.Object has no super class
         return index == 0 ? "" : getClassName(index);
     }
 
     public String getUtf8(int index) {
-        return ((ConstantInfo.CPUtf8)get(index)).value;
+        return ((ConstantInfo.CPUtf8) get(index)).value;
     }
 }
 

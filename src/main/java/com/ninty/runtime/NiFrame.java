@@ -9,7 +9,7 @@ public class NiFrame {
     LocalVars localVars;
     OperandStack operandStack;
 
-    public NiFrame(int localVarsSize, int operandStackSize){
+    public NiFrame(int localVarsSize, int operandStackSize) {
         localVars = new LocalVars(localVarsSize);
         operandStack = new OperandStack(operandStackSize);
     }

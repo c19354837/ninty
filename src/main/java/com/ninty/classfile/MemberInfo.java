@@ -16,7 +16,7 @@ public class MemberInfo {
     private String desc;
     private AttributeInfo[] attributeInfos;
 
-    MemberInfo(ConstantPoolInfos cps, ByteBuffer bb){
+    MemberInfo(ConstantPoolInfos cps, ByteBuffer bb) {
         this.cps = cps;
         accessFlag = bb.getChar();
         name = cps.getUtf8(bb.getChar());
@@ -24,7 +24,7 @@ public class MemberInfo {
         fillAttributes(cps, bb);
     }
 
-    private void fillAttributes(ConstantPoolInfos cps, ByteBuffer bb){
+    private void fillAttributes(ConstantPoolInfos cps, ByteBuffer bb) {
         int count = bb.getChar();
         attributeInfos = new AttributeInfo[count];
         for (int i = 0; i < count; i++) {

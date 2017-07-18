@@ -7,7 +7,7 @@ public class NiThread {
     private int pc;
     private NiStack stack;
 
-    public NiThread(int maxStackSize){
+    public NiThread(int maxStackSize) {
         stack = new NiStack(maxStackSize);
     }
 }

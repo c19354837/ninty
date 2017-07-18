@@ -28,7 +28,7 @@ public class zipEntry extends ClassEntry {
             zin = new ZipInputStream(in);
             ZipEntry ze;
             while ((ze = zin.getNextEntry()) != null) {
-                if(ze.getName().equals(className)){
+                if (ze.getName().equals(className)) {
                     byte[] datas = new byte[(int) ze.getSize()];
                     IOUtils.readFully(zf.getInputStream(ze), datas);
                     return datas;
@@ -36,13 +36,13 @@ public class zipEntry extends ClassEntry {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             IOUtils.closeQuietly(zin);
         }
         return null;
     }
 
-    private boolean isJar(){
+    private boolean isJar() {
         return path.toLowerCase().endsWith(".jar");
     }
 }

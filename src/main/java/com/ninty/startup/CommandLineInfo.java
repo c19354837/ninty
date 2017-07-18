@@ -64,7 +64,7 @@ public class CommandLineInfo {
         return commandLine;
     }
 
-    public void printVersion(){
+    public void printVersion() {
         System.out.println("ninty 1.0.0");
     }
 

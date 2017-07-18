@@ -9,10 +9,10 @@ import java.nio.ByteBuffer;
  */
 public class AttributeInfo {
 
-    public static AttributeInfo generate(ConstantPoolInfos cps, ByteBuffer bb){
+    public static AttributeInfo generate(ConstantPoolInfos cps, ByteBuffer bb) {
         int nameIndex = bb.getChar();
         String name = cps.getUtf8(nameIndex);
-        switch (name){
+        switch (name) {
             case "Code":
                 return new AttrCode(cps, bb);
             case "Deprecated":
@@ -34,57 +34,57 @@ public class AttributeInfo {
         }
     }
 
-    void skip(ByteBuffer bb, int len){
+    void skip(ByteBuffer bb, int len) {
         bb.position(bb.position() + len);
     }
 
-    void skipAttributeLen(ByteBuffer bb){
+    void skipAttributeLen(ByteBuffer bb) {
         skip(bb, 4);
     }
 
-    static class UnkonwAttr extends AttributeInfo{
-        UnkonwAttr(ByteBuffer bb){
+    static class UnkonwAttr extends AttributeInfo {
+        UnkonwAttr(ByteBuffer bb) {
             long len = bb.getInt();
             skip(bb, (int) len);
         }
     }
 
-    static class AttrDeprecated extends AttributeInfo{
-        AttrDeprecated(ByteBuffer bb){
+    static class AttrDeprecated extends AttributeInfo {
+        AttrDeprecated(ByteBuffer bb) {
             bb.getInt(); // must be 0
         }
     }
 
-    static class AttrSynthetic extends AttributeInfo{
-        AttrSynthetic(ByteBuffer bb){
+    static class AttrSynthetic extends AttributeInfo {
+        AttrSynthetic(ByteBuffer bb) {
             bb.getInt(); // must be 0
         }
     }
 
-    static class AttrSourceFile extends AttributeInfo{
+    static class AttrSourceFile extends AttributeInfo {
         String sourceFile;
 
-        AttrSourceFile(ConstantPoolInfos cps, ByteBuffer bb){
+        AttrSourceFile(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
             int sourceFileIndex = bb.getChar();
             sourceFile = cps.getUtf8(sourceFileIndex);
         }
     }
 
-    static class AttrConstantValue extends AttributeInfo{
+    static class AttrConstantValue extends AttributeInfo {
         String constantValue;
 
-        AttrConstantValue(ConstantPoolInfos cps, ByteBuffer bb){
+        AttrConstantValue(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
             int constantValueIndex = bb.getChar();
             constantValue = cps.getUtf8(constantValueIndex);
         }
     }
 
-    static class AttrExceptions extends AttributeInfo{
+    static class AttrExceptions extends AttributeInfo {
         String[] exceptionNames;
 
-        AttrExceptions(ConstantPoolInfos cps, ByteBuffer bb){
+        AttrExceptions(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
             int count = bb.getChar();
             exceptionNames = new String[count];
@@ -94,10 +94,10 @@ public class AttributeInfo {
         }
     }
 
-    static class AttrLineNumberTable extends AttributeInfo{
+    static class AttrLineNumberTable extends AttributeInfo {
         LineNumberTable[] lineNumberTables;
 
-        AttrLineNumberTable(ByteBuffer bb){
+        AttrLineNumberTable(ByteBuffer bb) {
             skipAttributeLen(bb);
             int count = bb.getChar();
             lineNumberTables = new LineNumberTable[count];
@@ -107,10 +107,10 @@ public class AttributeInfo {
         }
     }
 
-    static class AttrLocalVariableTable extends AttributeInfo{
+    static class AttrLocalVariableTable extends AttributeInfo {
         LocalVariable[] localVariables;
 
-        AttrLocalVariableTable(ConstantPoolInfos cps, ByteBuffer bb){
+        AttrLocalVariableTable(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
             int count = bb.getChar();
             localVariables = new LocalVariable[count];
@@ -120,14 +120,14 @@ public class AttributeInfo {
         }
     }
 
-    static class AttrCode extends AttributeInfo{
+    static class AttrCode extends AttributeInfo {
         int maxStack;
         int maxLocals;
         byte[] codes;
         ExceptionTable[] exceptionTables;
         AttributeInfo[] attributeInfos;
 
-        AttrCode(ConstantPoolInfos cps, ByteBuffer bb){
+        AttrCode(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
             maxStack = bb.getChar();
             maxLocals = bb.getChar();
@@ -148,24 +148,24 @@ public class AttributeInfo {
         }
     }
 
-    private static class LineNumberTable{
+    private static class LineNumberTable {
         int startPC;
         int lineNumber;
 
-        LineNumberTable(ByteBuffer bb){
+        LineNumberTable(ByteBuffer bb) {
             startPC = bb.getChar();
             lineNumber = bb.getChar();
         }
     }
 
-    private static class LocalVariable{
+    private static class LocalVariable {
         int startPC;
         int length;
         String name;
         String desc;
         int index;
 
-        LocalVariable(ConstantPoolInfos cps, ByteBuffer bb){
+        LocalVariable(ConstantPoolInfos cps, ByteBuffer bb) {
             startPC = bb.getChar();
             length = bb.getChar();
             name = cps.getUtf8(bb.getChar());
@@ -174,13 +174,13 @@ public class AttributeInfo {
         }
     }
 
-    private static class ExceptionTable{
+    private static class ExceptionTable {
         int startPc;
         int endPc;
         int handlerPc;
         int catchType;
 
-        ExceptionTable(ByteBuffer bb){
+        ExceptionTable(ByteBuffer bb) {
             startPc = bb.getChar();
             endPc = bb.getChar();
             handlerPc = bb.getChar();

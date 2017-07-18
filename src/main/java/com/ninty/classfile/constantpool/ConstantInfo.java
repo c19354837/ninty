@@ -13,10 +13,10 @@ public class ConstantInfo {
     public CPType type;
     public ConstantPoolInfos cps;
 
-    public static ConstantInfo generate(ConstantPoolInfos cps, ByteBuffer bb){
+    public static ConstantInfo generate(ConstantPoolInfos cps, ByteBuffer bb) {
         CPType type = CPType.get(bb.get());
         ConstantInfo cp = null;
-        switch (type){
+        switch (type) {
             case cp_integer:
                 cp = new CPInteger(bb);
                 break;
@@ -56,58 +56,62 @@ public class ConstantInfo {
 
     static class CPInteger extends ConstantInfo {
         int value;
-        CPInteger(ByteBuffer bb){
+
+        CPInteger(ByteBuffer bb) {
             value = bb.getInt();
         }
     }
 
     static class CPFloat extends ConstantInfo {
         float value;
-        CPFloat(ByteBuffer bb){
+
+        CPFloat(ByteBuffer bb) {
             value = bb.getFloat();
         }
     }
 
     static class CPFLong extends ConstantInfo {
         long value;
-        CPFLong(ByteBuffer bb){
+
+        CPFLong(ByteBuffer bb) {
             value = bb.getLong();
         }
     }
 
     static class CPDouble extends ConstantInfo {
         double value;
-        CPDouble(ByteBuffer bb){
+
+        CPDouble(ByteBuffer bb) {
             value = bb.getDouble();
         }
     }
 
-    static class CPClass extends ConstantInfo{
+    static class CPClass extends ConstantInfo {
         private int classIndex;
 
-        CPClass(ByteBuffer bb){
+        CPClass(ByteBuffer bb) {
             classIndex = bb.getChar();
         }
 
-        public String className(){
+        public String className() {
             return cps.getUtf8(classIndex);
         }
     }
 
-    static class CPNameAndType extends ConstantInfo{
+    static class CPNameAndType extends ConstantInfo {
         private int nameIndex;
         private int descIndex;
 
-        public CPNameAndType(ByteBuffer bb){
+        public CPNameAndType(ByteBuffer bb) {
             nameIndex = bb.getChar();
             descIndex = bb.getChar();
         }
 
-        public String name(){
+        public String name() {
             return cps.getUtf8(nameIndex);
         }
 
-        public String desc(){
+        public String desc() {
             return cps.getUtf8(descIndex);
         }
     }
@@ -115,11 +119,11 @@ public class ConstantInfo {
     static class CPString extends ConstantInfo {
         private int stringIndex;
 
-        CPString(ByteBuffer bb){
+        CPString(ByteBuffer bb) {
             stringIndex = bb.getChar();
         }
 
-        public String string(){
+        public String string() {
             return cps.getUtf8(stringIndex);
         }
     }
@@ -128,28 +132,28 @@ public class ConstantInfo {
         private int classIndex;
         private int nameAndTypeIndex;
 
-        CPMemeber(ByteBuffer bb){
+        CPMemeber(ByteBuffer bb) {
             classIndex = bb.getChar();
             nameAndTypeIndex = bb.getChar();
         }
 
-        public String className(){
-            return ((CPClass)cps.get(classIndex)).className();
+        public String className() {
+            return ((CPClass) cps.get(classIndex)).className();
         }
 
-        public String name(){
-            return ((CPNameAndType)cps.get(nameAndTypeIndex)).name();
+        public String name() {
+            return ((CPNameAndType) cps.get(nameAndTypeIndex)).name();
         }
 
-        public String desc(){
-            return ((CPNameAndType)cps.get(nameAndTypeIndex)).desc();
+        public String desc() {
+            return ((CPNameAndType) cps.get(nameAndTypeIndex)).desc();
         }
     }
 
     static class CPUtf8 extends ConstantInfo {
         String value;
 
-        CPUtf8(ByteBuffer bb){
+        CPUtf8(ByteBuffer bb) {
             int len = bb.getChar();
             byte[] datas = new byte[len];
             bb.get(datas);
@@ -173,19 +177,19 @@ public class ConstantInfo {
         }
     }
 
-    enum CPType{
+    enum CPType {
         cp_utf8(1), cp_integer(3), cp_float(4), cp_long(5), cp_double(6), cp_class(7), cp_string(8), cp_field(9), cp_method(10),
         cp_interface_method(11), cp_name_type(12), cp_method_handle(15), cp_method_type(16), cp_invoke_dynamic(18);
 
         int tag;
 
-        CPType(int tag){
+        CPType(int tag) {
             this.tag = tag;
         }
 
-        static CPType get(int tag){
-            for(CPType type : values()){
-                if(type.tag == tag){
+        static CPType get(int tag) {
+            for (CPType type : values()) {
+                if (type.tag == tag) {
                     return type;
                 }
             }
