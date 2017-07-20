@@ -91,8 +91,8 @@ public class CmdControl {
         public void exec(NiFrame frame) {
             int index = frame.getOperandStack().popInt();
             for (int i = 0; i < npairs * 2; i++) {
-                if(matchOffsets[i] == index){
-                    jumpTo(matchOffsets[i]+1);
+                if (matchOffsets[i] == index) {
+                    jumpTo(matchOffsets[i] + 1);
                     return;
                 }
             }

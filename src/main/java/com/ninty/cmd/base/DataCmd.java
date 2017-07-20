@@ -13,7 +13,7 @@ public abstract class DataCmd implements ICmdBase {
         this.bb = bb;
     }
 
-    public void jumpTo(int offset){
-        bb.position(bb.position()+offset);
+    public void jumpTo(int offset) {
+        bb.position(bb.position() + offset);
     }
 }
