@@ -8,27 +8,27 @@ import com.ninty.runtime.NiFrame;
  * Created by ninty on 2017/7/16.
  */
 public class CmdStores {
-    static void iStore(NiFrame frame, int index) {
+    private static void iStore(NiFrame frame, int index) {
         int val = frame.getOperandStack().popInt();
         frame.getLocalVars().setInt(index, val);
     }
 
-    static void lStore(NiFrame frame, int index) {
+    private static void lStore(NiFrame frame, int index) {
         long val = frame.getOperandStack().popLong();
         frame.getLocalVars().setLong(index, val);
     }
 
-    static void fStore(NiFrame frame, int index) {
+    private static void fStore(NiFrame frame, int index) {
         float val = frame.getOperandStack().popFloat();
         frame.getLocalVars().setFloat(index, val);
     }
 
-    static void dStore(NiFrame frame, int index) {
+    private static void dStore(NiFrame frame, int index) {
         double val = frame.getOperandStack().popDouble();
         frame.getLocalVars().setDouble(index, val);
     }
 
-    static void aStore(NiFrame frame, int index) {
+    private static void aStore(NiFrame frame, int index) {
         Object ref = frame.getOperandStack().popRef();
         frame.getLocalVars().setRef(index, ref);
     }

@@ -10,21 +10,21 @@ import com.ninty.runtime.OperandStack;
  */
 public class CmdComparisons {
 
-    static int icmp(NiFrame frame) {
+    private static int icmp(NiFrame frame) {
         OperandStack stack = frame.getOperandStack();
         int num1 = stack.popInt();
         int num2 = stack.popInt();
         return num1 > num2 ? 1 : (num1 == num2 ? 0 : -1);
     }
 
-    static boolean acmp(NiFrame frame) {
+    private static boolean acmp(NiFrame frame) {
         OperandStack stack = frame.getOperandStack();
         Object ref1 = stack.popRef();
         Object ref2 = stack.popRef();
         return ref1 == ref2;
     }
 
-    static void fcmp(NiFrame frame, int ifNaN) {
+    private static void fcmp(NiFrame frame, int ifNaN) {
         OperandStack stack = frame.getOperandStack();
         float num1 = stack.popFloat();
         float num2 = stack.popFloat();
@@ -35,7 +35,7 @@ public class CmdComparisons {
         }
     }
 
-    static void dcmp(NiFrame frame, int ifNaN) {
+    private static void dcmp(NiFrame frame, int ifNaN) {
         OperandStack stack = frame.getOperandStack();
         double num1 = stack.popDouble();
         double num2 = stack.popDouble();

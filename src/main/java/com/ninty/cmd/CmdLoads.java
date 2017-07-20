@@ -9,27 +9,27 @@ import com.ninty.runtime.NiFrame;
  */
 public class CmdLoads {
 
-    static void iLoad(NiFrame frame, int index) {
+    private static void iLoad(NiFrame frame, int index) {
         int val = frame.getLocalVars().getInt(index);
         frame.getOperandStack().pushInt(val);
     }
 
-    static void lLoad(NiFrame frame, int index) {
+    private static void lLoad(NiFrame frame, int index) {
         long val = frame.getLocalVars().getLong(index);
         frame.getOperandStack().pushLong(val);
     }
 
-    static void fLoad(NiFrame frame, int index) {
+    private static void fLoad(NiFrame frame, int index) {
         float val = frame.getLocalVars().getFloat(index);
         frame.getOperandStack().pushFloat(val);
     }
 
-    static void dLoad(NiFrame frame, int index) {
+    private static void dLoad(NiFrame frame, int index) {
         double val = frame.getLocalVars().getDouble(index);
         frame.getOperandStack().pushDouble(val);
     }
 
-    static void aLoad(NiFrame frame, int index) {
+    private static void aLoad(NiFrame frame, int index) {
         Object ref = frame.getLocalVars().getRef(index);
         frame.getOperandStack().pushRef(ref);
     }

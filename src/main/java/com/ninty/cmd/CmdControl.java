@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
  */
 public class CmdControl {
 
-    static void skipPadding(ByteBuffer bb) {
+    private static void skipPadding(ByteBuffer bb) {
         while (bb.position() % 4 != 0) {
             bb.position(bb.position() + 1);
         }
