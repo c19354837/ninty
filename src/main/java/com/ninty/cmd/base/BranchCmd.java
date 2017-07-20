@@ -5,12 +5,17 @@ import java.nio.ByteBuffer;
 /**
  * Created by ninty on 2017/7/16.
  */
-public abstract class BranchCmd implements ICmdBase {
+public abstract class BranchCmd extends DataCmd {
 
-    protected int offset;
+    private int offset;
 
     @Override
     public void init(ByteBuffer bb) {
+        super.init(bb);
         offset = bb.getShort();
+    }
+
+    protected void branch() {
+        jumpTo(offset);
     }
 }
