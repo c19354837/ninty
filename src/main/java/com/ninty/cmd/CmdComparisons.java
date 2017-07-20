@@ -10,6 +10,20 @@ import com.ninty.runtime.OperandStack;
  */
 public class CmdComparisons {
 
+    static int icmp(NiFrame frame) {
+        OperandStack stack = frame.getOperandStack();
+        int num1 = stack.popInt();
+        int num2 = stack.popInt();
+        return num1 > num2 ? 1 : (num1 == num2 ? 0 : -1);
+    }
+
+    static boolean acmp(NiFrame frame) {
+        OperandStack stack = frame.getOperandStack();
+        Object ref1 = stack.popRef();
+        Object ref2 = stack.popRef();
+        return ref1 == ref2;
+    }
+
     static void fcmp(NiFrame frame, int ifNaN) {
         OperandStack stack = frame.getOperandStack();
         float num1 = stack.popFloat();
@@ -75,7 +89,136 @@ public class CmdComparisons {
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
             int val = stack.popInt();
-            // TODO branch
+            if (val == 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IFNE extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            OperandStack stack = frame.getOperandStack();
+            int val = stack.popInt();
+            if (val != 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IFLT extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            OperandStack stack = frame.getOperandStack();
+            int val = stack.popInt();
+            if (val < 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IFGE extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            OperandStack stack = frame.getOperandStack();
+            int val = stack.popInt();
+            if (val >= 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IFGT extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            OperandStack stack = frame.getOperandStack();
+            int val = stack.popInt();
+            if (val > 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IFLE extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            OperandStack stack = frame.getOperandStack();
+            int val = stack.popInt();
+            if (val <= 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IF_ICMPEQ extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            if (icmp(frame) == 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IF_ICMPNE extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            if (icmp(frame) != 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IF_ICMPLT extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            if (icmp(frame) < 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IF_ICMPGE extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            if (icmp(frame) >= 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IF_ICMPGT extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            if (icmp(frame) > 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IF_ICMPLE extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            if (icmp(frame) <= 0) {
+                branch();
+            }
+        }
+    }
+
+    static class IF_ACMPEQ extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            if (acmp(frame)) {
+                branch();
+            }
+        }
+    }
+
+    static class IF_ACMPNE extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            if (!acmp(frame)) {
+                branch();
+            }
         }
     }
 }
