@@ -371,8 +371,8 @@ public class CmdMath {
     }
 
     static class IINC implements ICmdBase {
-        private int index;
-        private int inc;
+        int index;
+        int inc;
 
         @Override
         public void init(ByteBuffer bb) {
