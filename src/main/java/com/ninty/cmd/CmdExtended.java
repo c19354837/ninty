@@ -1,5 +1,7 @@
 package com.ninty.cmd;
 
+import com.ninty.cmd.base.BranchCmd;
+import com.ninty.cmd.base.DataCmd;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.runtime.NiFrame;
@@ -70,6 +72,41 @@ public class CmdExtended {
         @Override
         public void exec(NiFrame frame) {
             cmd.exec(frame);
+        }
+    }
+
+    static class IFNULL extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            Object ref = frame.getOperandStack().popRef();
+            if(ref == null){
+                branch();
+            }
+        }
+    }
+
+    static class IFNONNULL extends BranchCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            Object ref = frame.getOperandStack().popRef();
+            if(ref != null){
+                branch();
+            }
+        }
+    }
+
+    static class GOTO_W extends DataCmd {
+        private int offset;
+
+        @Override
+        public void init(ByteBuffer bb) {
+            super.init(bb);
+            offset = bb.getInt();
+        }
+
+        @Override
+        public void exec(NiFrame frame) {
+            jumpTo(offset);
         }
     }
 }
