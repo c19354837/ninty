@@ -4,6 +4,7 @@ import com.ninty.classfile.constantpool.ConstantPoolInfos;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import static com.ninty.classfile.AttributeInfo.AttrCode;
 
 /**
  * Created by ninty on 2017/7/9.
@@ -30,6 +31,23 @@ public class MemberInfo {
         for (int i = 0; i < count; i++) {
             attributeInfos[i] = AttributeInfo.generate(cps, bb);
         }
+    }
+
+    public AttrCode getAttrCode(){
+        for (AttributeInfo attr : attributeInfos) {
+            if(attr instanceof AttrCode){
+                return (AttrCode) attr;
+            }
+        }
+        return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 
     @Override
