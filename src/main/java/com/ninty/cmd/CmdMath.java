@@ -14,7 +14,7 @@ import static com.ninty.utils.VMUtils.toUInt;
  */
 public class CmdMath {
 
-    static class IADD extends NoOperandCmd {
+    public static class IADD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -24,7 +24,7 @@ public class CmdMath {
         }
     }
 
-    static class LADD extends NoOperandCmd {
+    public static class LADD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -34,7 +34,7 @@ public class CmdMath {
         }
     }
 
-    static class FADD extends NoOperandCmd {
+    public static class FADD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -44,7 +44,7 @@ public class CmdMath {
         }
     }
 
-    static class DADD extends NoOperandCmd {
+    public static class DADD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -54,7 +54,7 @@ public class CmdMath {
         }
     }
 
-    static class ISUB extends NoOperandCmd {
+    public static class ISUB extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -64,7 +64,7 @@ public class CmdMath {
         }
     }
 
-    static class LSUB extends NoOperandCmd {
+    public static class LSUB extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -74,7 +74,7 @@ public class CmdMath {
         }
     }
 
-    static class FSUB extends NoOperandCmd {
+    public static class FSUB extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -84,7 +84,7 @@ public class CmdMath {
         }
     }
 
-    static class DSUB extends NoOperandCmd {
+    public static class DSUB extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -94,7 +94,7 @@ public class CmdMath {
         }
     }
 
-    static class IMUL extends NoOperandCmd {
+    public static class IMUL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -104,7 +104,7 @@ public class CmdMath {
         }
     }
 
-    static class LMUL extends NoOperandCmd {
+    public static class LMUL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -114,7 +114,7 @@ public class CmdMath {
         }
     }
 
-    static class FMUL extends NoOperandCmd {
+    public static class FMUL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -124,7 +124,7 @@ public class CmdMath {
         }
     }
 
-    static class DMUL extends NoOperandCmd {
+    public static class DMUL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -134,7 +134,7 @@ public class CmdMath {
         }
     }
 
-    static class IDIV extends NoOperandCmd {
+    public static class IDIV extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -144,7 +144,7 @@ public class CmdMath {
         }
     }
 
-    static class LDIV extends NoOperandCmd {
+    public static class LDIV extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -154,7 +154,7 @@ public class CmdMath {
         }
     }
 
-    static class FDIV extends NoOperandCmd {
+    public static class FDIV extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -164,7 +164,7 @@ public class CmdMath {
         }
     }
 
-    static class DDIV extends NoOperandCmd {
+    public static class DDIV extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -174,7 +174,7 @@ public class CmdMath {
         }
     }
 
-    static class IREM extends NoOperandCmd {
+    public static class IREM extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -184,7 +184,7 @@ public class CmdMath {
         }
     }
 
-    static class LREM extends NoOperandCmd {
+    public static class LREM extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -194,7 +194,7 @@ public class CmdMath {
         }
     }
 
-    static class FREM extends NoOperandCmd {
+    public static class FREM extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -204,7 +204,7 @@ public class CmdMath {
         }
     }
 
-    static class DREM extends NoOperandCmd {
+    public static class DREM extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -214,7 +214,7 @@ public class CmdMath {
         }
     }
 
-    static class INEG extends NoOperandCmd {
+    public static class INEG extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -223,7 +223,7 @@ public class CmdMath {
         }
     }
 
-    static class LNEG extends NoOperandCmd {
+    public static class LNEG extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -232,7 +232,7 @@ public class CmdMath {
         }
     }
 
-    static class FNEG extends NoOperandCmd {
+    public static class FNEG extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -241,7 +241,7 @@ public class CmdMath {
         }
     }
 
-    static class DNEG extends NoOperandCmd {
+    public static class DNEG extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -250,7 +250,7 @@ public class CmdMath {
         }
     }
 
-    static class ISHL extends NoOperandCmd {
+    public static class ISHL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -260,7 +260,7 @@ public class CmdMath {
         }
     }
 
-    static class LSHL extends NoOperandCmd {
+    public static class LSHL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -270,7 +270,7 @@ public class CmdMath {
         }
     }
 
-    static class ISHR extends NoOperandCmd {
+    public static class ISHR extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -280,7 +280,7 @@ public class CmdMath {
         }
     }
 
-    static class LSHR extends NoOperandCmd {
+    public static class LSHR extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -290,7 +290,7 @@ public class CmdMath {
         }
     }
 
-    static class IUSHR extends NoOperandCmd {
+    public static class IUSHR extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -300,7 +300,7 @@ public class CmdMath {
         }
     }
 
-    static class LUSHR extends NoOperandCmd {
+    public static class LUSHR extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -310,7 +310,7 @@ public class CmdMath {
         }
     }
 
-    static class IAND extends NoOperandCmd {
+    public static class IAND extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -320,7 +320,7 @@ public class CmdMath {
         }
     }
 
-    static class LAND extends NoOperandCmd {
+    public static class LAND extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -330,7 +330,7 @@ public class CmdMath {
         }
     }
 
-    static class IOR extends NoOperandCmd {
+    public static class IOR extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -340,7 +340,7 @@ public class CmdMath {
         }
     }
 
-    static class LOR extends NoOperandCmd {
+    public static class LOR extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -350,7 +350,7 @@ public class CmdMath {
         }
     }
 
-    static class IXOR extends NoOperandCmd {
+    public static class IXOR extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -360,7 +360,7 @@ public class CmdMath {
         }
     }
 
-    static class LXOR extends NoOperandCmd {
+    public static class LXOR extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -370,7 +370,7 @@ public class CmdMath {
         }
     }
 
-    static class IINC implements ICmdBase {
+    public static class IINC implements ICmdBase {
         int index;
         int inc;
 

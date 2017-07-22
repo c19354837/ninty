@@ -1,7 +1,6 @@
 package com.ninty.cmd;
 
 import com.ninty.cmd.base.BranchCmd;
-import com.ninty.cmd.base.DataCmd;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.runtime.NiFrame;
@@ -15,10 +14,10 @@ import static com.ninty.utils.VMUtils.toUInt;
  */
 public class CmdExtended {
 
-    static class WIDE implements ICmdBase {
+    public static class WIDE implements ICmdBase {
         private ICmdBase cmd;
 
-        private void initIndex8Cmd(Index8Cmd cmd, ByteBuffer bb){
+        private void initIndex8Cmd(Index8Cmd cmd, ByteBuffer bb) {
             cmd.index = bb.getChar();
             this.cmd = cmd;
         }
@@ -75,38 +74,23 @@ public class CmdExtended {
         }
     }
 
-    static class IFNULL extends BranchCmd {
+    public static class IFNULL extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             Object ref = frame.getOperandStack().popRef();
-            if(ref == null){
+            if (ref == null) {
                 branch();
             }
         }
     }
 
-    static class IFNONNULL extends BranchCmd {
+    public static class IFNONNULL extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             Object ref = frame.getOperandStack().popRef();
-            if(ref != null){
+            if (ref != null) {
                 branch();
             }
-        }
-    }
-
-    static class GOTO_W extends DataCmd {
-        private int offset;
-
-        @Override
-        public void init(ByteBuffer bb) {
-            super.init(bb);
-            offset = bb.getInt();
-        }
-
-        @Override
-        public void exec(NiFrame frame) {
-            jumpTo(offset);
         }
     }
 }

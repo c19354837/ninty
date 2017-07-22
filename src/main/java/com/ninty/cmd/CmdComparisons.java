@@ -46,7 +46,7 @@ public class CmdComparisons {
         }
     }
 
-    static class LCMP extends NoOperandCmd {
+    public static class LCMP extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -56,35 +56,35 @@ public class CmdComparisons {
         }
     }
 
-    static class FCMPL extends NoOperandCmd {
+    public static class FCMPL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             fcmp(frame, -1);
         }
     }
 
-    static class FCMPG extends NoOperandCmd {
+    public static class FCMPG extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             fcmp(frame, 1);
         }
     }
 
-    static class DCMPL extends NoOperandCmd {
+    public static class DCMPL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             fcmp(frame, -1);
         }
     }
 
-    static class DCMPG extends NoOperandCmd {
+    public static class DCMPG extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             fcmp(frame, 1);
         }
     }
 
-    static class IFEQ extends BranchCmd {
+    public static class IFEQ extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -95,7 +95,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IFNE extends BranchCmd {
+    public static class IFNE extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -106,7 +106,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IFLT extends BranchCmd {
+    public static class IFLT extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -117,7 +117,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IFGE extends BranchCmd {
+    public static class IFGE extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -128,7 +128,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IFGT extends BranchCmd {
+    public static class IFGT extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -139,7 +139,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IFLE extends BranchCmd {
+    public static class IFLE extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -150,7 +150,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IF_ICMPEQ extends BranchCmd {
+    public static class IF_ICMPEQ extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             if (icmp(frame) == 0) {
@@ -159,7 +159,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IF_ICMPNE extends BranchCmd {
+    public static class IF_ICMPNE extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             if (icmp(frame) != 0) {
@@ -168,7 +168,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IF_ICMPLT extends BranchCmd {
+    public static class IF_ICMPLT extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             if (icmp(frame) < 0) {
@@ -177,7 +177,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IF_ICMPGE extends BranchCmd {
+    public static class IF_ICMPGE extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             if (icmp(frame) >= 0) {
@@ -186,7 +186,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IF_ICMPGT extends BranchCmd {
+    public static class IF_ICMPGT extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             if (icmp(frame) > 0) {
@@ -195,7 +195,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IF_ICMPLE extends BranchCmd {
+    public static class IF_ICMPLE extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             if (icmp(frame) <= 0) {
@@ -204,7 +204,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IF_ACMPEQ extends BranchCmd {
+    public static class IF_ACMPEQ extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             if (acmp(frame)) {
@@ -213,7 +213,7 @@ public class CmdComparisons {
         }
     }
 
-    static class IF_ACMPNE extends BranchCmd {
+    public static class IF_ACMPNE extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             if (!acmp(frame)) {

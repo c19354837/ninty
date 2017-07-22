@@ -10,14 +10,14 @@ import com.ninty.runtime.Slot;
  */
 public class CmdStack {
 
-    static class POP extends NoOperandCmd {
+    public static class POP extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             frame.getOperandStack().popSlot();
         }
     }
 
-    static class POP2 extends NoOperandCmd {
+    public static class POP2 extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             frame.getOperandStack().popSlot();
@@ -25,7 +25,7 @@ public class CmdStack {
         }
     }
 
-    static class DUP extends NoOperandCmd {
+    public static class DUP extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -36,7 +36,7 @@ public class CmdStack {
     }
 
 
-    static class DUP_X1 extends NoOperandCmd {
+    public static class DUP_X1 extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -49,7 +49,7 @@ public class CmdStack {
     }
 
 
-    static class DUP_X2 extends NoOperandCmd {
+    public static class DUP_X2 extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -63,7 +63,7 @@ public class CmdStack {
         }
     }
 
-    static class DUP2 extends NoOperandCmd {
+    public static class DUP2 extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -76,7 +76,7 @@ public class CmdStack {
         }
     }
 
-    static class DUP2_X1 extends NoOperandCmd {
+    public static class DUP2_X1 extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -91,7 +91,7 @@ public class CmdStack {
         }
     }
 
-    static class DUP2_X2 extends NoOperandCmd {
+    public static class DUP2_X2 extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -108,7 +108,7 @@ public class CmdStack {
         }
     }
 
-    static class SWAP extends NoOperandCmd {
+    public static class SWAP extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();

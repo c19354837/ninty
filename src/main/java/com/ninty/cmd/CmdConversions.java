@@ -9,7 +9,7 @@ import com.ninty.runtime.OperandStack;
  */
 public class CmdConversions {
 
-    static class I2L extends NoOperandCmd {
+    public static class I2L extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -18,7 +18,7 @@ public class CmdConversions {
         }
     }
 
-    static class I2F extends NoOperandCmd {
+    public static class I2F extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -27,7 +27,7 @@ public class CmdConversions {
         }
     }
 
-    static class I2D extends NoOperandCmd {
+    public static class I2D extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -36,7 +36,7 @@ public class CmdConversions {
         }
     }
 
-    static class L2I extends NoOperandCmd {
+    public static class L2I extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -45,7 +45,7 @@ public class CmdConversions {
         }
     }
 
-    static class L2F extends NoOperandCmd {
+    public static class L2F extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -54,7 +54,7 @@ public class CmdConversions {
         }
     }
 
-    static class L2D extends NoOperandCmd {
+    public static class L2D extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -63,7 +63,7 @@ public class CmdConversions {
         }
     }
 
-    static class F2I extends NoOperandCmd {
+    public static class F2I extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -72,7 +72,7 @@ public class CmdConversions {
         }
     }
 
-    static class F2L extends NoOperandCmd {
+    public static class F2L extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -81,7 +81,7 @@ public class CmdConversions {
         }
     }
 
-    static class F2D extends NoOperandCmd {
+    public static class F2D extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -90,7 +90,7 @@ public class CmdConversions {
         }
     }
 
-    static class D2I extends NoOperandCmd {
+    public static class D2I extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -99,7 +99,7 @@ public class CmdConversions {
         }
     }
 
-    static class D2L extends NoOperandCmd {
+    public static class D2L extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -108,7 +108,7 @@ public class CmdConversions {
         }
     }
 
-    static class D2F extends NoOperandCmd {
+    public static class D2F extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -117,7 +117,7 @@ public class CmdConversions {
         }
     }
 
-    static class I2B extends NoOperandCmd {
+    public static class I2B extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -126,7 +126,7 @@ public class CmdConversions {
         }
     }
 
-    static class I2C extends NoOperandCmd {
+    public static class I2C extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
@@ -135,7 +135,7 @@ public class CmdConversions {
         }
     }
 
-    static class I2S extends NoOperandCmd {
+    public static class I2S extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();

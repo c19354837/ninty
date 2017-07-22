@@ -17,14 +17,14 @@ public class CmdControl {
         }
     }
 
-    static class GOTO extends BranchCmd {
+    public static class GOTO extends BranchCmd {
         @Override
         public void exec(NiFrame frame) {
             branch();
         }
     }
 
-    static class GOTO_W extends DataCmd {
+    public static class GOTO_W extends DataCmd {
         private int offset;
 
         @Override
@@ -39,7 +39,7 @@ public class CmdControl {
         }
     }
 
-    static class TABLESWITCH extends DataCmd {
+    public static class TABLESWITCH extends DataCmd {
         private int defaultOffset;
         private int low;
         private int high;
@@ -70,7 +70,7 @@ public class CmdControl {
         }
     }
 
-    static class LOOKUPSWITCH extends DataCmd {
+    public static class LOOKUPSWITCH extends DataCmd {
         private int defaultOffset;
         private int npairs;
         private int[] matchOffsets;
