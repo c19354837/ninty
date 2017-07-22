@@ -12,22 +12,22 @@ public class CmdComparisons {
 
     private static int icmp(NiFrame frame) {
         OperandStack stack = frame.getOperandStack();
-        int num1 = stack.popInt();
         int num2 = stack.popInt();
+        int num1 = stack.popInt();
         return num1 > num2 ? 1 : (num1 == num2 ? 0 : -1);
     }
 
     private static boolean acmp(NiFrame frame) {
         OperandStack stack = frame.getOperandStack();
-        Object ref1 = stack.popRef();
         Object ref2 = stack.popRef();
+        Object ref1 = stack.popRef();
         return ref1 == ref2;
     }
 
     private static void fcmp(NiFrame frame, int ifNaN) {
         OperandStack stack = frame.getOperandStack();
-        float num1 = stack.popFloat();
         float num2 = stack.popFloat();
+        float num1 = stack.popFloat();
         if (Float.isNaN(num1) || Float.isNaN(num2)) {
             stack.pushInt(ifNaN);
         } else {
@@ -37,8 +37,8 @@ public class CmdComparisons {
 
     private static void dcmp(NiFrame frame, int ifNaN) {
         OperandStack stack = frame.getOperandStack();
-        double num1 = stack.popDouble();
         double num2 = stack.popDouble();
+        double num1 = stack.popDouble();
         if (Double.isNaN(num1) || Double.isNaN(num2)) {
             stack.pushInt(ifNaN);
         } else {
@@ -50,8 +50,8 @@ public class CmdComparisons {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
-            long num1 = stack.popLong();
             long num2 = stack.popLong();
+            long num1 = stack.popLong();
             stack.pushInt(num1 > num2 ? 1 : (num1 == num2 ? 0 : -1));
         }
     }
