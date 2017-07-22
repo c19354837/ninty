@@ -103,6 +103,10 @@ public class ClassFile {
         }
     }
 
+    public MemberInfo[] getMethodInfos() {
+        return methodInfos;
+    }
+
     @Override
     public String toString() {
         return "ClassFile{" +
