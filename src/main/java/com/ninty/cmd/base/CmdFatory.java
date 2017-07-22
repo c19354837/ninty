@@ -147,13 +147,13 @@ public class CmdFatory {
             case 0x3e:
                 return new ISTORE_3();
             case 0x3f:
-                return new LLOAD_0();
+                return new LSTORE_0();
             case 0x40:
-                return new LLOAD_1();
+                return new LSTORE_1();
             case 0x41:
-                return new LLOAD_2();
+                return new LSTORE_2();
             case 0x42:
-                return new LLOAD_3();
+                return new LSTORE_3();
             case 0x43:
                 return new FSTORE_0();
             case 0x44:
