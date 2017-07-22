@@ -42,3 +42,4 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+/src/main/java/com/ninty/test/
