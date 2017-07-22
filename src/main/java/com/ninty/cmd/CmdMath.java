@@ -383,7 +383,7 @@ public class CmdMath {
         @Override
         public void exec(NiFrame frame) {
             int val = frame.getLocalVars().getInt(index);
-            frame.getOperandStack().pushInt(val + inc);
+            frame.getLocalVars().setInt(index, val + inc);
         }
     }
 }
