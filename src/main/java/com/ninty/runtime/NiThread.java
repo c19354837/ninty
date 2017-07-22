@@ -10,4 +10,8 @@ public class NiThread {
     public NiThread(int maxStackSize) {
         stack = new NiStack(maxStackSize);
     }
+
+    public NiStack getStack() {
+        return stack;
+    }
 }

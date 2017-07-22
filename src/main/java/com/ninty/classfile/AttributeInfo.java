@@ -120,12 +120,12 @@ public class AttributeInfo {
         }
     }
 
-    static class AttrCode extends AttributeInfo {
-        int maxStack;
-        int maxLocals;
-        byte[] codes;
-        ExceptionTable[] exceptionTables;
-        AttributeInfo[] attributeInfos;
+    public static class AttrCode extends AttributeInfo {
+        public int maxStack;
+        public int maxLocals;
+        public byte[] codes;
+        public ExceptionTable[] exceptionTables;
+        public AttributeInfo[] attributeInfos;
 
         AttrCode(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);

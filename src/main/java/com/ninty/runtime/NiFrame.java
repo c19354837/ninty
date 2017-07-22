@@ -1,5 +1,7 @@
 package com.ninty.runtime;
 
+import java.nio.ByteBuffer;
+
 /**
  * Created by ninty on 2017/7/12.
  */
@@ -9,9 +11,12 @@ public class NiFrame {
     LocalVars localVars;
     OperandStack operandStack;
 
-    public NiFrame(int localVarsSize, int operandStackSize) {
+    ByteBuffer bb;
+
+    public NiFrame(int localVarsSize, int operandStackSize, byte[] codes) {
         localVars = new LocalVars(localVarsSize);
         operandStack = new OperandStack(operandStackSize);
+        bb = ByteBuffer.wrap(codes);
     }
 
     public NiFrame getPrevFrame() {
@@ -24,5 +29,9 @@ public class NiFrame {
 
     public OperandStack getOperandStack() {
         return operandStack;
+    }
+
+    public ByteBuffer getCode() {
+        return bb;
     }
 }
