@@ -11,7 +11,7 @@ public class Slot {
     public String toString() {
         return "Slot{" + (ref == null ?
                 "num=" + num
-                 :"ref=" + ref) +
+                : "ref=" + ref) +
                 '}';
     }
 }

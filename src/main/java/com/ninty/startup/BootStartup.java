@@ -56,11 +56,11 @@ public class BootStartup {
         return null;
     }
 
-    private void execThread(NiThread thread){
+    private void execThread(NiThread thread) {
         NiFrame frame = thread.getStack().pop();
         ByteBuffer bb = frame.getCode();
         try {
-            while (true){
+            while (true) {
                 byte opCode = bb.get();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
                 cmd.init(bb);
@@ -70,7 +70,7 @@ public class BootStartup {
                 System.out.println(frame);
                 System.out.println();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

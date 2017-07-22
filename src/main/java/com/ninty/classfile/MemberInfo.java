@@ -4,6 +4,7 @@ import com.ninty.classfile.constantpool.ConstantPoolInfos;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+
 import static com.ninty.classfile.AttributeInfo.AttrCode;
 
 /**
@@ -33,9 +34,9 @@ public class MemberInfo {
         }
     }
 
-    public AttrCode getAttrCode(){
+    public AttrCode getAttrCode() {
         for (AttributeInfo attr : attributeInfos) {
-            if(attr instanceof AttrCode){
+            if (attr instanceof AttrCode) {
                 return (AttrCode) attr;
             }
         }
