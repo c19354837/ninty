@@ -1,5 +1,7 @@
 package com.ninty.runtime;
 
+import java.util.Arrays;
+
 /**
  * Created by ninty on 2017/7/12.
  */
@@ -77,5 +79,13 @@ public class OperandStack {
     public Slot popSlot() {
         size--;
         return slots[size];
+    }
+
+    @Override
+    public String toString() {
+        return "OperandStack{" +
+                "slots=" + Arrays.toString(slots) +
+                ", size=" + size +
+                '}';
     }
 }

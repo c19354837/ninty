@@ -34,4 +34,12 @@ public class NiFrame {
     public ByteBuffer getCode() {
         return bb;
     }
+
+    @Override
+    public String toString() {
+        return "NiFrame{" +
+                "localVars=" + localVars +
+                ", operandStack=" + operandStack +
+                '}';
+    }
 }

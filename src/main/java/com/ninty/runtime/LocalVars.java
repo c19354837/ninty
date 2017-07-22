@@ -1,5 +1,7 @@
 package com.ninty.runtime;
 
+import java.util.Arrays;
+
 /**
  * Created by ninty on 2017/7/12.
  */
@@ -60,5 +62,12 @@ public class LocalVars {
 
     public void setRef(int index, Object ref) {
         slots[index].ref = ref;
+    }
+
+    @Override
+    public String toString() {
+        return "LocalVars{" +
+                "slots=" + Arrays.toString(slots) +
+                '}';
     }
 }
