@@ -21,7 +21,7 @@ public class ConstantInfo {
                 cp = new CPInteger(bb);
                 break;
             case cp_long:
-                cp = new CPFLong(bb);
+                cp = new CPLong(bb);
                 break;
             case cp_float:
                 cp = new CPFloat(bb);
@@ -54,39 +54,55 @@ public class ConstantInfo {
         return cp;
     }
 
-    static class CPInteger extends ConstantInfo {
-        int value;
+    public static class CPInteger extends ConstantInfo {
+        private int value;
 
         CPInteger(ByteBuffer bb) {
             value = bb.getInt();
         }
+
+        public int value() {
+            return value;
+        }
     }
 
-    static class CPFloat extends ConstantInfo {
-        float value;
+    public static class CPFloat extends ConstantInfo {
+        private float value;
 
         CPFloat(ByteBuffer bb) {
             value = bb.getFloat();
         }
-    }
 
-    static class CPFLong extends ConstantInfo {
-        long value;
-
-        CPFLong(ByteBuffer bb) {
-            value = bb.getLong();
+        public float value() {
+            return value;
         }
     }
 
-    static class CPDouble extends ConstantInfo {
-        double value;
+    public static class CPLong extends ConstantInfo {
+        private long value;
+
+        CPLong(ByteBuffer bb) {
+            value = bb.getLong();
+        }
+
+        public long value() {
+            return value;
+        }
+    }
+
+    public static class CPDouble extends ConstantInfo {
+        private double value;
 
         CPDouble(ByteBuffer bb) {
             value = bb.getDouble();
         }
+
+        public double value() {
+            return value;
+        }
     }
 
-    static class CPClass extends ConstantInfo {
+    public static class CPClass extends ConstantInfo {
         private int classIndex;
 
         CPClass(ByteBuffer bb) {
@@ -98,7 +114,7 @@ public class ConstantInfo {
         }
     }
 
-    static class CPNameAndType extends ConstantInfo {
+    public static class CPNameAndType extends ConstantInfo {
         private int nameIndex;
         private int descIndex;
 
@@ -116,7 +132,7 @@ public class ConstantInfo {
         }
     }
 
-    static class CPString extends ConstantInfo {
+    public static class CPString extends ConstantInfo {
         private int stringIndex;
 
         CPString(ByteBuffer bb) {
@@ -128,7 +144,7 @@ public class ConstantInfo {
         }
     }
 
-    static class CPMemeber extends ConstantInfo {
+    public static class CPMemeber extends ConstantInfo {
         private int classIndex;
         private int nameAndTypeIndex;
 
@@ -150,8 +166,8 @@ public class ConstantInfo {
         }
     }
 
-    static class CPUtf8 extends ConstantInfo {
-        String value;
+    public static class CPUtf8 extends ConstantInfo {
+        private String value;
 
         CPUtf8(ByteBuffer bb) {
             int len = bb.getChar();
@@ -163,6 +179,10 @@ public class ConstantInfo {
                 e.printStackTrace();
                 throw new ClassFormatException("cannot read the utf8");
             }
+        }
+
+        public String value() {
+            return value;
         }
 
         private String decodeMutf8(byte[] bytes) throws IOException {
@@ -177,7 +197,7 @@ public class ConstantInfo {
         }
     }
 
-    enum CPType {
+    public enum CPType {
         cp_utf8(1), cp_integer(3), cp_float(4), cp_long(5), cp_double(6), cp_class(7), cp_string(8), cp_field(9), cp_method(10),
         cp_interface_method(11), cp_name_type(12), cp_method_handle(15), cp_method_type(16), cp_invoke_dynamic(18);
 
