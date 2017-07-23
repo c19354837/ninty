@@ -3,6 +3,7 @@ package com.ninty.cmd;
 import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.heap.NiObject;
 
 /**
  * Created by ninty on 2017/7/16.
@@ -30,7 +31,7 @@ public class CmdLoads {
     }
 
     private static void aLoad(NiFrame frame, int index) {
-        Object ref = frame.getLocalVars().getRef(index);
+        NiObject ref = frame.getLocalVars().getRef(index);
         frame.getOperandStack().pushRef(ref);
     }
 

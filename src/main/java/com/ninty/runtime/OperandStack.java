@@ -1,5 +1,7 @@
 package com.ninty.runtime;
 
+import com.ninty.runtime.heap.NiObject;
+
 import java.util.Arrays;
 
 /**
@@ -59,14 +61,14 @@ public class OperandStack {
         return Double.longBitsToDouble(num);
     }
 
-    public void pushRef(Object ref) {
+    public void pushRef(NiObject ref) {
         slots[size].ref = ref;
         size++;
     }
 
-    public Object popRef() {
+    public NiObject popRef() {
         size--;
-        Object ref = slots[size].ref;
+        NiObject ref = slots[size].ref;
         slots[size].ref = null;
         return ref;
     }

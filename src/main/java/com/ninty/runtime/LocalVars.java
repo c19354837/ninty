@@ -1,5 +1,7 @@
 package com.ninty.runtime;
 
+import com.ninty.runtime.heap.NiObject;
+
 import java.util.Arrays;
 
 /**
@@ -56,11 +58,11 @@ public class LocalVars {
         setLong(index, num);
     }
 
-    public Object getRef(int index) {
+    public NiObject getRef(int index) {
         return slots[index].ref;
     }
 
-    public void setRef(int index, Object ref) {
+    public void setRef(int index, NiObject ref) {
         slots[index].ref = ref;
     }
 
