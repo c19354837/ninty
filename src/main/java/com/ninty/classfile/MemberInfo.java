@@ -34,6 +34,10 @@ public class MemberInfo {
         }
     }
 
+    public int getAccessFlag() {
+        return accessFlag;
+    }
+
     public AttrCode getAttrCode() {
         for (AttributeInfo attr : attributeInfos) {
             if (attr instanceof AttrCode) {

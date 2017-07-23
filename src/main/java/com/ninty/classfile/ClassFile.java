@@ -103,6 +103,30 @@ public class ClassFile {
         }
     }
 
+    public ConstantPoolInfos getCps() {
+        return cps;
+    }
+
+    public int getAccessFlags() {
+        return accessFlags;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public String getSuperClassName() {
+        return superClassName;
+    }
+
+    public String[] getInterfaceNames() {
+        return interfaceNames;
+    }
+
+    public MemberInfo[] getFiledInfos() {
+        return filedInfos;
+    }
+
     public MemberInfo[] getMethodInfos() {
         return methodInfos;
     }

@@ -16,7 +16,7 @@ public class ConstantPoolInfos {
         for (int i = 1; i < len; i++) {
             ConstantInfo cp = ConstantInfo.generate(this, bb);
             cps[i] = cp;
-            if (cp instanceof ConstantInfo.CPFLong || cp instanceof ConstantInfo.CPDouble) {
+            if (cp instanceof ConstantInfo.CPLong || cp instanceof ConstantInfo.CPDouble) {
                 i++;
             }
         }
@@ -30,6 +30,10 @@ public class ConstantPoolInfos {
         return ci;
     }
 
+    public ConstantInfo[] getCps() {
+        return cps;
+    }
+
     public String getClassName(int index) {
         return ((ConstantInfo.CPClass) get(index)).className();
     }
@@ -40,7 +44,7 @@ public class ConstantPoolInfos {
     }
 
     public String getUtf8(int index) {
-        return ((ConstantInfo.CPUtf8) get(index)).value;
+        return ((ConstantInfo.CPUtf8) get(index)).value();
     }
 }
 
