@@ -2,6 +2,7 @@ package com.ninty.runtime.heap;
 
 import com.ninty.classfile.ClassFile;
 import com.ninty.classfile.MemberInfo;
+import com.ninty.runtime.heap.constantpool.NiConstantPool;
 
 /**
  * Created by ninty on 2017/7/23.
@@ -15,7 +16,7 @@ public class NiClass {
     NiClass superClass;
     NiClass[] interfaces;
     NiConstantPool cps;
-    NiFiled[] fileds;
+    NiField[] fields;
     NiMethod[] methods;
 
     public NiClass(ClassFile classFile) {
@@ -34,10 +35,10 @@ public class NiClass {
     }
 
     private void initFiled(ClassFile classFile) {
-        MemberInfo[] filedInfos = classFile.getFiledInfos();
-        fileds = new NiFiled[filedInfos.length];
-        for (int i = 0; i < filedInfos.length; i++) {
-            fileds[i] = new NiFiled(this, filedInfos[i]);
+        MemberInfo[] fieldInfos = classFile.getFieldInfos();
+        fields = new NiField[fieldInfos.length];
+        for (int i = 0; i < fieldInfos.length; i++) {
+            fields[i] = new NiField(this, fieldInfos[i]);
         }
     }
 

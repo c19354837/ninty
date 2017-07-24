@@ -18,7 +18,7 @@ public class ClassFile {
     String className;
     String superClassName;
     String[] interfaceNames;
-    MemberInfo[] filedInfos;
+    MemberInfo[] fieldInfos;
     MemberInfo[] methodInfos;
     AttributeInfo[] attributeInfos;
 
@@ -81,9 +81,9 @@ public class ClassFile {
 
     private void fillFiledInfos(ByteBuffer bb) {
         int filedCount = bb.getChar();
-        filedInfos = new MemberInfo[filedCount];
+        fieldInfos = new MemberInfo[filedCount];
         for (int i = 0; i < filedCount; i++) {
-            filedInfos[i] = new MemberInfo(cps, bb);
+            fieldInfos[i] = new MemberInfo(cps, bb);
         }
     }
 
@@ -123,8 +123,8 @@ public class ClassFile {
         return interfaceNames;
     }
 
-    public MemberInfo[] getFiledInfos() {
-        return filedInfos;
+    public MemberInfo[] getFieldInfos() {
+        return fieldInfos;
     }
 
     public MemberInfo[] getMethodInfos() {
@@ -141,7 +141,7 @@ public class ClassFile {
                 ", thisClass=" + className +
                 ", superClass=" + superClassName +
                 ", interfaceInfos=" + Arrays.toString(interfaceNames) +
-                ", filedInfos=" + Arrays.toString(filedInfos) +
+                ", fieldInfos=" + Arrays.toString(fieldInfos) +
                 ", methodInfos=" + Arrays.toString(methodInfos) +
                 '}';
     }
