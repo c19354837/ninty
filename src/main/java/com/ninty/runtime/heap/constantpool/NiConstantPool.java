@@ -1,7 +1,8 @@
-package com.ninty.runtime.heap;
+package com.ninty.runtime.heap.constantpool;
 
 import com.ninty.classfile.constantpool.ConstantInfo;
 import com.ninty.classfile.constantpool.ConstantPoolInfos;
+import com.ninty.runtime.heap.NiClass;
 
 /**
  * Created by ninty on 2017/7/23.

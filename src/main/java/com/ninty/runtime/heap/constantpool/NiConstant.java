@@ -1,4 +1,4 @@
-package com.ninty.runtime.heap;
+package com.ninty.runtime.heap.constantpool;
 
 import com.ninty.classfile.constantpool.ConstantInfo;
 import com.sun.org.apache.bcel.internal.classfile.ClassFormatException;
