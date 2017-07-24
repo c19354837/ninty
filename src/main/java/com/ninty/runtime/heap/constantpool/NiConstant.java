@@ -30,12 +30,16 @@ public class NiConstant {
                 nicp = new NiConstant.NiUtf8((ConstantInfo.CPUtf8) cp);
                 break;
             case cp_class:
-                nicp = new NiClassInfo((ConstantInfo.CPClass) cp);
+                nicp = new ClassRef((ConstantInfo.CPClass) cp);
                 break;
             case cp_field:
+                nicp = new FieldRef((ConstantInfo.CPMemeber) cp);
+                break;
             case cp_method:
+                nicp = new MethodRef((ConstantInfo.CPMemeber) cp);
+                break;
             case cp_interface_method:
-                nicp = new NiConstant.NiMemeber((ConstantInfo.CPMemeber) cp);
+                nicp = new InterfaceMethodRef((ConstantInfo.CPMemeber) cp);
                 break;
             default:
                 throw new ClassFormatException("unsupported constant poll type:" + cp.getClass().getSimpleName());
@@ -88,18 +92,6 @@ public class NiConstant {
 
         NiString(ConstantInfo.CPString cp) {
             value = cp.string();
-        }
-    }
-
-    static class NiMemeber extends NiConstant {
-        String className;
-        String name;
-        String desc;
-
-        NiMemeber(ConstantInfo.CPMemeber cp) {
-            className = cp.className();
-            name = cp.name();
-            desc = cp.desc();
         }
     }
 
