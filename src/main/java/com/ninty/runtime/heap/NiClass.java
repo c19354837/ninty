@@ -19,6 +19,8 @@ public class NiClass {
     NiField[] fields;
     NiMethod[] methods;
 
+    NiClassLoader loader;
+
     public NiClass(ClassFile classFile) {
         accessFlags = classFile.getAccessFlags();
         className = classFile.getClassName();
