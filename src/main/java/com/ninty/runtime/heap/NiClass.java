@@ -51,4 +51,49 @@ public class NiClass {
             methods[i] = new NiMethod(this, methodInfos[i]);
         }
     }
+
+    public boolean isPublic() {
+        return (accessFlags & ClassConstant.ACC_PUBLIC) != 0;
+    }
+
+    public boolean isSubClass(NiClass clz) {
+        return (clz.superClassName != null && clz.superClassName.equals(superClassName)) || this.isSubClass(clz.getSuperClass());
+    }
+
+    public String packageName() {
+        int indexOf = className.lastIndexOf('/');
+        return indexOf > -1 ? className.substring(0, indexOf) : "";
+    }
+
+    public boolean isSamePackge(NiClass clz) {
+        return packageName().equals(clz.packageName());
+    }
+
+    public boolean canAccess(NiClass clz) {
+        return clz.isPublic() && clz.packageName().equals(this.packageName());
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public NiClass getSuperClass() {
+        return superClass;
+    }
+
+    public NiClass[] getInterfaces() {
+        return interfaces;
+    }
+
+    public NiField[] getFields() {
+        return fields;
+    }
+
+    public NiMethod[] getMethods() {
+        return methods;
+    }
+
+    public NiClassLoader getLoader() {
+        return loader;
+    }
 }
