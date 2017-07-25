@@ -9,4 +9,9 @@ public class InterfaceMethodRef extends MemberRef {
     public InterfaceMethodRef(ConstantInfo.CPMemeber cp) {
         super(cp);
     }
+
+    @Override
+    protected void resolve() {
+        // TODO
+    }
 }

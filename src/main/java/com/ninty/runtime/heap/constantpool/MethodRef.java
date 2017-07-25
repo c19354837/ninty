@@ -12,4 +12,9 @@ public class MethodRef extends MemberRef {
     public MethodRef(ConstantInfo.CPMemeber cp) {
         super(cp);
     }
+
+    @Override
+    protected void resolve() {
+        // TODO
+    }
 }
