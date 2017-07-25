@@ -9,4 +9,9 @@ public class ClassRef extends BaseSymbol {
     public ClassRef(ConstantInfo.CPClass cp) {
         className = cp.className();
     }
+
+    @Override
+    protected void resolve() {
+        resolveClass();
+    }
 }
