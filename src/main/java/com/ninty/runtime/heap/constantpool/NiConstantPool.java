@@ -20,7 +20,7 @@ public class NiConstantPool {
                 continue;
             }
             constants[i] = NiConstant.generate(cps[i]);
-            if(cps[i] instanceof ConstantInfo.CPLong || cps[i] instanceof ConstantInfo.CPDouble){
+            if (cps[i] instanceof ConstantInfo.CPLong || cps[i] instanceof ConstantInfo.CPDouble) {
                 i++;
             }
         }

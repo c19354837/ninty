@@ -13,19 +13,19 @@ public class NiClassLoader {
     private ClassPath clzp;
     private Map<String, NiClass> classes;
 
-    public NiClassLoader(ClassPath clzp){
+    public NiClassLoader(ClassPath clzp) {
         this.clzp = clzp;
-        classes = new HashMap<>(1<<10);
+        classes = new HashMap<>(1 << 10);
     }
 
-    public NiClass loadClass(String className) throws ClassNotFoundException {
-        if(classes.containsKey(className)){
+    public NiClass loadClass(String className) {
+        if (classes.containsKey(className)) {
             return classes.get(className);
         }
         return loadNonArrayClass(className);
     }
 
-    private NiClass loadNonArrayClass(String className) throws ClassNotFoundException {
+    private NiClass loadNonArrayClass(String className) {
         byte[] datas = readClass(className);
         NiClass clz = definedClass(datas);
         classes.put(className, clz);
@@ -33,15 +33,15 @@ public class NiClassLoader {
         return clz;
     }
 
-    private byte[] readClass(String className) throws ClassNotFoundException {
-        byte[] datas =  clzp.readClass(className);
-        if(datas == null || datas.length ==0){
-            throw new ClassNotFoundException(className);
+    private byte[] readClass(String className) {
+        byte[] datas = clzp.readClass(className);
+        if (datas == null || datas.length == 0) {
+            throw new RuntimeException("ClassNotFound : " + className);
         }
         return datas;
     }
 
-    private NiClass definedClass(byte[] datas) throws ClassNotFoundException {
+    private NiClass definedClass(byte[] datas) {
         ClassFile cf = new ClassFile(datas);
         NiClass clz = new NiClass(cf);
         clz.loader = this;
@@ -50,13 +50,13 @@ public class NiClassLoader {
         return null;
     }
 
-    private void resovleSuperClass(NiClass clz) throws ClassNotFoundException {
-        if(!clz.className.equals("java/lang/Object")){
+    private void resovleSuperClass(NiClass clz) {
+        if (!clz.className.equals("java/lang/Object")) {
             clz.superClass = loadClass(clz.superClassName);
         }
     }
 
-    private void resolveInterfaces(NiClass clz) throws ClassNotFoundException {
+    private void resolveInterfaces(NiClass clz) {
         for (int i = 0; i < clz.interfaceNames.length; i++) {
             clz.interfaces[i] = loadClass(clz.interfaceNames[i]);
         }
