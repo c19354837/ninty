@@ -2,6 +2,7 @@ package com.ninty.runtime.heap;
 
 import com.ninty.classfile.ClassFile;
 import com.ninty.classfile.MemberInfo;
+import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.heap.constantpool.NiConstantPool;
 
 /**
@@ -16,10 +17,13 @@ public class NiClass {
     NiClass superClass;
     NiClass[] interfaces;
     NiConstantPool cps;
-    NiField[] fields;
-    NiMethod[] methods;
+    private NiField[] fields;
+    private NiMethod[] methods;
 
     NiClassLoader loader;
+    LocalVars staticSlots;
+    int instantceSlotCount;
+    int staticSlotCount;
 
     public NiClass(ClassFile classFile) {
         accessFlags = classFile.getAccessFlags();
@@ -96,4 +100,5 @@ public class NiClass {
     public NiClassLoader getLoader() {
         return loader;
     }
+
 }

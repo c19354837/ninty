@@ -2,6 +2,9 @@ package com.ninty.runtime.heap;
 
 import com.ninty.classfile.ClassFile;
 import com.ninty.classpath.ClassPath;
+import com.ninty.runtime.LocalVars;
+import com.ninty.runtime.heap.constantpool.NiConstant;
+import com.ninty.runtime.heap.constantpool.NiConstantPool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,5 +75,79 @@ public class NiClassLoader {
     }
 
     private void prepare(NiClass clz) {
+        calcInstanceFieldSlotIds(clz);
+        calcStaticFieldSlotIds(clz);
+        allocAndInitStaticVars(clz);
+    }
+
+    private void calcInstanceFieldSlotIds(NiClass clz) {
+        int slotId = 0;
+        if (clz.superClass != null) {
+            slotId = clz.superClass.instantceSlotCount;
+        }
+        for (NiField field : clz.getFields()) {
+            if (!field.isStatic()) {
+                field.slotId = slotId;
+                slotId++;
+                if (field.isLongOrDouble()) {
+                    slotId++;
+                }
+            }
+        }
+        clz.instantceSlotCount = slotId;
+    }
+
+    private void calcStaticFieldSlotIds(NiClass clz) {
+        int slotId = 0;
+        for (NiField field : clz.getFields()) {
+            if (field.isStatic()) {
+                field.slotId = slotId;
+                slotId++;
+                if (field.isLongOrDouble()) {
+                    slotId++;
+                }
+            }
+        }
+        clz.staticSlotCount = slotId;
+    }
+
+    private void allocAndInitStaticVars(NiClass clz) {
+        clz.staticSlots = new LocalVars(clz.staticSlotCount);
+        for (NiField field : clz.getFields()) {
+            if (field.isStatic() && field.isFinal()) {
+                initStaticFinalVar(clz, field);
+            }
+        }
+    }
+
+    private void initStaticFinalVar(NiClass clz, NiField field) {
+        LocalVars slots = clz.staticSlots;
+        NiConstantPool cps = clz.cps;
+        int cpIndex = field.constantValueIndex;
+        int slotId = field.slotId;
+        if (cpIndex > 0) {
+            NiConstant cs = cps.get(cpIndex);
+            switch (field.desc) {
+                case "Z":
+                case "B":
+                case "C":
+                case "S":
+                case "I":
+                    slots.setInt(slotId, ((NiConstant.NiInteger) cs).value);
+                    break;
+                case "J":
+                    slots.setLong(slotId, ((NiConstant.NiLong) cs).value);
+                    break;
+                case "F":
+                    slots.setFloat(slotId, ((NiConstant.NiFloat) cs).value);
+                    break;
+                case "D":
+                    slots.setDouble(slotId, ((NiConstant.NiDouble) cs).value);
+                    break;
+                case "Ljava/lang/String;":
+                    throw new UnsupportedOperationException("unsupport String now");
+            }
+        }
+
     }
 }
