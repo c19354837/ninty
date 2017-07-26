@@ -7,12 +7,12 @@ import com.ninty.classfile.MemberInfo;
  */
 public class ClassMember {
 
-    private int accessFlags;
-    private String name;
-    private String desc;
+    protected int accessFlags;
+    protected String name;
+    protected String desc;
     protected NiClass clz;
 
-    void copy(MemberInfo memberInfo) {
+    void copyMemberInfo(MemberInfo memberInfo) {
         accessFlags = memberInfo.getAccessFlag();
         name = memberInfo.getName();
         desc = memberInfo.getDesc();
@@ -41,6 +41,14 @@ public class ClassMember {
 
     public boolean isPrivate() {
         return (accessFlags & ClassConstant.ACC_PRIVATE) != 0;
+    }
+
+    public boolean isStatic() {
+        return (accessFlags & ClassConstant.ACC_STATIC) != 0;
+    }
+
+    public boolean isFinal() {
+        return (accessFlags & ClassConstant.ACC_FINAL) != 0;
     }
 
     public String getName() {
