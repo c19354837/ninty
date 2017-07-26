@@ -14,7 +14,7 @@ public class NiMethod extends ClassMember {
     ByteBuffer codes;
 
     public NiMethod(NiClass clz, MemberInfo memberInfo) {
-        copy(memberInfo);
+        copyMemberInfo(memberInfo);
         this.clz = clz;
         AttributeInfo.AttrCode attrCode = memberInfo.getAttrCode();
         maxLocals = attrCode.maxLocals;
