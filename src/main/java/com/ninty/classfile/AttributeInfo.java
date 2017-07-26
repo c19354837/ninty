@@ -71,13 +71,16 @@ public class AttributeInfo {
         }
     }
 
-    static class AttrConstantValue extends AttributeInfo {
-        String constantValue;
+    public static class AttrConstantValue extends AttributeInfo {
+        private int constantValueIndex;
 
         AttrConstantValue(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
-            int constantValueIndex = bb.getChar();
-            constantValue = cps.getUtf8(constantValueIndex);
+            constantValueIndex = bb.getChar();
+        }
+
+        public int getConstantValueIndex() {
+            return constantValueIndex;
         }
     }
 
