@@ -25,4 +25,8 @@ public class NiConstantPool {
             }
         }
     }
+
+    public NiConstant get(int index) {
+        return constants[index];
+    }
 }
