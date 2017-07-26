@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import static com.ninty.classfile.AttributeInfo.AttrCode;
+import static com.ninty.classfile.AttributeInfo.AttrConstantValue;
 
 /**
  * Created by ninty on 2017/7/9.
@@ -42,6 +43,15 @@ public class MemberInfo {
         for (AttributeInfo attr : attributeInfos) {
             if (attr instanceof AttrCode) {
                 return (AttrCode) attr;
+            }
+        }
+        return null;
+    }
+
+    public AttrConstantValue getAttrConstantValue() {
+        for (AttributeInfo attr : attributeInfos) {
+            if (attr instanceof AttrConstantValue) {
+                return (AttrConstantValue) attr;
             }
         }
         return null;

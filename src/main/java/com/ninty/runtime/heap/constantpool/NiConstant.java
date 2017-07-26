@@ -47,56 +47,56 @@ public class NiConstant {
         return nicp;
     }
 
-    static class NiInteger extends NiConstant {
-        int value;
+    public static class NiInteger extends NiConstant {
+        public int value;
 
         public NiInteger(ConstantInfo.CPInteger cp) {
             value = cp.value();
         }
     }
 
-    static class NiFloat extends NiConstant {
-        float value;
+    public static class NiFloat extends NiConstant {
+        public float value;
 
         NiFloat(ConstantInfo.CPFloat cp) {
             value = cp.value();
         }
     }
 
-    static class NiLong extends NiConstant {
-        long value;
+    public static class NiLong extends NiConstant {
+        public long value;
 
         NiLong(ConstantInfo.CPLong cp) {
             value = cp.value();
         }
     }
 
-    static class NiDouble extends NiConstant {
-        double value;
+    public static class NiDouble extends NiConstant {
+        public double value;
 
         NiDouble(ConstantInfo.CPDouble cp) {
             value = cp.value();
         }
     }
 
-    static class NiClassInfo extends NiConstant {
-        String className;
+    public static class NiClassInfo extends NiConstant {
+        public String className;
 
         NiClassInfo(ConstantInfo.CPClass cp) {
             className = cp.className();
         }
     }
 
-    static class NiString extends NiConstant {
-        String value;
+    public static class NiString extends NiConstant {
+        public String value;
 
         NiString(ConstantInfo.CPString cp) {
             value = cp.string();
         }
     }
 
-    static class NiUtf8 extends NiConstant {
-        String value;
+    public static class NiUtf8 extends NiConstant {
+        public String value;
 
         public NiUtf8(ConstantInfo.CPUtf8 cp) {
             value = cp.value();
