@@ -10,6 +10,7 @@ public abstract class MemberRef extends BaseSymbol {
     String desc;
 
     public MemberRef(ConstantInfo.CPMemeber cp) {
+        className = cp.className();
         name = cp.name();
         desc = cp.desc();
     }
