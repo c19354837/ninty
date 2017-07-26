@@ -8,9 +8,9 @@ import java.util.Arrays;
  * Created by ninty on 2017/7/12.
  */
 public class LocalVars {
-    Slot[] slots;
+    private Slot[] slots;
 
-    LocalVars(int maxLocalSize) {
+    public LocalVars(int maxLocalSize) {
         slots = new Slot[maxLocalSize];
         for (int i = 0; i < maxLocalSize; i++) {
             slots[i] = new Slot();
