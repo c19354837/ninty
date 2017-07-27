@@ -122,7 +122,7 @@ public class NiClassLoader {
 
     private void initStaticFinalVar(NiClass clz, NiField field) {
         LocalVars slots = clz.staticSlots;
-        NiConstantPool cps = clz.cps;
+        NiConstantPool cps = clz.getCps();
         int cpIndex = field.constantValueIndex;
         int slotId = field.slotId;
         if (cpIndex > 0) {
