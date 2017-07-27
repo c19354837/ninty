@@ -8,23 +8,25 @@ import com.ninty.runtime.heap.NiField;
  * Created by ninty on 2017/7/24.
  */
 public class FieldRef extends MemberRef {
-    NiField field;
+    private NiField field;
 
     public FieldRef(ConstantInfo.CPMemeber cp) {
         super(cp);
     }
 
     @Override
-    protected void resolve() {
-        resolveClass();
-        NiField field = lookUpFields(clz, name, desc);
-        if (field == null) {
-            throw new RuntimeException("NoSuchField clz:" + clz.getClassName() + ", name:" + name + ", desc:" + desc);
+    public void resolve() {
+        if(this.field == null){
+            resolveClass();
+            NiField field = lookUpFields(clz, name, desc);
+            if (field == null) {
+                throw new RuntimeException("NoSuchField clz:" + clz.getClassName() + ", name:" + name + ", desc:" + desc);
+            }
+            if (!field.canAccess(cp.clz)) {
+                throw new RuntimeException(cp.clz.getClassName() + " can not access to " + field);
+            }
+            this.field = field;
         }
-        if (!field.canAccess(cp.clz)) {
-            throw new RuntimeException(cp.clz.getClassName() + " can not access to " + field);
-        }
-        this.field = field;
     }
 
     private NiField lookUpFields(NiClass clz, String name, String desc) {
@@ -43,5 +45,9 @@ public class FieldRef extends MemberRef {
         }
 
         return null;
+    }
+
+    public NiField getField() {
+        return field;
     }
 }

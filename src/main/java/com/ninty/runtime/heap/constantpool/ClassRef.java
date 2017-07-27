@@ -11,7 +11,7 @@ public class ClassRef extends BaseSymbol {
     }
 
     @Override
-    protected void resolve() {
+    public void resolve() {
         resolveClass();
     }
 }

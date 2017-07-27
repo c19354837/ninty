@@ -62,4 +62,14 @@ public class ClassMember {
     public NiClass getClz() {
         return clz;
     }
+
+    @Override
+    public String toString() {
+        return "ClassMember{" +
+                "accessFlags=" + accessFlags +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", clz=" + clz +
+                '}';
+    }
 }

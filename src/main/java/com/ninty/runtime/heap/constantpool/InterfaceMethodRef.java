@@ -11,7 +11,7 @@ public class InterfaceMethodRef extends MemberRef {
     }
 
     @Override
-    protected void resolve() {
+    public void resolve() {
         // TODO
     }
 }

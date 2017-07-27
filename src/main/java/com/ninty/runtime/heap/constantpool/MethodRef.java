@@ -7,14 +7,18 @@ import com.ninty.runtime.heap.NiMethod;
  * Created by ninty on 2017/7/24.
  */
 public class MethodRef extends MemberRef {
-    NiMethod method;
+    private NiMethod method;
 
     public MethodRef(ConstantInfo.CPMemeber cp) {
         super(cp);
     }
 
     @Override
-    protected void resolve() {
+    public void resolve() {
         // TODO
+    }
+
+    public NiMethod getMethod() {
+        return method;
     }
 }

@@ -10,7 +10,7 @@ public abstract class BaseSymbol extends NiConstant {
     String className;
     NiClass clz;
 
-    protected void resolveClass() {
+    protected NiClass resolveClass() {
         if (clz == null) {
             NiClass c = cp.clz.getLoader().loadClass(className);
             if (!cp.clz.canAccess(c)) {
@@ -18,7 +18,12 @@ public abstract class BaseSymbol extends NiConstant {
             }
             clz = c;
         }
+        return clz;
     }
 
-    abstract protected void resolve();
+    public abstract void resolve();
+
+    public NiClass getClz() {
+        return clz;
+    }
 }
