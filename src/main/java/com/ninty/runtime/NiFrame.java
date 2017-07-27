@@ -1,22 +1,26 @@
 package com.ninty.runtime;
 
+import com.ninty.runtime.heap.NiMethod;
+
 import java.nio.ByteBuffer;
 
 /**
  * Created by ninty on 2017/7/12.
  */
 public class NiFrame {
-    NiFrame prevFrame;
+    public NiFrame prevFrame;
 
-    LocalVars localVars;
-    OperandStack operandStack;
+    private NiMethod method;
 
-    ByteBuffer bb;
+    private LocalVars localVars;
+    private OperandStack operandStack;
 
-    public NiFrame(int localVarsSize, int operandStackSize, byte[] codes) {
-        localVars = new LocalVars(localVarsSize);
-        operandStack = new OperandStack(operandStackSize);
-        bb = ByteBuffer.wrap(codes);
+    private ByteBuffer bb;
+
+    public NiFrame(NiMethod method) {
+        localVars = new LocalVars(method.getMaxLocals());
+        operandStack = new OperandStack(method.getMaxStack());
+        bb = method.getCodes();
     }
 
     public NiFrame getPrevFrame() {
@@ -33,6 +37,10 @@ public class NiFrame {
 
     public ByteBuffer getCode() {
         return bb;
+    }
+
+    public NiMethod getMethod() {
+        return method;
     }
 
     @Override
