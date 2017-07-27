@@ -56,23 +56,23 @@ public class NiClass {
         }
     }
 
-    public boolean isAssignableFrom(NiClass clz){
+    public boolean isAssignableFrom(NiClass clz) {
         NiClass s = clz;
         NiClass t = this;
-        if(s == t){
+        if (s == t) {
             return true;
         }
-        if(t.isInterface()){
+        if (t.isInterface()) {
             return s.isImplements(t);
-        }else{
+        } else {
             return s.isSubClass(t);
         }
     }
 
-    public boolean isSubOf(NiClass clz){
+    public boolean isSubOf(NiClass clz) {
         NiClass c = this.superClass;
-        while(c != null){
-            if(c == clz){
+        while (c != null) {
+            if (c == clz) {
                 return true;
             }
             c = c.superClass;
@@ -80,25 +80,25 @@ public class NiClass {
         return false;
     }
 
-    public boolean isImplements(NiClass clz){
-        for( NiClass c = this; c != null; c = c.superClass){
-            if(c == clz || c.isSubInterfaceOf(clz)){
+    public boolean isImplements(NiClass clz) {
+        for (NiClass c = this; c != null; c = c.superClass) {
+            if (c == clz || c.isSubInterfaceOf(clz)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isSubInterfaceOf(NiClass c){
-        for(NiClass interf : this.interfaces){
-            if(interf == c || interf.isSubInterfaceOf(c)){
+    public boolean isSubInterfaceOf(NiClass c) {
+        for (NiClass interf : this.interfaces) {
+            if (interf == c || interf.isSubInterfaceOf(c)) {
                 return true;
             }
         }
         return false;
     }
 
-    public NiObject newObject(){
+    public NiObject newObject() {
         return new NiObject(this, instantceSlotCount);
     }
 
@@ -110,11 +110,11 @@ public class NiClass {
         return (clz.superClassName != null && clz.superClassName.equals(superClassName)) || this.isSubClass(clz.getSuperClass());
     }
 
-    public boolean isAbstract(){
+    public boolean isAbstract() {
         return (accessFlags & ClassConstant.ACC_ABSTRACT) != 0;
     }
 
-    public boolean isInterface(){
+    public boolean isInterface() {
         return (accessFlags & ClassConstant.ACC_INTERFACE) != 0;
     }
 

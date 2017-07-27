@@ -9,7 +9,7 @@ public class NiObject {
     private NiClass clz;
     private LocalVars slots;
 
-    public NiObject(NiClass clz, int count){
+    public NiObject(NiClass clz, int count) {
         this.clz = clz;
         slots = new LocalVars(count);
     }
@@ -22,7 +22,7 @@ public class NiObject {
         return slots;
     }
 
-    public boolean isInstanceOf(NiClass clz){
+    public boolean isInstanceOf(NiClass clz) {
         return clz.isAssignableFrom(this.clz);
     }
 }

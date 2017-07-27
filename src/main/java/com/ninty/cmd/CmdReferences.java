@@ -19,21 +19,22 @@ import com.ninty.runtime.heap.constantpool.NiConstantPool;
  */
 public class CmdReferences {
 
-    private static NiConstantPool getCP(NiFrame frame){
+    private static NiConstantPool getCP(NiFrame frame) {
         return frame.getMethod().getClz().getCps();
     }
-    private static void ldc(NiFrame frame, int index){
+
+    private static void ldc(NiFrame frame, int index) {
         OperandStack stack = frame.getOperandStack();
         NiConstantPool cp = getCP(frame);
         NiConstant constant = cp.get(index);
-        if(constant instanceof NiConstant.NiInteger){
+        if (constant instanceof NiConstant.NiInteger) {
             stack.pushInt(((NiConstant.NiInteger) constant).value);
-        }else if(constant instanceof NiConstant.NiFloat){
+        } else if (constant instanceof NiConstant.NiFloat) {
             stack.pushFloat(((NiConstant.NiFloat) constant).value);
-        }else if(constant instanceof NiConstant.NiString){
+        } else if (constant instanceof NiConstant.NiString) {
             // TODO
             throw new UnsupportedOperationException("ldc string");
-        }else if(constant instanceof ClassRef){
+        } else if (constant instanceof ClassRef) {
             // TODO
             throw new UnsupportedOperationException("ldc classRef");
         }
@@ -46,7 +47,7 @@ public class CmdReferences {
             ClassRef classRef = (ClassRef) cps.get(index);
             classRef.resolve();
             NiClass clz = classRef.getClz();
-            if(clz.isInterface() || clz.isAbstract()){
+            if (clz.isInterface() || clz.isAbstract()) {
                 throw new InstantiationError(clz.toString());
             }
             NiObject ref = clz.newObject();
@@ -65,11 +66,11 @@ public class CmdReferences {
             NiClass clz = fieldRef.getClz();
             NiField field = fieldRef.getField();
 
-            if(!field.isStatic()){
-                throw  new IncompatibleClassChangeError(field.toString());
+            if (!field.isStatic()) {
+                throw new IncompatibleClassChangeError(field.toString());
             }
             if (field.isFinal() &&
-                    (curClz != clz || !method.getDesc().equals("<clinit>"))){
+                    (curClz != clz || !method.getDesc().equals("<clinit>"))) {
                 throw new IllegalAccessError("access final field failed");
             }
 
@@ -77,7 +78,7 @@ public class CmdReferences {
             int slotId = field.getSlotId();
             LocalVars slots = clz.getStaticSlots();
             OperandStack stack = frame.getOperandStack();
-            switch (desc.charAt(0)){
+            switch (desc.charAt(0)) {
                 case 'Z':
                 case 'B':
                 case 'C':
@@ -111,15 +112,15 @@ public class CmdReferences {
             NiClass clz = fieldRef.getClz();
             NiField field = fieldRef.getField();
 
-            if(!field.isStatic()){
-                throw  new IncompatibleClassChangeError(field.toString());
+            if (!field.isStatic()) {
+                throw new IncompatibleClassChangeError(field.toString());
             }
 
             String desc = field.getDesc();
             int slotId = field.getSlotId();
             LocalVars slots = clz.getStaticSlots();
             OperandStack stack = frame.getOperandStack();
-            switch (desc.charAt(0)){
+            switch (desc.charAt(0)) {
                 case 'Z':
                 case 'B':
                 case 'C':
@@ -155,18 +156,18 @@ public class CmdReferences {
             NiClass clz = fieldRef.getClz();
             NiField field = fieldRef.getField();
 
-            if(!field.isStatic()){
-                throw  new IncompatibleClassChangeError(field.toString());
+            if (!field.isStatic()) {
+                throw new IncompatibleClassChangeError(field.toString());
             }
             if (field.isFinal() &&
-                    (curClz != clz || !method.getDesc().equals("<linit>"))){
+                    (curClz != clz || !method.getDesc().equals("<linit>"))) {
                 throw new IllegalAccessError("access final field failed");
             }
 
             String desc = field.getDesc();
             int slotId = field.getSlotId();
             OperandStack stack = frame.getOperandStack();
-            switch (desc.charAt(0)){
+            switch (desc.charAt(0)) {
                 case 'Z':
                 case 'B':
                 case 'C':
@@ -214,20 +215,20 @@ public class CmdReferences {
             fieldRef.resolve();
             NiField field = fieldRef.getField();
 
-            if(!field.isStatic()){
-                throw  new IncompatibleClassChangeError(field.toString());
+            if (!field.isStatic()) {
+                throw new IncompatibleClassChangeError(field.toString());
             }
 
             OperandStack stack = frame.getOperandStack();
             NiObject ref = stack.popRef();
-            if(ref == null){
+            if (ref == null) {
                 throw new NullPointerException("can get ref");
             }
 
             String desc = field.getDesc();
             int slotId = field.getSlotId();
-            LocalVars slots =ref.getSlots();
-            switch (desc.charAt(0)){
+            LocalVars slots = ref.getSlots();
+            switch (desc.charAt(0)) {
                 case 'Z':
                 case 'B':
                 case 'C':
@@ -257,7 +258,7 @@ public class CmdReferences {
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
             NiObject ref = stack.popRef();
-            if(ref == null){
+            if (ref == null) {
                 stack.pushInt(0);
                 return;
             }
@@ -265,9 +266,9 @@ public class CmdReferences {
             ClassRef classRef = (ClassRef) cps.get(index);
             classRef.resolve();
             NiClass clz = classRef.getClz();
-            if(ref.isInstanceOf(clz)){
+            if (ref.isInstanceOf(clz)) {
                 stack.pushInt(1);
-            }else{
+            } else {
                 stack.pushInt(0);
             }
         }
@@ -279,15 +280,15 @@ public class CmdReferences {
             OperandStack stack = frame.getOperandStack();
             NiObject ref = stack.popRef();
             stack.pushRef(ref);
-            if(ref == null){
+            if (ref == null) {
                 return;
             }
             NiConstantPool cps = getCP(frame);
             ClassRef classRef = (ClassRef) cps.get(index);
             classRef.resolve();
             NiClass clz = classRef.getClz();
-            if(!ref.isInstanceOf(clz)){
-                throw new ClassCastException(ref.getClz().getClassName() + " can not be cast to "+ clz.getClassName());
+            if (!ref.isInstanceOf(clz)) {
+                throw new ClassCastException(ref.getClz().getClassName() + " can not be cast to " + clz.getClassName());
             }
         }
     }
@@ -312,11 +313,11 @@ public class CmdReferences {
             OperandStack stack = frame.getOperandStack();
             NiConstantPool cp = getCP(frame);
             NiConstant constant = cp.get(index);
-            if(constant instanceof NiConstant.NiLong){
+            if (constant instanceof NiConstant.NiLong) {
                 stack.pushLong(((NiConstant.NiLong) constant).value);
-            }else if(constant instanceof NiConstant.NiDouble){
+            } else if (constant instanceof NiConstant.NiDouble) {
                 stack.pushDouble(((NiConstant.NiDouble) constant).value);
-            }else{
+            } else {
                 throw new UnsupportedOperationException("ldc classRef");
             }
         }

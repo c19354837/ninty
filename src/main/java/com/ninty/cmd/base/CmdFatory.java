@@ -7,9 +7,9 @@ import static com.ninty.cmd.CmdConversions.*;
 import static com.ninty.cmd.CmdExtended.*;
 import static com.ninty.cmd.CmdLoads.*;
 import static com.ninty.cmd.CmdMath.*;
+import static com.ninty.cmd.CmdReferences.*;
 import static com.ninty.cmd.CmdStack.*;
 import static com.ninty.cmd.CmdStores.*;
-import static com.ninty.cmd.CmdReferences.*;
 import static com.ninty.utils.VMUtils.toUInt;
 
 /**
@@ -62,7 +62,7 @@ public class CmdFatory {
             case 0x13:
                 return new LDC_W();
             case 0x14:
-                return  new LDC_2W();
+                return new LDC_2W();
             case 0x15:
                 return new ILOAD();
             case 0x16:

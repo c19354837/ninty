@@ -16,7 +16,7 @@ public class FieldRef extends MemberRef {
 
     @Override
     public void resolve() {
-        if(this.field == null){
+        if (this.field == null) {
             resolveClass();
             NiField field = lookUpFields(clz, name, desc);
             if (field == null) {
