@@ -21,4 +21,16 @@ public class NiMethod extends ClassMember {
         maxStack = attrCode.maxStack;
         codes = ByteBuffer.wrap(attrCode.codes);
     }
+
+    public int getMaxLocals() {
+        return maxLocals;
+    }
+
+    public int getMaxStack() {
+        return maxStack;
+    }
+
+    public ByteBuffer getCodes() {
+        return codes;
+    }
 }

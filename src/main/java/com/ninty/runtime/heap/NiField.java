@@ -27,4 +27,8 @@ public class NiField extends ClassMember {
     public boolean isLongOrDouble() {
         return desc.equals("J") || desc.equals("D");
     }
+
+    public int getSlotId() {
+        return slotId;
+    }
 }
