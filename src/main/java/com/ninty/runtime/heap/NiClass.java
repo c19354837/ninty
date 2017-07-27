@@ -16,7 +16,7 @@ public class NiClass {
 
     NiClass superClass;
     NiClass[] interfaces;
-    NiConstantPool cps;
+    private NiConstantPool cps;
     private NiField[] fields;
     private NiMethod[] methods;
 
@@ -56,12 +56,66 @@ public class NiClass {
         }
     }
 
+    public boolean isAssignableFrom(NiClass clz){
+        NiClass s = clz;
+        NiClass t = this;
+        if(s == t){
+            return true;
+        }
+        if(t.isInterface()){
+            return s.isImplements(t);
+        }else{
+            return s.isSubClass(t);
+        }
+    }
+
+    public boolean isSubOf(NiClass clz){
+        NiClass c = this.superClass;
+        while(c != null){
+            if(c == clz){
+                return true;
+            }
+            c = c.superClass;
+        }
+        return false;
+    }
+
+    public boolean isImplements(NiClass clz){
+        for( NiClass c = this; c != null; c = c.superClass){
+            if(c == clz || c.isSubInterfaceOf(clz)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isSubInterfaceOf(NiClass c){
+        for(NiClass interf : this.interfaces){
+            if(interf == c || interf.isSubInterfaceOf(c)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public NiObject newObject(){
+        return new NiObject(this, instantceSlotCount);
+    }
+
     public boolean isPublic() {
         return (accessFlags & ClassConstant.ACC_PUBLIC) != 0;
     }
 
     public boolean isSubClass(NiClass clz) {
         return (clz.superClassName != null && clz.superClassName.equals(superClassName)) || this.isSubClass(clz.getSuperClass());
+    }
+
+    public boolean isAbstract(){
+        return (accessFlags & ClassConstant.ACC_ABSTRACT) != 0;
+    }
+
+    public boolean isInterface(){
+        return (accessFlags & ClassConstant.ACC_INTERFACE) != 0;
     }
 
     public String packageName() {
@@ -101,4 +155,11 @@ public class NiClass {
         return loader;
     }
 
+    public NiConstantPool getCps() {
+        return cps;
+    }
+
+    public LocalVars getStaticSlots() {
+        return staticSlots;
+    }
 }

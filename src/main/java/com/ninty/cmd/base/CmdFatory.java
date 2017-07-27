@@ -9,6 +9,7 @@ import static com.ninty.cmd.CmdLoads.*;
 import static com.ninty.cmd.CmdMath.*;
 import static com.ninty.cmd.CmdStack.*;
 import static com.ninty.cmd.CmdStores.*;
+import static com.ninty.cmd.CmdReferences.*;
 import static com.ninty.utils.VMUtils.toUInt;
 
 /**
@@ -57,11 +58,11 @@ public class CmdFatory {
             case 0x11:
                 return new SIPUSH();
             case 0x12:
-                unsupport(code);//ldc
+                return new LDC();
             case 0x13:
-                unsupport(code);//ldc_w
+                return new LDC_W();
             case 0x14:
-                unsupport(code);//ldc2_w
+                return  new LDC_2W();
             case 0x15:
                 return new ILOAD();
             case 0x16:
@@ -377,13 +378,13 @@ public class CmdFatory {
             case 0xb1:
                 unsupport(code);//return
             case 0xb2:
-                unsupport(code);//getstatic
+                return new GETSTATIC();
             case 0xb3:
-                unsupport(code);//putstatic
+                return new PUTSTATIC();
             case 0xb4:
-                unsupport(code);//getfield
+                return new GETFIELD();
             case 0xb5:
-                unsupport(code);//putfield
+                return new PUTFIELD();
             case 0xb6:
                 unsupport(code);//invokevirtual
             case 0xb7:
@@ -395,7 +396,7 @@ public class CmdFatory {
             case 0xba:
                 unsupport(code);//invokedynamic
             case 0xbb:
-                unsupport(code);//new
+                return new NEW();
             case 0xbc:
                 unsupport(code);//newarray
             case 0xbd:
@@ -403,9 +404,9 @@ public class CmdFatory {
             case 0xbe:
                 unsupport(code);//athrow
             case 0xbf:
-                unsupport(code);//checkcast
+                return new CHECK_CAST();
             case 0xc0:
-                unsupport(code);//instanceof
+                return new INSTANCE_OF();
             case 0xc1:
                 unsupport(code);//monitorenter
             case 0xc2:
