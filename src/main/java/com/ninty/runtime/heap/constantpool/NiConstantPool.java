@@ -9,7 +9,7 @@ import com.ninty.runtime.heap.NiClass;
  */
 public class NiConstantPool {
     NiClass clz;
-    NiConstant[] constants;
+    private NiConstant[] constants;
 
     public NiConstantPool(NiClass clz, ConstantPoolInfos infos) {
         this.clz = clz;
@@ -20,6 +20,7 @@ public class NiConstantPool {
                 continue;
             }
             constants[i] = NiConstant.generate(cps[i]);
+            constants[i].cp = this;
             if (cps[i] instanceof ConstantInfo.CPLong || cps[i] instanceof ConstantInfo.CPDouble) {
                 i++;
             }

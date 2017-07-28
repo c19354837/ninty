@@ -6,7 +6,6 @@ import com.ninty.runtime.heap.NiClass;
  * Created by ninty on 2017/7/24.
  */
 public abstract class BaseSymbol extends NiConstant {
-    NiConstantPool cp;
     String className;
     NiClass clz;
 
