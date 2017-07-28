@@ -14,4 +14,12 @@ public abstract class MemberRef extends BaseSymbol {
         name = cp.name();
         desc = cp.desc();
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }
