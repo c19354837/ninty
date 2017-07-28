@@ -56,6 +56,15 @@ public class NiClass {
         }
     }
 
+    public NiMethod getMainMethod() {
+        for (NiMethod method : methods) {
+            if (method.getName().equals("main") && method.getDesc().equals("([Ljava/lang/String;)V")) {
+                return method;
+            }
+        }
+        return null;
+    }
+
     public boolean isAssignableFrom(NiClass clz) {
         NiClass s = clz;
         NiClass t = this;
@@ -128,7 +137,7 @@ public class NiClass {
     }
 
     public boolean canAccess(NiClass clz) {
-        return clz.isPublic() && clz.packageName().equals(this.packageName());
+        return clz.isPublic() || clz.packageName().equals(this.packageName());
     }
 
     public String getClassName() {

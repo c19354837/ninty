@@ -25,4 +25,11 @@ public class NiObject {
     public boolean isInstanceOf(NiClass clz) {
         return clz.isAssignableFrom(this.clz);
     }
+
+    @Override
+    public String toString() {
+        return "NiObject{" +
+                clz.className +
+                '}';
+    }
 }

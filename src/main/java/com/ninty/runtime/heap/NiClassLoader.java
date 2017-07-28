@@ -50,7 +50,7 @@ public class NiClassLoader {
         clz.loader = this;
         resovleSuperClass(clz);
         resolveInterfaces(clz);
-        return null;
+        return clz;
     }
 
     private void resovleSuperClass(NiClass clz) {

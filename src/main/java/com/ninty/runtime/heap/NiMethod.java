@@ -17,9 +17,11 @@ public class NiMethod extends ClassMember {
         copyMemberInfo(memberInfo);
         this.clz = clz;
         AttributeInfo.AttrCode attrCode = memberInfo.getAttrCode();
-        maxLocals = attrCode.maxLocals;
-        maxStack = attrCode.maxStack;
-        codes = ByteBuffer.wrap(attrCode.codes);
+        if(attrCode != null){
+            maxLocals = attrCode.maxLocals;
+            maxStack = attrCode.maxStack;
+            codes = ByteBuffer.wrap(attrCode.codes);
+        }
     }
 
     public int getMaxLocals() {

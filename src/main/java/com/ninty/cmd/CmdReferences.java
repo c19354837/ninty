@@ -153,7 +153,7 @@ public class CmdReferences {
             NiClass clz = fieldRef.getClz();
             NiField field = fieldRef.getField();
 
-            if (!field.isStatic()) {
+            if (field.isStatic()) {
                 throw new IncompatibleClassChangeError(field.toString());
             }
             if (field.isFinal() &&
@@ -212,7 +212,7 @@ public class CmdReferences {
             fieldRef.resolve();
             NiField field = fieldRef.getField();
 
-            if (!field.isStatic()) {
+            if (field.isStatic()) {
                 throw new IncompatibleClassChangeError(field.toString());
             }
 
@@ -231,20 +231,20 @@ public class CmdReferences {
                 case 'C':
                 case 'S':
                 case 'I':
-                    stack.pushInt(slots.getInt(index));
+                    stack.pushInt(slots.getInt(slotId));
                     break;
                 case 'F':
-                    stack.pushFloat(slots.getFloat(index));
+                    stack.pushFloat(slots.getFloat(slotId));
                     break;
                 case 'J':
-                    stack.pushLong(slots.getLong(index));
+                    stack.pushLong(slots.getLong(slotId));
                     break;
                 case 'D':
-                    stack.pushDouble(slots.getDouble(index));
+                    stack.pushDouble(slots.getDouble(slotId));
                     break;
                 case 'L':
                 case '[':
-                    stack.pushRef(slots.getRef(index));
+                    stack.pushRef(slots.getRef(slotId));
                     break;
             }
         }

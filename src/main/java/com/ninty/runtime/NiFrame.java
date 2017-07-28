@@ -18,6 +18,7 @@ public class NiFrame {
     private ByteBuffer bb;
 
     public NiFrame(NiMethod method) {
+        this.method = method;
         localVars = new LocalVars(method.getMaxLocals());
         operandStack = new OperandStack(method.getMaxStack());
         bb = method.getCodes();

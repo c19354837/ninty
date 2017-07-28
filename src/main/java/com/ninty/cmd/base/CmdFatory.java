@@ -386,9 +386,9 @@ public class CmdFatory {
             case 0xb5:
                 return new PUTFIELD();
             case 0xb6:
-                unsupport(code);//invokevirtual
+                return new INVOKE_VIRTUAL();
             case 0xb7:
-                unsupport(code);//invokespecial
+                return new INVOKE_SPECIAL();
             case 0xb8:
                 unsupport(code);//invokestatic
             case 0xb9:
@@ -400,17 +400,17 @@ public class CmdFatory {
             case 0xbc:
                 unsupport(code);//newarray
             case 0xbd:
-                unsupport(code);//arraylength
+                unsupport(code);//anewarray
             case 0xbe:
-                unsupport(code);//athrow
+                unsupport(code);//arraylength
             case 0xbf:
-                return new CHECK_CAST();
+                unsupport(code);//athrow
             case 0xc0:
-                return new INSTANCE_OF();
+                return new CHECK_CAST();
             case 0xc1:
-                unsupport(code);//monitorenter
+                return new INSTANCE_OF();
             case 0xc2:
-                unsupport(code);//monitorexit
+                unsupport(code);//monitorenter
             case 0xc3:
                 unsupport(code);//monitorexit
             case 0xc4:
