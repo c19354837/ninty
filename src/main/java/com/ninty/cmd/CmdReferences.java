@@ -9,10 +9,7 @@ import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiField;
 import com.ninty.runtime.heap.NiMethod;
 import com.ninty.runtime.heap.NiObject;
-import com.ninty.runtime.heap.constantpool.ClassRef;
-import com.ninty.runtime.heap.constantpool.FieldRef;
-import com.ninty.runtime.heap.constantpool.NiConstant;
-import com.ninty.runtime.heap.constantpool.NiConstantPool;
+import com.ninty.runtime.heap.constantpool.*;
 
 /**
  * Created by ninty on 2017/7/27.
@@ -319,6 +316,54 @@ public class CmdReferences {
                 stack.pushDouble(((NiConstant.NiDouble) constant).value);
             } else {
                 throw new UnsupportedOperationException("ldc classRef");
+            }
+        }
+    }
+
+    public static class INVOKE_SPECIAL extends Index16Cmd {
+        @Override
+        public void exec(NiFrame frame) {
+            // TODO hack
+            frame.getOperandStack().popRef();
+        }
+    }
+
+    public static class INVOKE_VIRTUAL extends Index16Cmd {
+        @Override
+        public void exec(NiFrame frame) {
+            NiConstantPool cps = getCP(frame);
+            MethodRef methodRef = (MethodRef) cps.get(index);
+            if (methodRef.getName().equals("println")) {
+                OperandStack stack = frame.getOperandStack();
+                switch (methodRef.getDesc()) {
+                    case "(Z)V":
+                        System.out.println(stack.popInt() != 0);
+                        break;
+                    case "(C)V":
+                        System.out.println((char) stack.popInt());
+                        break;
+                    case "(B)V":
+                        System.out.println((byte) stack.popInt());
+                        break;
+                    case "(S)V":
+                        System.out.println((short) stack.popInt());
+                        break;
+                    case "(I)V":
+                        System.out.println(stack.popInt());
+                        break;
+                    case "(J)V":
+                        System.out.println(stack.popLong());
+                        break;
+                    case "(F)V":
+                        System.out.println(stack.popFloat());
+                        break;
+                    case "(D)V":
+                        System.out.println(stack.popDouble());
+                        break;
+                    default:
+                        throw new RuntimeException("What happen");
+                }
+                stack.popRef();
             }
         }
     }
