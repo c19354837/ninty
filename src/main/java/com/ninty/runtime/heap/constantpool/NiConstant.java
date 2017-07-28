@@ -7,6 +7,7 @@ import com.sun.org.apache.bcel.internal.classfile.ClassFormatException;
  * Created by ninty on 2017/7/23.
  */
 public class NiConstant {
+    NiConstantPool cp;
 
     public static NiConstant generate(ConstantInfo cp) {
         NiConstant nicp;
