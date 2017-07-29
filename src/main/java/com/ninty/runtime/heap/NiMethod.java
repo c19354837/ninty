@@ -35,4 +35,13 @@ public class NiMethod extends ClassMember {
     public ByteBuffer getCodes() {
         return codes;
     }
+
+    @Override
+    public String toString() {
+        return "NiMethod{" +
+                "clz=" + clz +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
 }

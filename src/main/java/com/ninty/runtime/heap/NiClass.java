@@ -171,4 +171,9 @@ public class NiClass {
     public LocalVars getStaticSlots() {
         return staticSlots;
     }
+
+    @Override
+    public String toString() {
+        return className;
+    }
 }
