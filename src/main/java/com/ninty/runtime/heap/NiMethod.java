@@ -9,9 +9,11 @@ import java.nio.ByteBuffer;
  * Created by ninty on 2017/7/23.
  */
 public class NiMethod extends ClassMember {
-    int maxLocals;
-    int maxStack;
-    ByteBuffer codes;
+    private int maxLocals;
+    private int maxStack;
+    private int argsCount;
+
+    private ByteBuffer codes;
 
     public NiMethod(NiClass clz, MemberInfo memberInfo) {
         copyMemberInfo(memberInfo);
@@ -22,6 +24,31 @@ public class NiMethod extends ClassMember {
             maxStack = attrCode.maxStack;
             codes = ByteBuffer.wrap(attrCode.codes);
         }
+        argsCount = calcArgsCount();
+    }
+
+    private int calcArgsCount() {
+        int start = desc.indexOf('(');
+        int end = desc.indexOf(')');
+        if(start == -1 || end <= start){
+            throw new IllegalArgumentException("bad description for method" + this );
+        }
+        String args = desc.substring(start+1, end);
+        int argsCount = 0;
+        for (int i = 0; i < args.length(); i++) {
+            char arg = args.charAt(i);
+            if (arg == '['){
+                continue;
+            }
+            argsCount++;
+            if(arg == 'L'){
+                i = args.indexOf(';', i);
+            }
+            else if(arg == 'J' || arg == 'D'){
+                argsCount++;
+            }
+        }
+        return argsCount;
     }
 
     public int getMaxLocals() {
@@ -32,10 +59,13 @@ public class NiMethod extends ClassMember {
         return maxStack;
     }
 
+    public int getArgsCount() {
+        return argsCount;
+    }
+
     public ByteBuffer getCodes() {
         return codes;
     }
-
     @Override
     public String toString() {
         return "NiMethod{" +
