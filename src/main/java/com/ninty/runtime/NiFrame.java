@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 public class NiFrame {
     public NiFrame prevFrame;
 
+    private NiThread thread;
     private NiMethod method;
 
     private LocalVars localVars;
@@ -17,7 +18,8 @@ public class NiFrame {
 
     private ByteBuffer bb;
 
-    public NiFrame(NiMethod method) {
+    public NiFrame(NiThread thread, NiMethod method) {
+        this.thread = thread;
         this.method = method;
         localVars = new LocalVars(method.getMaxLocals());
         operandStack = new OperandStack(method.getMaxStack());
@@ -42,6 +44,10 @@ public class NiFrame {
 
     public NiMethod getMethod() {
         return method;
+    }
+
+    public NiThread getThread() {
+        return thread;
     }
 
     @Override

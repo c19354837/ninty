@@ -39,7 +39,7 @@ public class BootStartup {
         }
 
         NiThread thread = new NiThread(64);
-        NiFrame frame = new NiFrame(mainMethod);
+        NiFrame frame = new NiFrame(thread, mainMethod);
         NiStack stack = thread.getStack();
         stack.push(frame);
 
