@@ -41,7 +41,7 @@ public class InterfaceMethodRef extends MemberRef {
 
         for (NiClass c : clz.getInterfaces()) {
             NiMethod method = lookUpMethods(c, name, desc);
-            if(method != null){
+            if (method != null) {
                 return method;
             }
         }

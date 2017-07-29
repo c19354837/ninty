@@ -38,14 +38,14 @@ public class FieldRef extends MemberRef {
 
         for (NiClass c : clz.getInterfaces()) {
             NiField field = lookUpFields(c, name, desc);
-            if(field != null){
+            if (field != null) {
                 return field;
             }
         }
 
         if (clz.getSuperClass() != null) {
             NiField field = lookUpFields(clz.getSuperClass(), name, desc);
-            if(field != null){
+            if (field != null) {
                 return field;
             }
         }

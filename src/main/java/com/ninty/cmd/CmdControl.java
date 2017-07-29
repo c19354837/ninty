@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
  */
 public class CmdControl {
 
-    public static void invokeMethod(NiFrame frame, NiMethod method){
+    public static void invokeMethod(NiFrame frame, NiMethod method) {
         NiThread thread = frame.getThread();
         NiFrame newFrame = new NiFrame(thread, method);
         thread.getStack().push(newFrame);

@@ -19,7 +19,7 @@ public class NiMethod extends ClassMember {
         copyMemberInfo(memberInfo);
         this.clz = clz;
         AttributeInfo.AttrCode attrCode = memberInfo.getAttrCode();
-        if(attrCode != null){
+        if (attrCode != null) {
             maxLocals = attrCode.maxLocals;
             maxStack = attrCode.maxStack;
             codes = ByteBuffer.wrap(attrCode.codes);
@@ -30,21 +30,20 @@ public class NiMethod extends ClassMember {
     private int calcArgsCount() {
         int start = desc.indexOf('(');
         int end = desc.indexOf(')');
-        if(start == -1 || end <= start){
-            throw new IllegalArgumentException("bad description for method" + this );
+        if (start == -1 || end <= start) {
+            throw new IllegalArgumentException("bad description for method" + this);
         }
-        String args = desc.substring(start+1, end);
+        String args = desc.substring(start + 1, end);
         int argsCount = 0;
         for (int i = 0; i < args.length(); i++) {
             char arg = args.charAt(i);
-            if (arg == '['){
+            if (arg == '[') {
                 continue;
             }
             argsCount++;
-            if(arg == 'L'){
+            if (arg == 'L') {
                 i = args.indexOf(';', i);
-            }
-            else if(arg == 'J' || arg == 'D'){
+            } else if (arg == 'J' || arg == 'D') {
                 argsCount++;
             }
         }
@@ -66,6 +65,7 @@ public class NiMethod extends ClassMember {
     public ByteBuffer getCodes() {
         return codes;
     }
+
     @Override
     public String toString() {
         return "NiMethod{" +

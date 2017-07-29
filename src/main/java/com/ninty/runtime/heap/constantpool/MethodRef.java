@@ -16,16 +16,16 @@ public class MethodRef extends MemberRef {
 
     @Override
     public void resolve() {
-        if(method == null){
+        if (method == null) {
             resolveClass();
-            if(clz.isInterface()){
+            if (clz.isInterface()) {
                 throw new IncompatibleClassChangeError("expect for class while it's interface: " + clz);
             }
             NiMethod method = lookUpMethods(clz, name, desc);
-            if(method == null){
+            if (method == null) {
                 throw new NoSuchMethodError(this.toString());
             }
-            if(!method.canAccess(cp.clz)){
+            if (!method.canAccess(cp.clz)) {
                 throw new IllegalAccessError(cp.clz + " cannot access " + method);
             }
             this.method = method;
@@ -41,14 +41,14 @@ public class MethodRef extends MemberRef {
 
         if (clz.getSuperClass() != null) {
             NiMethod method = lookUpMethods(clz.getSuperClass(), name, desc);
-            if(method != null){
+            if (method != null) {
                 return method;
             }
         }
 
         for (NiClass c : clz.getInterfaces()) {
             NiMethod method = lookUpMethods(c, name, desc);
-            if(method != null){
+            if (method != null) {
                 return method;
             }
         }
