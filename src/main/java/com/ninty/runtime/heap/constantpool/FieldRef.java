@@ -20,10 +20,10 @@ public class FieldRef extends MemberRef {
             resolveClass();
             NiField field = lookUpFields(clz, name, desc);
             if (field == null) {
-                throw new RuntimeException("NoSuchField clz:" + clz.getClassName() + ", name:" + name + ", desc:" + desc);
+                throw new NoSuchFieldError(this.toString());
             }
             if (!field.canAccess(cp.clz)) {
-                throw new RuntimeException(cp.clz.getClassName() + " can not access to " + field);
+                throw new IllegalAccessError(cp.clz + " cannot access " + field);
             }
             this.field = field;
         }
@@ -37,11 +37,17 @@ public class FieldRef extends MemberRef {
         }
 
         for (NiClass c : clz.getInterfaces()) {
-            return lookUpFields(c, name, desc);
+            NiField field = lookUpFields(c, name, desc);
+            if(field != null){
+                return field;
+            }
         }
 
         if (clz.getSuperClass() != null) {
-            return lookUpFields(clz.getSuperClass(), name, desc);
+            NiField field = lookUpFields(clz.getSuperClass(), name, desc);
+            if(field != null){
+                return field;
+            }
         }
 
         return null;
@@ -49,5 +55,14 @@ public class FieldRef extends MemberRef {
 
     public NiField getField() {
         return field;
+    }
+
+    @Override
+    public String toString() {
+        return "FieldRef{" +
+                "className='" + className + '\'' +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                '}';
     }
 }
