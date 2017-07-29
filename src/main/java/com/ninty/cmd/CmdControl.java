@@ -2,7 +2,11 @@ package com.ninty.cmd;
 
 import com.ninty.cmd.base.BranchCmd;
 import com.ninty.cmd.base.DataCmd;
+import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.NiThread;
+import com.ninty.runtime.OperandStack;
+import com.ninty.runtime.heap.NiMethod;
 
 import java.nio.ByteBuffer;
 
@@ -10,6 +14,18 @@ import java.nio.ByteBuffer;
  * Created by ninty on 2017/7/16.
  */
 public class CmdControl {
+
+    public static void invokeMethod(NiFrame frame, NiMethod method){
+        NiThread thread = frame.getThread();
+        NiFrame newFrame = new NiFrame(thread, method);
+        thread.getStack().push(newFrame);
+        int argsCount = method.getArgsCount();
+        OperandStack stack = frame.getOperandStack();
+        LocalVars slots = frame.getLocalVars();
+        for (int i = 0; i < argsCount; i++) {
+            slots.setSlot(i, stack.popSlot());
+        }
+    }
 
     private static void skipPadding(ByteBuffer bb) {
         while (bb.position() % 4 != 0) {
