@@ -30,7 +30,7 @@ public class CmdStack {
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
             Slot slot = stack.popSlot();
-            stack.pushSlot(slot);
+            stack.pushSlot(slot.duplicate());
             stack.pushSlot(slot);
         }
     }
@@ -42,7 +42,7 @@ public class CmdStack {
             OperandStack stack = frame.getOperandStack();
             Slot slot1 = stack.popSlot();
             Slot slot2 = stack.popSlot();
-            stack.pushSlot(slot1);
+            stack.pushSlot(slot1.duplicate());
             stack.pushSlot(slot2);
             stack.pushSlot(slot1);
         }
@@ -56,7 +56,7 @@ public class CmdStack {
             Slot slot1 = stack.popSlot();
             Slot slot2 = stack.popSlot();
             Slot slot3 = stack.popSlot();
-            stack.pushSlot(slot1);
+            stack.pushSlot(slot1.duplicate());
             stack.pushSlot(slot3);
             stack.pushSlot(slot2);
             stack.pushSlot(slot1);
@@ -71,8 +71,8 @@ public class CmdStack {
             Slot slot2 = stack.popSlot();
             stack.pushSlot(slot2);
             stack.pushSlot(slot1);
-            stack.pushSlot(slot2);
-            stack.pushSlot(slot1);
+            stack.pushSlot(slot2.duplicate());
+            stack.pushSlot(slot1.duplicate());
         }
     }
 
@@ -83,8 +83,8 @@ public class CmdStack {
             Slot slot1 = stack.popSlot();
             Slot slot2 = stack.popSlot();
             Slot slot3 = stack.popSlot();
-            stack.pushSlot(slot2);
-            stack.pushSlot(slot1);
+            stack.pushSlot(slot2.duplicate());
+            stack.pushSlot(slot1.duplicate());
             stack.pushSlot(slot3);
             stack.pushSlot(slot2);
             stack.pushSlot(slot1);
@@ -99,8 +99,8 @@ public class CmdStack {
             Slot slot2 = stack.popSlot();
             Slot slot3 = stack.popSlot();
             Slot slot4 = stack.popSlot();
-            stack.pushSlot(slot2);
-            stack.pushSlot(slot1);
+            stack.pushSlot(slot2.duplicate());
+            stack.pushSlot(slot1.duplicate());
             stack.pushSlot(slot4);
             stack.pushSlot(slot3);
             stack.pushSlot(slot2);

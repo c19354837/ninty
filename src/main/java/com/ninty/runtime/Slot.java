@@ -9,6 +9,15 @@ public class Slot {
     int num;
     NiObject ref;
 
+    public Slot duplicate() {
+        if (ref == null) {
+            return this; //only reference object need duplicate
+        }
+        Slot slot = new Slot();
+        slot.ref = new NiObject(ref);
+        return slot;
+    }
+
     @Override
     public String toString() {
         return "Slot{" + (ref == null ?
