@@ -108,14 +108,14 @@ public class CmdConstants {
     public static class LCONST_0 extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            frame.getOperandStack().pushInt(0);
+            frame.getOperandStack().pushLong(0);
         }
     }
 
     public static class LCONST_1 extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            frame.getOperandStack().pushInt(1);
+            frame.getOperandStack().pushLong(1);
         }
     }
 
