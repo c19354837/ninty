@@ -3,11 +3,8 @@ package com.ninty.cmd;
 import com.ninty.cmd.base.BranchCmd;
 import com.ninty.cmd.base.DataCmd;
 import com.ninty.cmd.base.NoOperandCmd;
-import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
-import com.ninty.runtime.OperandStack;
-import com.ninty.runtime.heap.NiMethod;
 
 import java.nio.ByteBuffer;
 
@@ -16,15 +13,25 @@ import java.nio.ByteBuffer;
  */
 public class CmdControl {
 
-    public static void invokeMethod(NiFrame frame, NiMethod method) {
+    private static void returnCmd(NiFrame frame, char type) {
         NiThread thread = frame.getThread();
-        NiFrame newFrame = new NiFrame(thread, method);
-        thread.pushFrame(newFrame);
-        int argsCount = method.getArgsCount();
-        OperandStack stack = frame.getOperandStack();
-        LocalVars slots = frame.getLocalVars();
-        for (int i = 0; i < argsCount; i++) {
-            slots.setSlot(i, stack.popSlot());
+        thread.popFrame();
+        if (type != 'a') {
+            NiFrame topFrame = thread.topFrame();
+            switch (type) {
+                case 'i':
+                    topFrame.getOperandStack().pushInt(frame.getOperandStack().popInt());
+                    break;
+                case 'l':
+                    topFrame.getOperandStack().pushLong(frame.getOperandStack().popLong());
+                    break;
+                case 'f':
+                    topFrame.getOperandStack().pushFloat(frame.getOperandStack().popFloat());
+                    break;
+                case 'd':
+                    topFrame.getOperandStack().pushDouble(frame.getOperandStack().popDouble());
+                    break;
+            }
         }
     }
 
@@ -121,6 +128,41 @@ public class CmdControl {
         @Override
         public void exec(NiFrame frame) {
             frame.getThread().popFrame();
+        }
+    }
+
+    public static class ARETURN extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            returnCmd(frame, 'a');
+        }
+    }
+
+    public static class IRETURN extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            returnCmd(frame, 'i');
+        }
+    }
+
+    public static class LRETURN extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            returnCmd(frame, 'l');
+        }
+    }
+
+    public static class FRETURN extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            returnCmd(frame, 'f');
+        }
+    }
+
+    public static class DRETURN extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            returnCmd(frame, 'd');
         }
     }
 }
