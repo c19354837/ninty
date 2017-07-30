@@ -89,6 +89,9 @@ public class NiClass {
         return false;
     }
 
+    /**
+     * this implements clz
+     */
     public boolean isImplements(NiClass clz) {
         for (NiClass c = this; c != null; c = c.superClass) {
             if (c == clz || c.isSubInterfaceOf(clz)) {
@@ -115,8 +118,18 @@ public class NiClass {
         return (accessFlags & ClassConstant.ACC_PUBLIC) != 0;
     }
 
+    /**
+     * clz extend this
+     */
     public boolean isSubClass(NiClass clz) {
         return (clz.superClassName != null && clz.superClassName.equals(superClassName)) || this.isSubClass(clz.getSuperClass());
+    }
+
+    /**
+     * clz extend this
+     */
+    public boolean isSuperClass(NiClass clz) {
+        return !isSubClass(clz);
     }
 
     public boolean isAbstract() {
