@@ -83,6 +83,10 @@ public class OperandStack {
         return slots[size];
     }
 
+    public NiObject getRefFromTop(int n) {
+        return slots[size - n].ref;
+    }
+
     @Override
     public String toString() {
         return "OperandStack{" +
