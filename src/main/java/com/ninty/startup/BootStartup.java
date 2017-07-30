@@ -38,30 +38,42 @@ public class BootStartup {
         }
 
         NiThread thread = new NiThread(64);
-        NiFrame frame = new NiFrame(thread, mainMethod);
+        NiFrame frame = new NiFrame(mainMethod);
         thread.pushFrame(frame);
 
         execThread(thread);
     }
 
     private void execThread(NiThread thread) {
-        NiFrame frame = thread.popFrame();
-        ByteBuffer bb = frame.getCode();
         try {
             while (true) {
+                NiFrame frame = thread.topFrame();
+                ByteBuffer bb = frame.getCode();
                 byte opCode = bb.get();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
                 cmd.init(bb);
                 cmd.exec(frame);
 
-                System.out.println(cmd.getClass().getSimpleName());
-                System.out.println(frame);
+                System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
+                System.out.println(getT(thread.getLevel()) + frame);
                 System.out.println();
+
+                if (thread.isEmpty()) {
+                    System.out.println("\n**done**");
+                    return;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    private String getT(int level) {
+        StringBuilder t = new StringBuilder(level);
+        for (int i = 1; i < level; i++) {
+            t.append('\t');
+        }
+        return t.toString();
     }
 
 }
