@@ -60,6 +60,7 @@ public class NiClassLoader {
     }
 
     private void resolveInterfaces(NiClass clz) {
+        clz.interfaces = new NiClass[clz.interfaceNames.length];
         for (int i = 0; i < clz.interfaceNames.length; i++) {
             clz.interfaces[i] = loadClass(clz.interfaceNames[i]);
         }

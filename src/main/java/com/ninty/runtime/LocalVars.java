@@ -74,6 +74,10 @@ public class LocalVars {
         slots[index] = slot;
     }
 
+    public int length() {
+        return slots.length;
+    }
+
     @Override
     public String toString() {
         return "LocalVars{" +

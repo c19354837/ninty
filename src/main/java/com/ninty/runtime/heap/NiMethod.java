@@ -47,7 +47,14 @@ public class NiMethod extends ClassMember {
                 argsCount++;
             }
         }
+        if (!isStatic()) {
+            argsCount++;
+        }
         return argsCount;
+    }
+
+    public boolean isAbstract() {
+        return (accessFlags & ClassConstant.ACC_ABSTRACT) != 0;
     }
 
     public int getMaxLocals() {
