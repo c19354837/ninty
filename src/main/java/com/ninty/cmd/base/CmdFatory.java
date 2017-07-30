@@ -49,8 +49,10 @@ public class CmdFatory {
                 return new FCONST_0();
             case 0x0c:
                 return new FCONST_1();
-            case 0x0e:
+            case 0x0d:
                 return new FCONST_2();
+            case 0x0e:
+                return new DCONST_0();
             case 0x0f:
                 return new DCONST_1();
             case 0x10:
@@ -366,17 +368,17 @@ public class CmdFatory {
             case 0xab:
                 return new LOOKUPSWITCH();
             case 0xac:
-                unsupport(code);//ireturn
+                return new IRETURN();
             case 0xad:
-                unsupport(code);//lreturn
+                return new LRETURN();
             case 0xae:
-                unsupport(code);//freturn
+                return new FRETURN();
             case 0xaf:
-                unsupport(code);//dreturn
+                return new DRETURN();
             case 0xb0:
-                unsupport(code);//areturn
+                return new ARETURN();
             case 0xb1:
-                unsupport(code);//return
+                return new RETURN();
             case 0xb2:
                 return new GETSTATIC();
             case 0xb3:
@@ -390,9 +392,9 @@ public class CmdFatory {
             case 0xb7:
                 return new INVOKE_SPECIAL();
             case 0xb8:
-                unsupport(code);//invokestatic
+                return new INVOKE_STATIC();
             case 0xb9:
-                unsupport(code);//invokeinterface
+                return new INVOKE_INTERFACE();
             case 0xba:
                 unsupport(code);//invokedynamic
             case 0xbb:
@@ -425,8 +427,11 @@ public class CmdFatory {
                 return new GOTO_W();
             case 0xc9:
                 unsupport(code);//jsr_w
+                break;
+            default:
+                unsupport(code);//jsr_w
         }
-        throw new RuntimeException("Unsupport byte code: " + code);
+        return null;
     }
 
     private static void unsupport(int code) {
