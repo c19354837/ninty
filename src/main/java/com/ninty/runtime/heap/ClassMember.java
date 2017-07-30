@@ -28,7 +28,11 @@ public class ClassMember {
         if (!isPrivate()) {
             return clz.isSamePackge(c);
         }
-        return c == clz;
+        return clz.isSame(c);
+    }
+
+    public boolean isSuper() {
+        return (accessFlags & ClassConstant.ACC_SUPER) != 0;
     }
 
     public boolean isPublic() {
