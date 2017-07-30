@@ -7,19 +7,24 @@ import com.ninty.runtime.LocalVars;
  */
 public class NiObject {
     private NiClass clz;
-    private LocalVars slots;
+    private LocalVars fields;
 
     public NiObject(NiClass clz, int count) {
         this.clz = clz;
-        slots = new LocalVars(count);
+        fields = new LocalVars(count);
+    }
+
+    public NiObject(NiObject obj) {
+        this.clz = obj.clz;
+        this.fields = obj.fields;
     }
 
     public NiClass getClz() {
         return clz;
     }
 
-    public LocalVars getSlots() {
-        return slots;
+    public LocalVars getFields() {
+        return fields;
     }
 
     public boolean isInstanceOf(NiClass clz) {
