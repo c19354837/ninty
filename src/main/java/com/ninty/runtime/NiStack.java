@@ -37,9 +37,10 @@ public class NiStack {
     }
 
     NiFrame top() {
-        if (top == null) {
-            throw new EmptyStackException();
-        }
         return top;
+    }
+
+    boolean isEmpty() {
+        return top == null;
     }
 }
