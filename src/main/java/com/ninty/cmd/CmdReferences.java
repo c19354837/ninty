@@ -1,9 +1,11 @@
 package com.ninty.cmd;
 
+import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index16Cmd;
 import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.NiThread;
 import com.ninty.runtime.OperandStack;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiField;
@@ -11,10 +13,57 @@ import com.ninty.runtime.heap.NiMethod;
 import com.ninty.runtime.heap.NiObject;
 import com.ninty.runtime.heap.constantpool.*;
 
+import java.nio.ByteBuffer;
+
 /**
  * Created by ninty on 2017/7/27.
  */
 public class CmdReferences {
+
+    private static void invokeMethod(NiFrame frame, NiMethod method) {
+        NiThread thread = frame.getThread();
+        NiFrame newFrame = new NiFrame(method);
+        thread.pushFrame(newFrame);
+        int argsCount = method.getArgsCount();
+        OperandStack stack = frame.getOperandStack();
+        LocalVars slots = newFrame.getLocalVars();
+        if (argsCount > 0) {
+            for (int i = argsCount - 1; i >= 0; i--) {
+                slots.setSlot(i, stack.popSlot());
+            }
+        }
+    }
+
+    private static void print(OperandStack stack, String desc) {
+        switch (desc) {
+            case "(Z)V":
+                System.out.println(stack.popInt() != 0);
+                break;
+            case "(C)V":
+                System.out.println((char) stack.popInt());
+                break;
+            case "(B)V":
+                System.out.println((byte) stack.popInt());
+                break;
+            case "(S)V":
+                System.out.println((short) stack.popInt());
+                break;
+            case "(I)V":
+                System.out.println(stack.popInt());
+                break;
+            case "(J)V":
+                System.out.println(stack.popLong());
+                break;
+            case "(F)V":
+                System.out.println(stack.popFloat());
+                break;
+            case "(D)V":
+                System.out.println(stack.popDouble());
+                break;
+            default:
+                throw new RuntimeException("What happen");
+        }
+    }
 
     private static NiConstantPool getCP(NiFrame frame) {
         return frame.getMethod().getClz().getCps();
@@ -172,32 +221,32 @@ public class CmdReferences {
                 case 'I':
                     int ival = stack.popInt();
                     NiObject iref = stack.popRef();
-                    LocalVars islots = iref.getSlots();
+                    LocalVars islots = iref.getFields();
                     islots.setInt(slotId, ival);
                     break;
                 case 'F':
                     float fval = stack.popFloat();
                     NiObject fref = stack.popRef();
-                    LocalVars fslots = fref.getSlots();
+                    LocalVars fslots = fref.getFields();
                     fslots.setFloat(slotId, fval);
                     break;
                 case 'J':
                     long lval = stack.popLong();
                     NiObject lref = stack.popRef();
-                    LocalVars lslots = lref.getSlots();
+                    LocalVars lslots = lref.getFields();
                     lslots.setLong(slotId, lval);
                     break;
                 case 'D':
                     double dval = stack.popDouble();
                     NiObject dref = stack.popRef();
-                    LocalVars dslots = dref.getSlots();
+                    LocalVars dslots = dref.getFields();
                     dslots.setDouble(slotId, dval);
                     break;
                 case 'L':
                 case '[':
                     NiObject rval = stack.popRef();
                     NiObject rref = stack.popRef();
-                    LocalVars rslots = rref.getSlots();
+                    LocalVars rslots = rref.getFields();
                     rslots.setRef(slotId, rval);
                     break;
             }
@@ -224,7 +273,7 @@ public class CmdReferences {
 
             String desc = field.getDesc();
             int slotId = field.getSlotId();
-            LocalVars slots = ref.getSlots();
+            LocalVars slots = ref.getFields();
             switch (desc.charAt(0)) {
                 case 'Z':
                 case 'B':
@@ -320,51 +369,151 @@ public class CmdReferences {
         }
     }
 
+    public static class INVOKE_STATIC extends Index16Cmd {
+        @Override
+        public void exec(NiFrame frame) {
+            NiConstantPool cps = frame.getMethod().getClz().getCps();
+            MethodRef methodRef = (MethodRef) cps.get(index);
+            methodRef.resolve();
+            NiMethod method = methodRef.getMethod();
+            if (!method.isStatic()) {
+                throw new IncompatibleClassChangeError(method + " is not static");
+            }
+            invokeMethod(frame, method);
+        }
+    }
+
     public static class INVOKE_SPECIAL extends Index16Cmd {
         @Override
         public void exec(NiFrame frame) {
-            // TODO hack
-            frame.getOperandStack().popRef();
+            NiConstantPool cps = frame.getMethod().getClz().getCps();
+            MethodRef methodRef = (MethodRef) cps.get(index);
+            methodRef.resolve();
+            NiMethod method = methodRef.getMethod();
+            NiClass clz = methodRef.getClz();
+            NiClass c = frame.getMethod().getClz();
+            if (method.getName().equals("<init>") && method.getClz() != clz) {
+                throw new NoSuchMethodError("should call <init> with same class, except:" + c + ", while:" + clz);
+            }
+            if (method.isStatic()) {
+                throw new IncompatibleClassChangeError(method + " is static");
+            }
+            NiObject ref = frame.getOperandStack().getRefFromTop(method.getArgsCount());
+            if (ref == null) {
+                throw new NullPointerException("this cannot be null");
+            }
+
+            if (method.isProtected()
+                    && c.isSubClass(clz)
+                    && !c.isSamePackge(clz)
+                    && ref.getClz() != c
+                    && !c.isSubClass(ref.getClz())) {
+                throw new IllegalAccessError("only self or subclass can access the protected method");
+            }
+
+            NiMethod finalMethod = method;
+            if (method.isSuper()
+                    && c.isSubClass(clz)
+                    && !method.getName().equals("<init>")) {
+                finalMethod = MethodRef.lookUpMethods(c.getSuperClass(), methodRef.getName(), methodRef.getDesc());
+            }
+
+            if (finalMethod == null || finalMethod.isAbstract()) {
+                throw new AbstractMethodError();
+            }
+
+            invokeMethod(frame, finalMethod);
         }
     }
 
     public static class INVOKE_VIRTUAL extends Index16Cmd {
         @Override
         public void exec(NiFrame frame) {
-            NiConstantPool cps = getCP(frame);
+            NiConstantPool cps = frame.getMethod().getClz().getCps();
             MethodRef methodRef = (MethodRef) cps.get(index);
+
+            //hack
             if (methodRef.getName().equals("println")) {
                 OperandStack stack = frame.getOperandStack();
-                switch (methodRef.getDesc()) {
-                    case "(Z)V":
-                        System.out.println(stack.popInt() != 0);
-                        break;
-                    case "(C)V":
-                        System.out.println((char) stack.popInt());
-                        break;
-                    case "(B)V":
-                        System.out.println((byte) stack.popInt());
-                        break;
-                    case "(S)V":
-                        System.out.println((short) stack.popInt());
-                        break;
-                    case "(I)V":
-                        System.out.println(stack.popInt());
-                        break;
-                    case "(J)V":
-                        System.out.println(stack.popLong());
-                        break;
-                    case "(F)V":
-                        System.out.println(stack.popFloat());
-                        break;
-                    case "(D)V":
-                        System.out.println(stack.popDouble());
-                        break;
-                    default:
-                        throw new RuntimeException("What happen");
-                }
+                print(stack, methodRef.getDesc());
                 stack.popRef();
+                return;
             }
+            //hack end
+
+            methodRef.resolve();
+            NiMethod method = methodRef.getMethod();
+            NiClass clz = methodRef.getClz();
+            NiClass c = frame.getMethod().getClz();
+
+            if (method.isStatic()) {
+                throw new IncompatibleClassChangeError(method + " is static");
+            }
+            NiObject ref = frame.getOperandStack().getRefFromTop(method.getArgsCount());
+            if (ref == null) {
+                throw new NullPointerException("this cannot be null");
+            }
+
+            if (method.isProtected()
+                    && c.isSubClass(clz)
+                    && !c.isSamePackge(clz)
+                    && ref.getClz() != c
+                    && !c.isSubClass(ref.getClz())) {
+                throw new IllegalAccessError("only self or subclass can access the protected method");
+            }
+
+            NiMethod finalMethod = method;
+            if (method.isSuper()
+                    && c.isSubClass(clz)
+                    && !method.getName().equals("<init>")) {
+                finalMethod = MethodRef.lookUpMethods(clz, methodRef.getName(), methodRef.getDesc());
+            }
+
+            if (finalMethod == null || finalMethod.isAbstract()) {
+                throw new AbstractMethodError();
+            }
+
+            invokeMethod(frame, finalMethod);
+        }
+    }
+
+    // TODO vtable
+    public static class INVOKE_INTERFACE implements ICmdBase {
+        private int index;
+
+        @Override
+        public void init(ByteBuffer bb) {
+            index = bb.getChar();
+            bb.get(); //args count
+            bb.get(); //must be 0
+        }
+
+        @Override
+        public void exec(NiFrame frame) {
+            NiConstantPool cps = getCP(frame);
+            InterfaceMethodRef methodRef = (InterfaceMethodRef) cps.get(index);
+            methodRef.resolve();
+            ;
+            NiMethod method = methodRef.getMethod();
+            if (method.isStatic() || method.isPrivate()) {
+                throw new IncompatibleClassChangeError();
+            }
+            NiObject self = frame.getOperandStack().getRefFromTop(method.getArgsCount());
+            if (self == null) {
+                throw new NullPointerException("this cannot be null");
+            }
+            if (!self.getClz().isImplements(method.getClz())) {
+                throw new IncompatibleClassChangeError();
+            }
+            NiMethod finalMethod = MethodRef.lookUpMethods(frame.getMethod().getClz(), methodRef.getName(), methodRef.getDesc());
+            if (finalMethod == null || finalMethod.isAbstract()) {
+                throw new AbstractMethodError();
+            }
+            if (!method.isPublic()) {
+                throw new IllegalAccessError(" interface method should be public: " + method);
+            }
+            invokeMethod(frame, finalMethod);
         }
     }
 }
+
