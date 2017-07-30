@@ -11,6 +11,19 @@ public class NiThread {
         stack = new NiStack(maxStackSize);
     }
 
+
+    public NiFrame popFrame() {
+        return stack.pop();
+    }
+
+    public void pushFrame(NiFrame frame) {
+        stack.push(frame);
+    }
+
+    public NiFrame topFrame() {
+        return stack.top();
+    }
+
     public NiStack getStack() {
         return stack;
     }

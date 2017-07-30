@@ -2,6 +2,7 @@ package com.ninty.cmd;
 
 import com.ninty.cmd.base.BranchCmd;
 import com.ninty.cmd.base.DataCmd;
+import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
@@ -18,7 +19,7 @@ public class CmdControl {
     public static void invokeMethod(NiFrame frame, NiMethod method) {
         NiThread thread = frame.getThread();
         NiFrame newFrame = new NiFrame(thread, method);
-        thread.getStack().push(newFrame);
+        thread.pushFrame(newFrame);
         int argsCount = method.getArgsCount();
         OperandStack stack = frame.getOperandStack();
         LocalVars slots = frame.getLocalVars();
@@ -113,6 +114,13 @@ public class CmdControl {
                 }
             }
             jumpTo(defaultOffset);
+        }
+    }
+
+    public static class RETURN extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            frame.getThread().popFrame();
         }
     }
 }

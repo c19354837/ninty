@@ -4,7 +4,6 @@ import com.ninty.classpath.ClassPath;
 import com.ninty.cmd.base.CmdFatory;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.runtime.NiFrame;
-import com.ninty.runtime.NiStack;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiClassLoader;
@@ -40,14 +39,13 @@ public class BootStartup {
 
         NiThread thread = new NiThread(64);
         NiFrame frame = new NiFrame(thread, mainMethod);
-        NiStack stack = thread.getStack();
-        stack.push(frame);
+        thread.pushFrame(frame);
 
         execThread(thread);
     }
 
     private void execThread(NiThread thread) {
-        NiFrame frame = thread.getStack().pop();
+        NiFrame frame = thread.popFrame();
         ByteBuffer bb = frame.getCode();
         try {
             while (true) {

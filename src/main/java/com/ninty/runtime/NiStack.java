@@ -14,7 +14,7 @@ public class NiStack {
         this.maxSize = maxSize;
     }
 
-    public void push(NiFrame frame) {
+    void push(NiFrame frame) {
         if (size >= maxSize) {
             throw new StackOverflowError("max stack size:" + maxSize);
         }
@@ -25,7 +25,7 @@ public class NiStack {
         size++;
     }
 
-    public NiFrame pop() {
+    NiFrame pop() {
         if (size == 0) {
             throw new EmptyStackException();
         }
@@ -36,7 +36,7 @@ public class NiStack {
         return frame;
     }
 
-    public NiFrame top() {
+    NiFrame top() {
         if (top == null) {
             throw new EmptyStackException();
         }
