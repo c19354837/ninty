@@ -17,9 +17,9 @@ public class NiFrame {
     private OperandStack operandStack;
 
     private ByteBuffer bb;
+    private int position;
 
-    public NiFrame(NiThread thread, NiMethod method) {
-        this.thread = thread;
+    public NiFrame(NiMethod method) {
         this.method = method;
         localVars = new LocalVars(method.getMaxLocals());
         operandStack = new OperandStack(method.getMaxStack());
@@ -46,14 +46,31 @@ public class NiFrame {
         return method;
     }
 
+    public void setThread(NiThread thread) {
+        this.thread = thread;
+    }
+
     public NiThread getThread() {
         return thread;
+    }
+
+    public void reset() {
+        bb.position(0);
+    }
+
+    public void savePosition() {
+        position = bb.position();
+    }
+
+    public void restorePostion() {
+        bb.position(position);
     }
 
     @Override
     public String toString() {
         return "NiFrame{" +
-                "localVars=" + localVars +
+                "method=" + method +
+                ",\nlocalVars=" + localVars +
                 ", operandStack=" + operandStack +
                 '}';
     }

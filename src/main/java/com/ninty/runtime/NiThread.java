@@ -4,8 +4,9 @@ package com.ninty.runtime;
  * Created by ninty on 2017/7/12.
  */
 public class NiThread {
-    private int pc;
+    private int level;
     private NiStack stack;
+
 
     public NiThread(int maxStackSize) {
         stack = new NiStack(maxStackSize);
@@ -13,10 +14,23 @@ public class NiThread {
 
 
     public NiFrame popFrame() {
-        return stack.pop();
+        level--;
+        NiFrame frame = stack.pop();
+        NiFrame top = topFrame();
+        if (top != null) {
+            top.restorePostion();
+        }
+        return frame;
     }
 
     public void pushFrame(NiFrame frame) {
+        level++;
+        NiFrame top = topFrame();
+        if (top != null) {
+            top.savePosition();
+        }
+        frame.reset();
+        frame.setThread(this);
         stack.push(frame);
     }
 
@@ -24,7 +38,11 @@ public class NiThread {
         return stack.top();
     }
 
-    public NiStack getStack() {
-        return stack;
+    public boolean isEmpty() {
+        return stack.isEmpty();
+    }
+
+    public int getLevel() {
+        return level;
     }
 }
