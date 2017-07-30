@@ -60,7 +60,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             int num1 = stack.popInt();
             int num2 = stack.popInt();
-            stack.pushInt(num1 - num2);
+            stack.pushInt(num2 - num1);
         }
     }
 
@@ -70,7 +70,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             long num1 = stack.popLong();
             long num2 = stack.popLong();
-            stack.pushLong(num1 - num2);
+            stack.pushLong(num2 - num1);
         }
     }
 
@@ -80,7 +80,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             float num1 = stack.popFloat();
             float num2 = stack.popFloat();
-            stack.pushFloat(num1 - num2);
+            stack.pushFloat(num2 - num1);
         }
     }
 
@@ -90,7 +90,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             double num1 = stack.popDouble();
             double num2 = stack.popDouble();
-            stack.pushDouble(num1 - num2);
+            stack.pushDouble(num2 - num1);
         }
     }
 
@@ -140,7 +140,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             int num1 = stack.popInt();
             int num2 = stack.popInt();
-            stack.pushInt(num1 / num2);
+            stack.pushInt(num2 / num1);
         }
     }
 
@@ -150,7 +150,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             long num1 = stack.popLong();
             long num2 = stack.popLong();
-            stack.pushLong(num1 / num2);
+            stack.pushLong(num2 / num1);
         }
     }
 
@@ -160,7 +160,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             float num1 = stack.popFloat();
             float num2 = stack.popFloat();
-            stack.pushFloat(num1 / num2);
+            stack.pushFloat(num2 / num1);
         }
     }
 
@@ -170,7 +170,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             double num1 = stack.popDouble();
             double num2 = stack.popDouble();
-            stack.pushDouble(num1 / num2);
+            stack.pushDouble(num2 / num1);
         }
     }
 
@@ -180,7 +180,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             int num1 = stack.popInt();
             int num2 = stack.popInt();
-            stack.pushInt(num1 % num2);
+            stack.pushInt(num2 % num1);
         }
     }
 
@@ -190,7 +190,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             long num1 = stack.popLong();
             long num2 = stack.popLong();
-            stack.pushLong(num1 % num2);
+            stack.pushLong(num2 % num1);
         }
     }
 
@@ -200,7 +200,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             float num1 = stack.popFloat();
             float num2 = stack.popFloat();
-            stack.pushFloat(num1 % num2);
+            stack.pushFloat(num2 % num1);
         }
     }
 
@@ -210,7 +210,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             double num1 = stack.popDouble();
             double num2 = stack.popDouble();
-            stack.pushDouble(num1 % num2);
+            stack.pushDouble(num2 % num1);
         }
     }
 
