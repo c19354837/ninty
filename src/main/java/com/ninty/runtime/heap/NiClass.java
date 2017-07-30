@@ -89,6 +89,13 @@ public class NiClass {
         return false;
     }
 
+    public boolean isSame(NiClass clz) {
+        if (clz == null) {
+            return false;
+        }
+        return clz.className.equals(className) && clz.loader == loader;
+    }
+
     /**
      * this implements clz
      */
