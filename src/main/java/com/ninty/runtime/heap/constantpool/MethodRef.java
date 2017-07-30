@@ -32,7 +32,7 @@ public class MethodRef extends MemberRef {
         }
     }
 
-    private NiMethod lookUpMethods(NiClass clz, String name, String desc) {
+    public static NiMethod lookUpMethods(NiClass clz, String name, String desc) {
         for (NiMethod method : clz.getMethods()) {
             if (method.getName().equals(name) && method.getDesc().equals(desc)) {
                 return method;
