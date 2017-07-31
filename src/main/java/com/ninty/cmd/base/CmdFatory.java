@@ -1,5 +1,6 @@
 package com.ninty.cmd.base;
 
+import static com.ninty.cmd.CmdArray.*;
 import static com.ninty.cmd.CmdComparisons.*;
 import static com.ninty.cmd.CmdConstants.*;
 import static com.ninty.cmd.CmdControl.*;
@@ -116,21 +117,21 @@ public class CmdFatory {
             case 0x2d:
                 return new ALOAD_3();
             case 0x2e:
-                unsupport(code); //iaload
+                return new IALOAD();
             case 0x2f:
-                unsupport(code); // laload
+                return new LALOAD();
             case 0x30:
-                unsupport(code); // faload
+                return new FALOAD();
             case 0x31:
-                unsupport(code); // daload
+                return new DALOAD();
             case 0x32:
-                unsupport(code); // aaload
+                return new AALOAD();
             case 0x33:
-                unsupport(code); // baload
+                return new BALOAD();
             case 0x34:
-                unsupport(code); // caload
+                return new CALOAD();
             case 0x35:
-                unsupport(code); // saload
+                return new SALOAD();
             case 0x36:
                 return new ISTORE();
             case 0x37:
@@ -182,21 +183,21 @@ public class CmdFatory {
             case 0x4e:
                 return new ASTORE_3();
             case 0x4f:
-                unsupport(code); //iastore
+                return new IASTORE();
             case 0x50:
-                unsupport(code); //lastore
+                return new LASTORE();
             case 0x51:
-                unsupport(code); //fastore
+                return new FASTORE();
             case 0x52:
-                unsupport(code); //dastore
+                return new DASTORE();
             case 0x53:
-                unsupport(code); //aastore
+                return new AASTORE();
             case 0x54:
-                unsupport(code); //bastore
+                return new BASTORE();
             case 0x55:
-                unsupport(code); //castore
+                return new CASTORE();
             case 0x56:
-                unsupport(code); //sastore
+                return new SASTORE();
             case 0x57:
                 return new POP();
             case 0x58:
@@ -400,11 +401,11 @@ public class CmdFatory {
             case 0xbb:
                 return new NEW();
             case 0xbc:
-                unsupport(code);//newarray
+                return new NEW_ARRAY();
             case 0xbd:
-                unsupport(code);//anewarray
+                return new ANEW_ARRAY();
             case 0xbe:
-                unsupport(code);//arraylength
+                return new ARRAY_LENGTH();
             case 0xbf:
                 unsupport(code);//athrow
             case 0xc0:
@@ -418,7 +419,7 @@ public class CmdFatory {
             case 0xc4:
                 return new WIDE();
             case 0xc5:
-                unsupport(code);//multianewarray
+                return new MULTI_ANEW_ARRAY();
             case 0xc6:
                 return new IFNULL();
             case 0xc7:
