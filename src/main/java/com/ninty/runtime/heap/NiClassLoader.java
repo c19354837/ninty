@@ -25,8 +25,19 @@ public class NiClassLoader {
         if (classes.containsKey(className)) {
             return classes.get(className);
         }
+        if (className.charAt(0) == '[') {
+            return loadArrayClass(className);
+        }
         return loadNonArrayClass(className);
     }
+
+    private NiClass loadArrayClass(String className) {
+        NiClass clz = new NiClass(ClassConstant.ACC_PUBLIC, className, "java/lang/Object", new String[]{"java/lang/Cloneable", "java/io/Serializable"});
+        resolve(clz);
+        classes.put(className, clz);
+        return clz;
+    }
+
 
     private NiClass loadNonArrayClass(String className) {
         byte[] datas = readClass(className);
@@ -47,10 +58,14 @@ public class NiClassLoader {
     private NiClass definedClass(byte[] datas) {
         ClassFile cf = new ClassFile(datas);
         NiClass clz = new NiClass(cf);
+        resolve(clz);
+        return clz;
+    }
+
+    private void resolve(NiClass clz) {
         clz.loader = this;
         resovleSuperClass(clz);
         resolveInterfaces(clz);
-        return clz;
     }
 
     private void resovleSuperClass(NiClass clz) {
