@@ -5,6 +5,9 @@ import com.ninty.classfile.MemberInfo;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.heap.constantpool.NiConstantPool;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ninty on 2017/7/23.
  */
@@ -25,6 +28,20 @@ public class NiClass {
     int instantceSlotCount;
     int staticSlotCount;
 
+    private Map<String, String> primitiveTypes = new HashMap<>(16);
+
+    {
+        primitiveTypes.put("void", "V");
+        primitiveTypes.put("boolean", "Z");
+        primitiveTypes.put("byte", "B");
+        primitiveTypes.put("short", "S");
+        primitiveTypes.put("char", "C");
+        primitiveTypes.put("int", "I");
+        primitiveTypes.put("long", "L");
+        primitiveTypes.put("float", "F");
+        primitiveTypes.put("double", "D");
+    }
+
     public NiClass(ClassFile classFile) {
         accessFlags = classFile.getAccessFlags();
         className = classFile.getClassName();
@@ -34,6 +51,13 @@ public class NiClass {
         initCP(classFile);
         initFiled(classFile);
         initMethod(classFile);
+    }
+
+    public NiClass(int accessFlags, String className, String superClassName, String[] interfaceNames) {
+        this.accessFlags = accessFlags;
+        this.className = className;
+        this.superClassName = superClassName;
+        this.interfaceNames = interfaceNames;
     }
 
     private void initCP(ClassFile classFile) {
@@ -119,6 +143,74 @@ public class NiClass {
 
     public NiObject newObject() {
         return new NiObject(this, instantceSlotCount);
+    }
+
+    public NiObject newArray(int count) {
+        if (!isArray()) {
+            throw new IllegalAccessError("Current class is not an array:" + this);
+        }
+        switch (className.substring(0, 2)) {
+            case "[Z":
+                return new NiObject(this, new byte[count]);
+            case "[B":
+                return new NiObject(this, new byte[count]);
+            case "[C":
+                return new NiObject(this, new char[count]);
+            case "[S":
+                return new NiObject(this, new short[count]);
+            case "[I":
+                return new NiObject(this, new int[count]);
+            case "[J":
+                return new NiObject(this, new long[count]);
+            case "[F":
+                return new NiObject(this, new float[count]);
+            case "[D":
+                return new NiObject(this, new double[count]);
+            default:
+                return new NiObject(this, new NiObject[count]);
+        }
+    }
+
+    public boolean isArray() {
+        return className.charAt(0) == '[';
+    }
+
+    /**
+     * convert classname to Array class
+     */
+    public void toArrayClass() {
+        if (!isArray()) {
+            String type = primitiveTypes.get(className);
+            if (type == null) {
+                className = "L" + className + ";";
+            } else {
+                className = type;
+            }
+        }
+        className = "[" + className;
+    }
+
+    public NiClass componentClass() {
+        if (isArray()) {
+
+            return loader.loadClass(toClassname(className.substring(1)));
+        }
+        throw new IllegalAccessError("Current class is not an array:" + this);
+    }
+
+    private String toClassname(String desc) {
+        if (desc.charAt(0) == '[') {
+            return desc;
+        }
+        if (desc.charAt(0) == 'L') {
+            return desc.substring(0, desc.length() - 1);
+        }
+        for (String key : primitiveTypes.keySet()) {
+            if (primitiveTypes.get(key).equals(desc)) {
+                return key;
+            }
+        }
+        throw new IllegalArgumentException("invalid descriptor:" + desc);
     }
 
     public boolean isPublic() {
