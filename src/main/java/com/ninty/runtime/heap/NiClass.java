@@ -95,22 +95,33 @@ public class NiClass {
         if (s == t) {
             return true;
         }
-        if (t.isInterface()) {
-            return s.isImplements(t);
-        } else {
-            return s.isSubClass(t);
-        }
-    }
-
-    public boolean isSubOf(NiClass clz) {
-        NiClass c = this.superClass;
-        while (c != null) {
-            if (c == clz) {
-                return true;
+        if(s.isArray()){
+            if(t.isArray()){
+                NiClass sc = s.componentClass();
+                NiClass tc = t.componentClass();
+                return sc == tc || tc.isAssignableFrom(sc);
+            }else{
+                if (t.isInterface()) {
+                    return t.className.equals("java/lang/Cloneable") || t.className.equals("java/io/Serializable");
+                } else {
+                    return t.className.equals("java/lang/Object");
+                }
             }
-            c = c.superClass;
+        }else{
+            if(s.isInterface()){
+                if(t.isInterface()){
+                    return s.isSubClass(t);
+                }else {
+                    return t.className.equals("java/lang/Object");
+                }
+            }else{
+                if(t.isInterface()){
+                    return s.isImplements(t);
+                }else {
+                    return s.isSubClass(t);
+                }
+            }
         }
-        return false;
     }
 
     public boolean isSame(NiClass clz) {
