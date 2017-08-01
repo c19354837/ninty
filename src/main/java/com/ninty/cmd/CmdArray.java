@@ -148,8 +148,10 @@ public class CmdArray {
             NiConstantPool cps = frame.getMethod().getClz().getCps();
             ClassRef classRef = (ClassRef) cps.get(index);
             classRef.resolve();
-            int[] counts = getCounts(frame.getOperandStack());
-
+            OperandStack stack = frame.getOperandStack();
+            int[] counts = getCounts(stack);
+            NiObject ref =newMultiDimensionalArray(counts, classRef.getClz());
+            stack.pushRef(ref);
         }
 
         private int[] getCounts(OperandStack stack) {
@@ -169,7 +171,7 @@ public class CmdArray {
             if (counts.length > 1) {
                 NiObject[] refs = array.aobject();
                 for (int i = 0; i < count; i++) {
-                    refs[i] = newMultiDimensionalArray(Arrays.copyOfRange(counts, 1, counts.length), clz);
+                    refs[i] = newMultiDimensionalArray(Arrays.copyOfRange(counts, 1, counts.length), clz.componentClass());
                 }
             }
             return array;
