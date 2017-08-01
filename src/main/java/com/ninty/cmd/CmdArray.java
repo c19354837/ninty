@@ -29,30 +29,39 @@ public class CmdArray {
         return len;
     }
 
-    private static void aload(NiFrame frame) {
+    private static void aload(NiFrame frame, char type) {
         OperandStack stack = frame.getOperandStack();
         int index = stack.popInt();
         NiObject array = stack.popRef();
         nullChech(array);
         Class clz = array.getClass();
-        if (clz == byte[].class) {
-            stack.pushInt(array.abyte()[index]);
-        } else if (clz == short[].class) {
-            stack.pushInt(array.ashort()[index]);
-        } else if (clz == char[].class) {
-            stack.pushInt(array.achar()[index]);
-        } else if (clz == int[].class) {
-            stack.pushInt(array.aint()[index]);
-        } else if (clz == long[].class) {
-            stack.pushLong(array.along()[index]);
-        } else if (clz == float[].class) {
-            stack.pushFloat(array.afloat()[index]);
-        } else if (clz == double[].class) {
-            stack.pushDouble(array.adouble()[index]);
-        } else if (clz == NiObject[].class) {
-            stack.pushRef(array.aobject()[index]);
-        } else {
-            throw new RuntimeException("what happened");
+        switch (type) {
+            case 'b':
+                stack.pushInt(array.abyte()[index]);
+                break;
+            case 's':
+                stack.pushInt(array.ashort()[index]);
+                break;
+            case 'c':
+                stack.pushInt(array.achar()[index]);
+                break;
+            case 'i':
+                stack.pushInt(array.aint()[index]);
+                break;
+            case 'l':
+                stack.pushLong(array.along()[index]);
+                break;
+            case 'f':
+                stack.pushFloat(array.afloat()[index]);
+                break;
+            case 'd':
+                stack.pushDouble(array.adouble()[index]);
+                break;
+            case 'a':
+                stack.pushRef(array.aobject()[index]);
+                break;
+            default:
+                throw new RuntimeException("what happened");
         }
     }
 
@@ -150,7 +159,7 @@ public class CmdArray {
             classRef.resolve();
             OperandStack stack = frame.getOperandStack();
             int[] counts = getCounts(stack);
-            NiObject ref =newMultiDimensionalArray(counts, classRef.getClz());
+            NiObject ref = newMultiDimensionalArray(counts, classRef.getClz());
             stack.pushRef(ref);
         }
 
@@ -181,56 +190,56 @@ public class CmdArray {
     public static class AALOAD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            aload(frame);
+            aload(frame, 'a');
         }
     }
 
     public static class BALOAD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            aload(frame);
+            aload(frame, 'b');
         }
     }
 
     public static class CALOAD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            aload(frame);
+            aload(frame, 'c');
         }
     }
 
     public static class SALOAD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            aload(frame);
+            aload(frame, 's');
         }
     }
 
     public static class IALOAD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            aload(frame);
+            aload(frame, 'i');
         }
     }
 
     public static class LALOAD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            aload(frame);
+            aload(frame, 'l');
         }
     }
 
     public static class FALOAD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            aload(frame);
+            aload(frame, 'f');
         }
     }
 
     public static class DALOAD extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            aload(frame);
+            aload(frame, 'd');
         }
     }
 
