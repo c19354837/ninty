@@ -69,7 +69,7 @@ public class OperandStack {
     public NiObject popRef() {
         size--;
         NiObject ref = slots[size].ref;
-//        slots[size].ref = null;
+        slots[size].ref = null;
         return ref;
     }
 
