@@ -18,6 +18,7 @@ public class NiObject {
     public NiObject(NiObject obj) {
         this.clz = obj.clz;
         this.fields = obj.fields;
+        this.arrayDatas = obj.arrayDatas;
     }
 
     public NiObject(NiClass clz, Object arrayDatas) {
