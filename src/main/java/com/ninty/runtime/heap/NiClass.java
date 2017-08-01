@@ -192,7 +192,6 @@ public class NiClass {
 
     public NiClass componentClass() {
         if (isArray()) {
-
             return loader.loadClass(toClassname(className.substring(1)));
         }
         throw new IllegalAccessError("Current class is not an array:" + this);
