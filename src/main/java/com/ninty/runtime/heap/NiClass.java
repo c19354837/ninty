@@ -95,29 +95,29 @@ public class NiClass {
         if (s == t) {
             return true;
         }
-        if(s.isArray()){
-            if(t.isArray()){
+        if (s.isArray()) {
+            if (t.isArray()) {
                 NiClass sc = s.componentClass();
                 NiClass tc = t.componentClass();
                 return sc == tc || tc.isAssignableFrom(sc);
-            }else{
+            } else {
                 if (t.isInterface()) {
                     return t.className.equals("java/lang/Cloneable") || t.className.equals("java/io/Serializable");
                 } else {
                     return t.className.equals("java/lang/Object");
                 }
             }
-        }else{
-            if(s.isInterface()){
-                if(t.isInterface()){
+        } else {
+            if (s.isInterface()) {
+                if (t.isInterface()) {
                     return s.isSubClass(t);
-                }else {
+                } else {
                     return t.className.equals("java/lang/Object");
                 }
-            }else{
-                if(t.isInterface()){
+            } else {
+                if (t.isInterface()) {
                     return s.isImplements(t);
-                }else {
+                } else {
                     return s.isSubClass(t);
                 }
             }
