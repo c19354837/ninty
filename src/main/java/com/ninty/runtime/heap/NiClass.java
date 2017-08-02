@@ -89,6 +89,15 @@ public class NiClass {
         return null;
     }
 
+    public NiField findField(String name, String desc) {
+        for (NiField field : fields) {
+            if (field.getName().equals(name) && field.getDesc().equals(desc)) {
+                return field;
+            }
+        }
+        return null;
+    }
+
     public boolean isAssignableFrom(NiClass clz) {
         NiClass s = clz;
         NiClass t = this;

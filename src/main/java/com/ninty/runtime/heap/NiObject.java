@@ -34,6 +34,10 @@ public class NiObject {
         return fields;
     }
 
+    public Object getArrayDatas() {
+        return arrayDatas;
+    }
+
     public byte[] abyte() {
         return (byte[]) arrayDatas;
     }

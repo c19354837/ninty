@@ -161,7 +161,10 @@ public class NiClassLoader {
                     slots.setDouble(slotId, ((NiConstant.NiDouble) cs).value);
                     break;
                 case "Ljava/lang/String;":
-                    throw new UnsupportedOperationException("unsupport String now");
+                    NiClassLoader loader = clz.getLoader();
+                    String value = ((NiConstant.NiStr) cs).value;
+                    slots.setRef(slotId, NiString.newString(loader, value));
+                    break;
             }
         }
 

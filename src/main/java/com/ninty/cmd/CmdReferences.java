@@ -7,10 +7,7 @@ import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.OperandStack;
-import com.ninty.runtime.heap.NiClass;
-import com.ninty.runtime.heap.NiField;
-import com.ninty.runtime.heap.NiMethod;
-import com.ninty.runtime.heap.NiObject;
+import com.ninty.runtime.heap.*;
 import com.ninty.runtime.heap.constantpool.*;
 
 import java.nio.ByteBuffer;
@@ -60,6 +57,9 @@ public class CmdReferences {
             case "(D)V":
                 System.out.println(stack.popDouble());
                 break;
+            case "(Ljava/lang/String;)V":
+                System.out.println(stack.popRef());
+                break;
             default:
                 throw new RuntimeException("What happen");
         }
@@ -71,18 +71,20 @@ public class CmdReferences {
 
     private static void ldc(NiFrame frame, int index) {
         OperandStack stack = frame.getOperandStack();
+        NiClassLoader loader = frame.getMethod().getClz().getLoader();
         NiConstantPool cp = getCP(frame);
         NiConstant constant = cp.get(index);
         if (constant instanceof NiConstant.NiInteger) {
             stack.pushInt(((NiConstant.NiInteger) constant).value);
         } else if (constant instanceof NiConstant.NiFloat) {
             stack.pushFloat(((NiConstant.NiFloat) constant).value);
-        } else if (constant instanceof NiConstant.NiString) {
-            // TODO
-            throw new UnsupportedOperationException("ldc string");
+        } else if (constant instanceof NiConstant.NiStr) {
+            stack.pushRef(NiString.newString(loader, ((NiConstant.NiStr) constant).value));
         } else if (constant instanceof ClassRef) {
             // TODO
             throw new UnsupportedOperationException("ldc classRef");
+        } else {
+            throw new UnsupportedOperationException("ldc unknow");
         }
     }
 

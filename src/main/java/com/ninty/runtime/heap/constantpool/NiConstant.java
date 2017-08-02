@@ -25,7 +25,7 @@ public class NiConstant {
                 nicp = new NiConstant.NiDouble((ConstantInfo.CPDouble) cp);
                 break;
             case cp_string:
-                nicp = new NiConstant.NiString((ConstantInfo.CPString) cp);
+                nicp = new NiStr((ConstantInfo.CPString) cp);
                 break;
             case cp_utf8:
                 nicp = new NiConstant.NiUtf8((ConstantInfo.CPUtf8) cp);
@@ -88,10 +88,10 @@ public class NiConstant {
         }
     }
 
-    public static class NiString extends NiConstant {
+    public static class NiStr extends NiConstant {
         public String value;
 
-        NiString(ConstantInfo.CPString cp) {
+        NiStr(ConstantInfo.CPString cp) {
             value = cp.string();
         }
     }
