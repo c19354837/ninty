@@ -42,6 +42,15 @@ public class NiConstant {
             case cp_interface_method:
                 nicp = new InterfaceMethodRef((ConstantInfo.CPMemeber) cp);
                 break;
+            case cp_method_type:
+                nicp  = new NiMethodType((ConstantInfo.CPMethodType) cp);
+                break;
+            case cp_method_handle:
+                nicp = new NiMethodHandleInfo((ConstantInfo.CPMethodHandleInfo) cp);
+                break;
+            case cp_invoke_dynamic:
+                nicp = new NiInvokeDynamic((ConstantInfo.CPInvokeDynamic) cp);
+                break;
             default:
                 throw new ClassFormatException("unsupported constant poll type:" + cp.getClass().getSimpleName());
         }
@@ -101,6 +110,24 @@ public class NiConstant {
 
         public NiUtf8(ConstantInfo.CPUtf8 cp) {
             value = cp.value();
+        }
+    }
+
+    public static class NiInvokeDynamic extends NiConstant {
+        public NiInvokeDynamic(ConstantInfo.CPInvokeDynamic cp) {
+            // TODO
+        }
+    }
+
+    public static class NiMethodType extends NiConstant {
+        public NiMethodType(ConstantInfo.CPMethodType cp) {
+            // TODO
+        }
+    }
+
+    public static class NiMethodHandleInfo extends NiConstant {
+        public NiMethodHandleInfo(ConstantInfo.CPMethodHandleInfo cp) {
+            // TODO
         }
     }
 }

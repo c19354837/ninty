@@ -46,6 +46,15 @@ public class ConstantInfo {
             case cp_interface_method:
                 cp = new CPMemeber(bb);
                 break;
+            case cp_method_type:
+                cp = new CPMethodType(bb);
+                break;
+            case cp_method_handle:
+                cp = new CPMethodHandleInfo(bb);
+                break;
+            case cp_invoke_dynamic:
+                cp = new CPInvokeDynamic(bb);
+                break;
             default:
                 throw new ClassFormatException("unsupported constant poll type: " + type);
         }
@@ -196,6 +205,35 @@ public class ConstantInfo {
             return dis.readUTF();
         }
     }
+
+    public static class CPInvokeDynamic extends ConstantInfo {
+        private int bootstrapMethodAttrIndex;
+        private int nameAndTypeIndex;
+
+        CPInvokeDynamic(ByteBuffer bb) {
+            bootstrapMethodAttrIndex = bb.getChar();
+            nameAndTypeIndex = bb.getChar();
+        }
+    }
+
+    public static class CPMethodHandleInfo extends ConstantInfo {
+        private int referenceKind;
+        private int referenceIndex;
+
+        public CPMethodHandleInfo(ByteBuffer bb) {
+            referenceKind = bb.get();
+            referenceIndex = bb.getChar();
+        }
+    }
+
+    public static class CPMethodType extends ConstantInfo {
+        private int descriptorIndex;
+
+        public CPMethodType(ByteBuffer bb) {
+            descriptorIndex = bb.getChar();
+        }
+    }
+
 
     public enum CPType {
         cp_utf8(1), cp_integer(3), cp_float(4), cp_long(5), cp_double(6), cp_class(7), cp_string(8), cp_field(9), cp_method(10),

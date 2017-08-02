@@ -58,7 +58,7 @@ public class CmdReferences {
                 System.out.println(stack.popDouble());
                 break;
             case "(Ljava/lang/String;)V":
-                System.out.println(stack.popRef());
+                System.out.println(NiString.getString(stack.popRef()));
                 break;
             default:
                 throw new RuntimeException("What happen");
