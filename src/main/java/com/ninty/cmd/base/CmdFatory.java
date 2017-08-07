@@ -18,6 +18,32 @@ import static com.ninty.utils.VMUtils.toUInt;
  */
 public class CmdFatory {
 
+    private static ICmdBase NOP = new NOP();
+    private static ICmdBase ACONST_NULL = new ACONST_NULL();
+    private static ICmdBase ICONST_M1 = new ICONST_M1();
+    private static ICmdBase ICONST_0 = new ICONST_0();
+    private static ICmdBase ICONST_1 = new ICONST_1();
+    private static ICmdBase ICONST_2 = new ICONST_2();
+    private static ICmdBase ICONST_3 = new ICONST_3();
+    private static ICmdBase ICONST_4 = new ICONST_4();
+    private static ICmdBase ICONST_5 = new ICONST_5();
+    private static ICmdBase LCONST_0 = new LCONST_0();
+    private static ICmdBase LCONST_1 = new LCONST_1();
+    private static ICmdBase FCONST_0 = new FCONST_0();
+    private static ICmdBase FCONST_1 = new FCONST_1();
+    private static ICmdBase FCONST_2 = new FCONST_2();
+    private static ICmdBase DCONST_0 = new DCONST_0();
+    private static ICmdBase DCONST_1 = new DCONST_1();
+    private static ICmdBase AALOAD = new AALOAD();
+    private static ICmdBase AASTORE = new AASTORE();
+    private static ICmdBase ARRAY_LENGTH = new ARRAY_LENGTH();
+    private static ICmdBase BALOAD = new BALOAD();
+    private static ICmdBase BASTORE = new BASTORE();
+    private static ICmdBase CALOAD = new CALOAD();
+    private static ICmdBase CASTORE = new CASTORE();
+    private static ICmdBase DALOAD = new DALOAD();
+    private static ICmdBase DASTORE = new DASTORE();
+
     private CmdFatory() {
     }
 
@@ -25,37 +51,37 @@ public class CmdFatory {
         int code = toUInt(opCode);
         switch (code) {
             case 0x00:
-                return new NOP();
+                return NOP;
             case 0x01:
-                return new ACONST_NULL();
+                return ACONST_NULL;
             case 0x02:
-                return new ICONST_M1();
+                return ICONST_M1;
             case 0x03:
-                return new ICONST_0();
+                return ICONST_0;
             case 0x04:
-                return new ICONST_1();
+                return ICONST_1;
             case 0x05:
-                return new ICONST_2();
+                return ICONST_2;
             case 0x06:
-                return new ICONST_3();
+                return ICONST_3;
             case 0x07:
-                return new ICONST_4();
+                return ICONST_4;
             case 0x08:
-                return new ICONST_5();
+                return ICONST_5;
             case 0x09:
-                return new LCONST_0();
+                return LCONST_0;
             case 0x0a:
-                return new LCONST_1();
+                return LCONST_1;
             case 0x0b:
-                return new FCONST_0();
+                return FCONST_0;
             case 0x0c:
-                return new FCONST_1();
+                return FCONST_1;
             case 0x0d:
-                return new FCONST_2();
+                return FCONST_2;
             case 0x0e:
-                return new DCONST_0();
+                return DCONST_0;
             case 0x0f:
-                return new DCONST_1();
+                return DCONST_1;
             case 0x10:
                 return new BIPUSH();
             case 0x11:
@@ -123,13 +149,13 @@ public class CmdFatory {
             case 0x30:
                 return new FALOAD();
             case 0x31:
-                return new DALOAD();
+                return DALOAD;
             case 0x32:
-                return new AALOAD();
+                return AALOAD;
             case 0x33:
-                return new BALOAD();
+                return BALOAD;
             case 0x34:
-                return new CALOAD();
+                return CALOAD;
             case 0x35:
                 return new SALOAD();
             case 0x36:
