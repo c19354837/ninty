@@ -34,15 +34,134 @@ public class CmdFatory {
     private static ICmdBase FCONST_2 = new FCONST_2();
     private static ICmdBase DCONST_0 = new DCONST_0();
     private static ICmdBase DCONST_1 = new DCONST_1();
+    private static ICmdBase ILOAD_0 = new ILOAD_0();
+    private static ICmdBase ILOAD_1 = new ILOAD_1();
+    private static ICmdBase ILOAD_2 = new ILOAD_2();
+    private static ICmdBase ILOAD_3 = new ILOAD_3();
+    private static ICmdBase LLOAD_0 = new LLOAD_0();
+    private static ICmdBase LLOAD_1 = new LLOAD_1();
+    private static ICmdBase LLOAD_2 = new LLOAD_2();
+    private static ICmdBase LLOAD_3 = new LLOAD_3();
+    private static ICmdBase FLOAD_0 = new FLOAD_0();
+    private static ICmdBase FLOAD_1 = new FLOAD_1();
+    private static ICmdBase FLOAD_2 = new FLOAD_2();
+    private static ICmdBase FLOAD_3 = new FLOAD_3();
+    private static ICmdBase DLOAD_0 = new DLOAD_0();
+    private static ICmdBase DLOAD_1 = new DLOAD_1();
+    private static ICmdBase DLOAD_2 = new DLOAD_2();
+    private static ICmdBase DLOAD_3 = new DLOAD_3();
+    private static ICmdBase ALOAD_0 = new ALOAD_0();
+    private static ICmdBase ALOAD_1 = new ALOAD_1();
+    private static ICmdBase ALOAD_2 = new ALOAD_2();
+    private static ICmdBase ALOAD_3 = new ALOAD_3();
     private static ICmdBase AALOAD = new AALOAD();
+    private static ICmdBase CALOAD = new CALOAD();
+    private static ICmdBase IALOAD = new IALOAD();
+    private static ICmdBase LALOAD = new LALOAD();
+    private static ICmdBase FALOAD = new FALOAD();
+    private static ICmdBase DALOAD = new DALOAD();
+    private static ICmdBase SALOAD = new SALOAD();
+    private static ICmdBase ISTORE_0 = new ISTORE_0();
+    private static ICmdBase ISTORE_1 = new ISTORE_1();
+    private static ICmdBase ISTORE_2 = new ISTORE_2();
+    private static ICmdBase ISTORE_3 = new ISTORE_3();
+    private static ICmdBase LSTORE_0 = new LSTORE_0();
+    private static ICmdBase LSTORE_1 = new LSTORE_1();
+    private static ICmdBase LSTORE_2 = new LSTORE_2();
+    private static ICmdBase LSTORE_3 = new LSTORE_3();
+    private static ICmdBase FSTORE_0 = new FSTORE_0();
+    private static ICmdBase FSTORE_1 = new FSTORE_1();
+    private static ICmdBase FSTORE_2 = new FSTORE_2();
+    private static ICmdBase FSTORE_3 = new FSTORE_3();
+    private static ICmdBase DSTORE_0 = new DSTORE_0();
+    private static ICmdBase DSTORE_1 = new DSTORE_1();
+    private static ICmdBase DSTORE_2 = new DSTORE_2();
+    private static ICmdBase DSTORE_3 = new DSTORE_3();
+    private static ICmdBase ASTORE_0 = new ASTORE_0();
+    private static ICmdBase ASTORE_1 = new ASTORE_1();
+    private static ICmdBase ASTORE_2 = new ASTORE_2();
+    private static ICmdBase ASTORE_3 = new ASTORE_3();
     private static ICmdBase AASTORE = new AASTORE();
+    private static ICmdBase IASTORE = new IASTORE();
+    private static ICmdBase LASTORE = new LASTORE();
+    private static ICmdBase FASTORE = new FASTORE();
+    private static ICmdBase DASTORE = new DASTORE();
+    private static ICmdBase CASTORE = new CASTORE();
+    private static ICmdBase BASTORE = new BASTORE();
+    private static ICmdBase SASTORE = new SASTORE();
     private static ICmdBase ARRAY_LENGTH = new ARRAY_LENGTH();
     private static ICmdBase BALOAD = new BALOAD();
-    private static ICmdBase BASTORE = new BASTORE();
-    private static ICmdBase CALOAD = new CALOAD();
-    private static ICmdBase CASTORE = new CASTORE();
-    private static ICmdBase DALOAD = new DALOAD();
-    private static ICmdBase DASTORE = new DASTORE();
+    private static ICmdBase POP = new POP();
+    private static ICmdBase POP2 = new POP2();
+    private static ICmdBase DUP = new DUP();
+    private static ICmdBase DUP_X1 = new DUP_X1();
+    private static ICmdBase DUP_X2 = new DUP_X2();
+    private static ICmdBase DUP2 = new DUP2();
+    private static ICmdBase DUP2_X1 = new DUP2_X1();
+    private static ICmdBase DUP2_X2 = new DUP2_X2();
+    private static ICmdBase SWAP = new SWAP();
+    private static ICmdBase IADD = new IADD();
+    private static ICmdBase LADD = new LADD();
+    private static ICmdBase FADD = new FADD();
+    private static ICmdBase DADD = new DADD();
+    private static ICmdBase ISUB = new ISUB();
+    private static ICmdBase LSUB = new LSUB();
+    private static ICmdBase FSUB = new FSUB();
+    private static ICmdBase DSUB = new DSUB();
+    private static ICmdBase IMUL = new IMUL();
+    private static ICmdBase LMUL = new LMUL();
+    private static ICmdBase FMUL = new FMUL();
+    private static ICmdBase DMUL = new DMUL();
+    private static ICmdBase IDIV = new IDIV();
+    private static ICmdBase LDIV = new LDIV();
+    private static ICmdBase FDIV = new FDIV();
+    private static ICmdBase DDIV = new DDIV();
+    private static ICmdBase IREM = new IREM();
+    private static ICmdBase LREM = new LREM();
+    private static ICmdBase FREM = new FREM();
+    private static ICmdBase DREM = new DREM();
+    private static ICmdBase INEG = new INEG();
+    private static ICmdBase LNEG = new LNEG();
+    private static ICmdBase FNEG = new FNEG();
+    private static ICmdBase DNEG = new DNEG();
+    private static ICmdBase ISHL = new ISHL();
+    private static ICmdBase ISHR = new ISHR();
+    private static ICmdBase LSHL = new LSHL();
+    private static ICmdBase LSHR = new LSHR();
+    private static ICmdBase IUSHR = new IUSHR();
+    private static ICmdBase LUSHR = new LUSHR();
+    private static ICmdBase IAND = new IAND();
+    private static ICmdBase LAND = new LAND();
+    private static ICmdBase IOR = new IOR();
+    private static ICmdBase LOR = new LOR();
+    private static ICmdBase IXOR = new IXOR();
+    private static ICmdBase LXOR = new LXOR();
+    private static ICmdBase I2L = new I2L();
+    private static ICmdBase I2F = new I2F();
+    private static ICmdBase I2D = new I2D();
+    private static ICmdBase L2I = new L2I();
+    private static ICmdBase L2F = new L2F();
+    private static ICmdBase L2D = new L2D();
+    private static ICmdBase F2I = new F2I();
+    private static ICmdBase F2L = new F2L();
+    private static ICmdBase F2D = new F2D();
+    private static ICmdBase D2I = new D2I();
+    private static ICmdBase D2L = new D2L();
+    private static ICmdBase D2F = new D2F();
+    private static ICmdBase I2B = new I2B();
+    private static ICmdBase I2C = new I2C();
+    private static ICmdBase I2S = new I2S();
+    private static ICmdBase LCMP = new LCMP();
+    private static ICmdBase FCMPL = new FCMPL();
+    private static ICmdBase FCMPG = new FCMPG();
+    private static ICmdBase DCMPL = new DCMPL();
+    private static ICmdBase DCMPG = new DCMPG();
+    private static ICmdBase RETURN = new RETURN();
+    private static ICmdBase IRETURN = new IRETURN();
+    private static ICmdBase LRETURN = new LRETURN();
+    private static ICmdBase FRETURN = new FRETURN();
+    private static ICmdBase DRETURN = new DRETURN();
+    private static ICmdBase ARETURN = new ARETURN();
 
     private CmdFatory() {
     }
@@ -103,51 +222,51 @@ public class CmdFatory {
             case 0x19:
                 return new ALOAD();
             case 0x1a:
-                return new ILOAD_0();
+                return ILOAD_0;
             case 0x1b:
-                return new ILOAD_1();
+                return ILOAD_1;
             case 0x1c:
-                return new ILOAD_2();
+                return ILOAD_2;
             case 0x1d:
-                return new ILOAD_3();
+                return ILOAD_3;
             case 0x1e:
-                return new LLOAD_0();
+                return LLOAD_0;
             case 0x1f:
-                return new LLOAD_1();
+                return LLOAD_1;
             case 0x20:
-                return new LLOAD_2();
+                return LLOAD_2;
             case 0x21:
-                return new LLOAD_3();
+                return LLOAD_3;
             case 0x22:
-                return new FLOAD_0();
+                return FLOAD_0;
             case 0x23:
-                return new FLOAD_1();
+                return FLOAD_1;
             case 0x24:
-                return new FLOAD_2();
+                return FLOAD_2;
             case 0x25:
-                return new FLOAD_3();
+                return FLOAD_3;
             case 0x26:
-                return new DLOAD_0();
+                return DLOAD_0;
             case 0x27:
-                return new DLOAD_1();
+                return DLOAD_1;
             case 0x28:
-                return new DLOAD_2();
+                return DLOAD_2;
             case 0x29:
-                return new DLOAD_3();
+                return DLOAD_3;
             case 0x2a:
-                return new ALOAD_0();
+                return ALOAD_0;
             case 0x2b:
-                return new ALOAD_1();
+                return ALOAD_1;
             case 0x2c:
-                return new ALOAD_2();
+                return ALOAD_2;
             case 0x2d:
-                return new ALOAD_3();
+                return ALOAD_3;
             case 0x2e:
-                return new IALOAD();
+                return IALOAD;
             case 0x2f:
-                return new LALOAD();
+                return LALOAD;
             case 0x30:
-                return new FALOAD();
+                return FALOAD;
             case 0x31:
                 return DALOAD;
             case 0x32:
@@ -157,7 +276,7 @@ public class CmdFatory {
             case 0x34:
                 return CALOAD;
             case 0x35:
-                return new SALOAD();
+                return SALOAD;
             case 0x36:
                 return new ISTORE();
             case 0x37:
@@ -169,193 +288,193 @@ public class CmdFatory {
             case 0x3a:
                 return new ASTORE();
             case 0x3b:
-                return new ISTORE_0();
+                return ISTORE_0;
             case 0x3c:
-                return new ISTORE_1();
+                return ISTORE_1;
             case 0x3d:
-                return new ISTORE_2();
+                return ISTORE_2;
             case 0x3e:
-                return new ISTORE_3();
+                return ISTORE_3;
             case 0x3f:
-                return new LSTORE_0();
+                return LSTORE_0;
             case 0x40:
-                return new LSTORE_1();
+                return LSTORE_1;
             case 0x41:
-                return new LSTORE_2();
+                return LSTORE_2;
             case 0x42:
-                return new LSTORE_3();
+                return LSTORE_3;
             case 0x43:
-                return new FSTORE_0();
+                return FSTORE_0;
             case 0x44:
-                return new FSTORE_1();
+                return FSTORE_1;
             case 0x45:
-                return new FSTORE_2();
+                return FSTORE_2;
             case 0x46:
-                return new FSTORE_3();
+                return FSTORE_3;
             case 0x47:
-                return new DSTORE_0();
+                return DSTORE_0;
             case 0x48:
-                return new DSTORE_1();
+                return DSTORE_1;
             case 0x49:
-                return new DSTORE_2();
+                return DSTORE_2;
             case 0x4a:
-                return new DSTORE_3();
+                return DSTORE_3;
             case 0x4b:
-                return new ASTORE_0();
+                return ASTORE_0;
             case 0x4c:
-                return new ASTORE_1();
+                return ASTORE_1;
             case 0x4d:
-                return new ASTORE_2();
+                return ASTORE_2;
             case 0x4e:
-                return new ASTORE_3();
+                return ASTORE_3;
             case 0x4f:
-                return new IASTORE();
+                return IASTORE;
             case 0x50:
-                return new LASTORE();
+                return LASTORE;
             case 0x51:
-                return new FASTORE();
+                return FASTORE;
             case 0x52:
-                return new DASTORE();
+                return DASTORE;
             case 0x53:
-                return new AASTORE();
+                return AASTORE;
             case 0x54:
-                return new BASTORE();
+                return BASTORE;
             case 0x55:
-                return new CASTORE();
+                return CASTORE;
             case 0x56:
-                return new SASTORE();
+                return SASTORE;
             case 0x57:
-                return new POP();
+                return POP;
             case 0x58:
-                return new POP2();
+                return POP2;
             case 0x59:
-                return new DUP();
+                return DUP;
             case 0x5a:
-                return new DUP_X1();
+                return DUP_X1;
             case 0x5b:
-                return new DUP_X2();
+                return DUP_X2;
             case 0x5c:
-                return new DUP2();
+                return DUP2;
             case 0x5d:
-                return new DUP2_X1();
+                return DUP2_X1;
             case 0x5e:
-                return new DUP2_X2();
+                return DUP2_X2;
             case 0x5f:
-                return new SWAP();
+                return SWAP;
             case 0x60:
-                return new IADD();
+                return IADD;
             case 0x61:
-                return new LADD();
+                return LADD;
             case 0x62:
-                return new FADD();
+                return FADD;
             case 0x63:
-                return new DADD();
+                return DADD;
             case 0x64:
-                return new ISUB();
+                return ISUB;
             case 0x65:
-                return new LSUB();
+                return LSUB;
             case 0x66:
-                return new FSUB();
+                return FSUB;
             case 0x67:
-                return new DSUB();
+                return DSUB;
             case 0x68:
-                return new IMUL();
+                return IMUL;
             case 0x69:
-                return new LMUL();
+                return LMUL;
             case 0x6a:
-                return new FMUL();
+                return FMUL;
             case 0x6b:
-                return new DMUL();
+                return DMUL;
             case 0x6c:
-                return new IDIV();
+                return IDIV;
             case 0x6d:
-                return new LDIV();
+                return LDIV;
             case 0x6e:
-                return new FDIV();
+                return FDIV;
             case 0x6f:
-                return new DDIV();
+                return DDIV;
             case 0x70:
-                return new IREM();
+                return IREM;
             case 0x71:
-                return new LREM();
+                return LREM;
             case 0x72:
-                return new FREM();
+                return FREM;
             case 0x73:
-                return new DREM();
+                return DREM;
             case 0x74:
-                return new INEG();
+                return INEG;
             case 0x75:
-                return new LNEG();
+                return LNEG;
             case 0x76:
-                return new FNEG();
+                return FNEG;
             case 0x77:
-                return new DNEG();
+                return DNEG;
             case 0x78:
-                return new ISHL();
+                return ISHL;
             case 0x79:
-                return new LSHL();
+                return LSHL;
             case 0x7a:
-                return new ISHR();
+                return ISHR;
             case 0x7b:
-                return new LSHR();
+                return LSHR;
             case 0x7c:
-                return new IUSHR();
+                return IUSHR;
             case 0x7d:
-                return new LUSHR();
+                return LUSHR;
             case 0x7e:
-                return new IAND();
+                return IAND;
             case 0x7f:
-                return new LAND();
+                return LAND;
             case 0x80:
-                return new IOR();
+                return IOR;
             case 0x81:
-                return new LOR();
+                return LOR;
             case 0x82:
-                return new IXOR();
+                return IXOR;
             case 0x83:
-                return new LXOR();
+                return LXOR;
             case 0x84:
                 return new IINC();
             case 0x85:
-                return new I2L();
+                return I2L;
             case 0x86:
-                return new I2F();
+                return I2F;
             case 0x87:
-                return new I2D();
+                return I2D;
             case 0x88:
-                return new L2I();
+                return L2I;
             case 0x89:
-                return new L2F();
+                return L2F;
             case 0x8a:
-                return new L2D();
+                return L2D;
             case 0x8b:
-                return new F2I();
+                return F2I;
             case 0x8c:
-                return new F2L();
+                return F2L;
             case 0x8d:
-                return new F2D();
+                return F2D;
             case 0x8e:
-                return new D2I();
+                return D2I;
             case 0x8f:
-                return new D2L();
+                return D2L;
             case 0x90:
-                return new D2F();
+                return D2F;
             case 0x91:
-                return new I2B();
+                return I2B;
             case 0x92:
-                return new I2C();
+                return I2C;
             case 0x93:
-                return new I2S();
+                return I2S;
             case 0x94:
-                return new LCMP();
+                return LCMP;
             case 0x95:
-                return new FCMPL();
+                return FCMPL;
             case 0x96:
-                return new FCMPG();
+                return FCMPG;
             case 0x97:
-                return new DCMPL();
+                return DCMPL;
             case 0x98:
-                return new DCMPG();
+                return DCMPG;
             case 0x99:
                 return new IFEQ();
             case 0x9a:
@@ -395,17 +514,17 @@ public class CmdFatory {
             case 0xab:
                 return new LOOKUPSWITCH();
             case 0xac:
-                return new IRETURN();
+                return IRETURN;
             case 0xad:
-                return new LRETURN();
+                return LRETURN;
             case 0xae:
-                return new FRETURN();
+                return FRETURN;
             case 0xaf:
-                return new DRETURN();
+                return DRETURN;
             case 0xb0:
-                return new ARETURN();
+                return ARETURN;
             case 0xb1:
-                return new RETURN();
+                return RETURN;
             case 0xb2:
                 return new GETSTATIC();
             case 0xb3:
@@ -431,7 +550,7 @@ public class CmdFatory {
             case 0xbd:
                 return new ANEW_ARRAY();
             case 0xbe:
-                return new ARRAY_LENGTH();
+                return ARRAY_LENGTH;
             case 0xbf:
                 unsupport(code);//athrow
             case 0xc0:
