@@ -26,14 +26,14 @@ public class NiClassLoader {
     }
 
     private void loadBasicClasses() {
-        for(String className : classes.keySet()){
+        for (String className : classes.keySet()) {
             NiClass clz = classes.get(className);
             fillJClass(clz);
         }
     }
 
     private void loadPrimitiveClasses() {
-        for(String classname : NiClass.primitiveTypes.keySet()){
+        for (String classname : NiClass.primitiveTypes.keySet()) {
             NiClass clz = new NiClass();
             clz.className = classname;
             clz.loader = this;
@@ -42,9 +42,9 @@ public class NiClassLoader {
         }
     }
 
-    private void fillJClass(NiClass clz){
+    private void fillJClass(NiClass clz) {
         NiClass jClass = loadClass(J_CLASS);
-        if(clz.getjClass() == null){
+        if (clz.getjClass() == null) {
             clz.setjClass(jClass.newObject());
             clz.getjClass().setExtra(clz);
         }
@@ -57,7 +57,7 @@ public class NiClassLoader {
         NiClass clz;
         if (className.charAt(0) == '[') {
             clz = loadArrayClass(className);
-        }else{
+        } else {
             clz = loadNonArrayClass(className);
         }
         fillJClass(clz);

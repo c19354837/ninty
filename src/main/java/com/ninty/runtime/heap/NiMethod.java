@@ -25,7 +25,7 @@ public class NiMethod extends ClassMember {
             codes = ByteBuffer.wrap(attrCode.codes);
         }
         argsCount = calcArgsCount();
-        if(isNative()){
+        if (isNative()) {
             injectNativeCode(memberInfo.getDesc());
         }
     }
@@ -34,7 +34,7 @@ public class NiMethod extends ClassMember {
         maxLocals = argsCount;
         maxStack = 4;
         char returnType = desc.charAt(desc.lastIndexOf(')') + 1);
-        switch (returnType){
+        switch (returnType) {
             case 'V':
                 codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xb1});
                 break;

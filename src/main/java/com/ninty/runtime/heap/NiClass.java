@@ -44,7 +44,7 @@ public class NiClass {
         primitiveTypes.put("double", "D");
     }
 
-    public NiClass(){
+    public NiClass() {
     }
 
     public NiClass(ClassFile classFile) {
@@ -235,6 +235,10 @@ public class NiClass {
             }
         }
         throw new IllegalArgumentException("invalid descriptor:" + desc);
+    }
+
+    public String javaName() {
+        return className.replace('/', '.');
     }
 
     public boolean isPublic() {

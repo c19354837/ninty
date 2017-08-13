@@ -4,6 +4,8 @@ import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index16Cmd;
 import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.cmd.base.NoOperandCmd;
+import com.ninty.nativee.INativeMethod;
+import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
@@ -82,7 +84,7 @@ public class CmdReferences {
         } else if (constant instanceof NiConstant.NiStr) {
             stack.pushRef(NiString.newString(loader, ((NiConstant.NiStr) constant).value));
         } else if (constant instanceof ClassRef) {
-            ClassRef ref = ((ClassRef)constant);
+            ClassRef ref = ((ClassRef) constant);
             ref.resolve();
             NiObject jClass = ref.getClz().getjClass();
             stack.pushRef(jClass);
@@ -521,10 +523,12 @@ public class CmdReferences {
         }
     }
 
-    public static class INVOKE_NATIVE extends NoOperandCmd{
+    public static class INVOKE_NATIVE extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-
+            NiMethod method = frame.getMethod();
+            INativeMethod nativeMethod = NaMethodManager.findNativeMethod(method);
+            nativeMethod.invoke(frame);
         }
     }
 }

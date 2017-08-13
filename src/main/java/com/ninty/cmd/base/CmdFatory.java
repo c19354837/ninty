@@ -162,6 +162,7 @@ public class CmdFatory {
     private static ICmdBase FRETURN = new FRETURN();
     private static ICmdBase DRETURN = new DRETURN();
     private static ICmdBase ARETURN = new ARETURN();
+    private static ICmdBase INVOKE_NATIVE = new INVOKE_NATIVE();
 
     private CmdFatory() {
     }
@@ -574,8 +575,10 @@ public class CmdFatory {
             case 0xc9:
                 unsupport(code);//jsr_w
                 break;
+            case 0xfe:
+                return INVOKE_NATIVE;
             default:
-                unsupport(code);//jsr_w
+                unsupport(code);
         }
         return null;
     }

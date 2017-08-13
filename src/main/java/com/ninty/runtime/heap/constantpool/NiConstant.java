@@ -43,7 +43,7 @@ public class NiConstant {
                 nicp = new InterfaceMethodRef((ConstantInfo.CPMemeber) cp);
                 break;
             case cp_method_type:
-                nicp  = new NiMethodType((ConstantInfo.CPMethodType) cp);
+                nicp = new NiMethodType((ConstantInfo.CPMethodType) cp);
                 break;
             case cp_method_handle:
                 nicp = new NiMethodHandleInfo((ConstantInfo.CPMethodHandleInfo) cp);
