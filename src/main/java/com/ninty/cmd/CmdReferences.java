@@ -103,6 +103,11 @@ public class CmdReferences {
             if (clz.isInterface() || clz.isAbstract()) {
                 throw new InstantiationError(clz.toString());
             }
+            if (!clz.isClinit()) {
+                frame.restorePostion();
+                clz.clinit(frame.getThread());
+                return;
+            }
             NiObject ref = clz.newObject();
             frame.getOperandStack().pushRef(ref);
         }
@@ -116,14 +121,20 @@ public class CmdReferences {
             NiConstantPool cps = curClz.getCps();
             FieldRef fieldRef = (FieldRef) cps.get(index);
             fieldRef.resolve();
-            NiClass clz = fieldRef.getClz();
-            NiField field = fieldRef.getField();
 
+            NiClass clz = fieldRef.getClz();
+            if (!clz.isClinit()) {
+                frame.restorePostion();
+                clz.clinit(frame.getThread());
+                return;
+            }
+
+            NiField field = fieldRef.getField();
             if (!field.isStatic()) {
                 throw new IncompatibleClassChangeError(field.toString());
             }
             if (field.isFinal() &&
-                    (curClz != clz || !method.getDesc().equals("<clinit>"))) {
+                    (curClz != clz || !method.getName().equals("<clinit>"))) {
                 throw new IllegalAccessError("access final field failed");
             }
 
@@ -162,9 +173,15 @@ public class CmdReferences {
             NiConstantPool cps = getCP(frame);
             FieldRef fieldRef = (FieldRef) cps.get(index);
             fieldRef.resolve();
-            NiClass clz = fieldRef.getClz();
-            NiField field = fieldRef.getField();
 
+            NiClass clz = fieldRef.getClz();
+            if (!clz.isClinit()) {
+                frame.restorePostion();
+                clz.clinit(frame.getThread());
+                return;
+            }
+
+            NiField field = fieldRef.getField();
             if (!field.isStatic()) {
                 throw new IncompatibleClassChangeError(field.toString());
             }
@@ -213,7 +230,7 @@ public class CmdReferences {
                 throw new IncompatibleClassChangeError(field.toString());
             }
             if (field.isFinal() &&
-                    (curClz != clz || !method.getDesc().equals("<linit>"))) {
+                    (curClz != clz || !method.getName().equals("<linit>"))) {
                 throw new IllegalAccessError("access final field failed");
             }
 
@@ -382,6 +399,14 @@ public class CmdReferences {
             NiConstantPool cps = frame.getMethod().getClz().getCps();
             MethodRef methodRef = (MethodRef) cps.get(index);
             methodRef.resolve();
+
+            NiClass clz = methodRef.getClz();
+            if (!clz.isClinit()) {
+                frame.restorePostion();
+                clz.clinit(frame.getThread());
+                return;
+            }
+
             NiMethod method = methodRef.getMethod();
             if (!method.isStatic()) {
                 throw new IncompatibleClassChangeError(method + " is not static");
@@ -439,15 +464,6 @@ public class CmdReferences {
             NiConstantPool cps = frame.getMethod().getClz().getCps();
             MethodRef methodRef = (MethodRef) cps.get(index);
 
-            //hack
-            if (methodRef.getName().equals("println")) {
-                OperandStack stack = frame.getOperandStack();
-                print(stack, methodRef.getDesc());
-                stack.popRef();
-                return;
-            }
-            //hack end
-
             methodRef.resolve();
             NiMethod method = methodRef.getMethod();
             NiClass clz = methodRef.getClz();
@@ -458,6 +474,14 @@ public class CmdReferences {
             }
             NiObject ref = frame.getOperandStack().getRefFromTop(method.getArgsCount());
             if (ref == null) {
+                //hack
+                if (methodRef.getName().equals("println")) {
+                    OperandStack stack = frame.getOperandStack();
+                    print(stack, methodRef.getDesc());
+                    stack.popRef();
+                    return;
+                }
+                //hack end
                 throw new NullPointerException("this cannot be null");
             }
 
