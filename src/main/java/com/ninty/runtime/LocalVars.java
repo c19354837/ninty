@@ -78,6 +78,10 @@ public class LocalVars {
         return slots.length;
     }
 
+    public NiObject getThis() {
+        return getRef(0);
+    }
+
     @Override
     public String toString() {
         return "LocalVars{" +
