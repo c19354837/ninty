@@ -49,7 +49,7 @@ public class BootStartup {
             while (true) {
                 NiFrame frame = thread.topFrame();
                 ByteBuffer bb = frame.getCode();
-                byte opCode = bb.get();
+                byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
                 cmd.init(bb);
                 cmd.exec(frame);

@@ -42,6 +42,11 @@ public class NiFrame {
         return bb;
     }
 
+    public byte getOpCode() {
+        savePosition();
+        return bb.get();
+    }
+
     public NiMethod getMethod() {
         return method;
     }
