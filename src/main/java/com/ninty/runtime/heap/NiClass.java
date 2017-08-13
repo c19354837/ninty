@@ -3,6 +3,8 @@ package com.ninty.runtime.heap;
 import com.ninty.classfile.ClassFile;
 import com.ninty.classfile.MemberInfo;
 import com.ninty.runtime.LocalVars;
+import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.NiThread;
 import com.ninty.runtime.heap.constantpool.NiConstantPool;
 
 import java.util.HashMap;
@@ -28,11 +30,12 @@ public class NiClass {
     int instantceSlotCount;
     int staticSlotCount;
 
+    private boolean clinit;
     private NiObject jClass; // class's class, className=java/lang/Class
 
     static Map<String, String> primitiveTypes = new HashMap<>(16);
 
-    {
+    static {
         primitiveTypes.put("void", "V");
         primitiveTypes.put("boolean", "Z");
         primitiveTypes.put("byte", "B");
@@ -86,8 +89,16 @@ public class NiClass {
     }
 
     public NiMethod getMainMethod() {
+        return getMethod("main", "([Ljava/lang/String;)V");
+    }
+
+    public NiMethod getClinitMethod() {
+        return getMethod("<clinit>", "()V");
+    }
+
+    private NiMethod getMethod(String name, String desc) {
         for (NiMethod method : methods) {
-            if (method.getName().equals("main") && method.getDesc().equals("([Ljava/lang/String;)V")) {
+            if (method.getName().equals(name) && method.getDesc().equals(desc)) {
                 return method;
             }
         }
@@ -168,6 +179,25 @@ public class NiClass {
 
     public NiObject newObject() {
         return new NiObject(this, instantceSlotCount);
+    }
+
+    public void clinit(NiThread thread) {
+        clinit = true;
+        scheduleClinit(thread);
+        initSuperClass(thread);
+    }
+
+    private void scheduleClinit(NiThread thread) {
+        NiMethod clinitMethod = getClinitMethod();
+        if (clinitMethod != null) {
+            thread.pushFrame(new NiFrame(clinitMethod));
+        }
+    }
+
+    private void initSuperClass(NiThread thread) {
+        if (!isInterface() && superClass != null && !superClass.isClinit()) {
+            superClass.clinit(thread);
+        }
     }
 
     public NiObject newArray(int count) {
@@ -318,6 +348,10 @@ public class NiClass {
 
     public void setjClass(NiObject jClass) {
         this.jClass = jClass;
+    }
+
+    public boolean isClinit() {
+        return clinit;
     }
 
     @Override
