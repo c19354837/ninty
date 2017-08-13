@@ -1,5 +1,6 @@
 package com.ninty.nativee;
 
+import com.ninty.nativee.lang.NaClass;
 import com.ninty.nativee.lang.NaObject;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.heap.NiClass;
@@ -17,6 +18,7 @@ public class NaMethodManager {
 
     static {
         NaObject.init();
+        NaClass.init();
     }
 
     private final static INativeMethod EMPTY = new INativeMethod() {
