@@ -39,6 +39,7 @@ public class NiClassLoader {
             clz.loader = this;
             clz.accessFlags = ClassConstant.ACC_PUBLIC;
             fillJClass(clz);
+            classes.put(classname, clz);
         }
     }
 
