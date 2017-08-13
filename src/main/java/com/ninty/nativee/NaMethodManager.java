@@ -13,6 +13,8 @@ import java.util.Map;
  */
 public class NaMethodManager {
 
+    public static Map<String, INativeMethod> methodMap = new HashMap<>(1 << 10);
+
     static {
         NaObject.init();
     }
@@ -22,8 +24,6 @@ public class NaMethodManager {
         public void invoke(NiFrame frame) {
         }
     };
-
-    public static Map<String, INativeMethod> methodMap = new HashMap<>(1 << 10);
 
     public static void register(String className, String name, String desc, INativeMethod nativeMethod) {
         methodMap.put(getKey(className, name, desc), nativeMethod);
