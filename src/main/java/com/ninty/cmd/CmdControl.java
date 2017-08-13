@@ -16,22 +16,23 @@ public class CmdControl {
     private static void returnCmd(NiFrame frame, char type) {
         NiThread thread = frame.getThread();
         thread.popFrame();
-        if (type != 'a') {
-            NiFrame topFrame = thread.topFrame();
-            switch (type) {
-                case 'i':
-                    topFrame.getOperandStack().pushInt(frame.getOperandStack().popInt());
-                    break;
-                case 'l':
-                    topFrame.getOperandStack().pushLong(frame.getOperandStack().popLong());
-                    break;
-                case 'f':
-                    topFrame.getOperandStack().pushFloat(frame.getOperandStack().popFloat());
-                    break;
-                case 'd':
-                    topFrame.getOperandStack().pushDouble(frame.getOperandStack().popDouble());
-                    break;
-            }
+        NiFrame topFrame = thread.topFrame();
+        switch (type) {
+            case 'i':
+                topFrame.getOperandStack().pushInt(frame.getOperandStack().popInt());
+                break;
+            case 'l':
+                topFrame.getOperandStack().pushLong(frame.getOperandStack().popLong());
+                break;
+            case 'f':
+                topFrame.getOperandStack().pushFloat(frame.getOperandStack().popFloat());
+                break;
+            case 'd':
+                topFrame.getOperandStack().pushDouble(frame.getOperandStack().popDouble());
+                break;
+            case 'a':
+                topFrame.getOperandStack().pushRef(frame.getOperandStack().popRef());
+                break;
         }
     }
 
