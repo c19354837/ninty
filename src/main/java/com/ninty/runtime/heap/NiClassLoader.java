@@ -16,19 +16,52 @@ public class NiClassLoader {
     private ClassPath clzp;
     private Map<String, NiClass> classes;
 
+    private final static String J_CLASS = "java/lang/Class";
+
     public NiClassLoader(ClassPath clzp) {
         this.clzp = clzp;
         classes = new HashMap<>(1 << 10);
+        loadBasicClasses();
+        loadPrimitiveClasses();
+    }
+
+    private void loadBasicClasses() {
+        for(String className : classes.keySet()){
+            NiClass clz = classes.get(className);
+            fillJClass(clz);
+        }
+    }
+
+    private void loadPrimitiveClasses() {
+        for(String classname : NiClass.primitiveTypes.keySet()){
+            NiClass clz = new NiClass();
+            clz.className = classname;
+            clz.loader = this;
+            clz.accessFlags = ClassConstant.ACC_PUBLIC;
+            fillJClass(clz);
+        }
+    }
+
+    private void fillJClass(NiClass clz){
+        NiClass jClass = loadClass(J_CLASS);
+        if(clz.getjClass() == null){
+            clz.setjClass(jClass.newObject());
+            clz.getjClass().setExtra(clz);
+        }
     }
 
     public NiClass loadClass(String className) {
         if (classes.containsKey(className)) {
             return classes.get(className);
         }
+        NiClass clz;
         if (className.charAt(0) == '[') {
-            return loadArrayClass(className);
+            clz = loadArrayClass(className);
+        }else{
+            clz = loadNonArrayClass(className);
         }
-        return loadNonArrayClass(className);
+        fillJClass(clz);
+        return clz;
     }
 
     private NiClass loadArrayClass(String className) {
@@ -37,7 +70,6 @@ public class NiClassLoader {
         classes.put(className, clz);
         return clz;
     }
-
 
     private NiClass loadNonArrayClass(String className) {
         byte[] datas = readClass(className);

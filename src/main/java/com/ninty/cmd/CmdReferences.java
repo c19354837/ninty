@@ -82,8 +82,10 @@ public class CmdReferences {
         } else if (constant instanceof NiConstant.NiStr) {
             stack.pushRef(NiString.newString(loader, ((NiConstant.NiStr) constant).value));
         } else if (constant instanceof ClassRef) {
-            // TODO
-            throw new UnsupportedOperationException("ldc classRef");
+            ClassRef ref = ((ClassRef)constant);
+            ref.resolve();
+            NiObject jClass = ref.getClz().getjClass();
+            stack.pushRef(jClass);
         } else {
             throw new UnsupportedOperationException("ldc unknow");
         }

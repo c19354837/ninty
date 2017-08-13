@@ -28,7 +28,9 @@ public class NiClass {
     int instantceSlotCount;
     int staticSlotCount;
 
-    private Map<String, String> primitiveTypes = new HashMap<>(16);
+    private NiObject jClass; // class's class, className=java/lang/Class
+
+    static Map<String, String> primitiveTypes = new HashMap<>(16);
 
     {
         primitiveTypes.put("void", "V");
@@ -40,6 +42,9 @@ public class NiClass {
         primitiveTypes.put("long", "L");
         primitiveTypes.put("float", "F");
         primitiveTypes.put("double", "D");
+    }
+
+    public NiClass(){
     }
 
     public NiClass(ClassFile classFile) {
@@ -301,6 +306,14 @@ public class NiClass {
 
     public LocalVars getStaticSlots() {
         return staticSlots;
+    }
+
+    public NiObject getjClass() {
+        return jClass;
+    }
+
+    public void setjClass(NiObject jClass) {
+        this.jClass = jClass;
     }
 
     @Override

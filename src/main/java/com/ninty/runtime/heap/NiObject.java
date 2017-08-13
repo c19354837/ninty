@@ -9,6 +9,7 @@ public class NiObject {
     private NiClass clz;
     private LocalVars fields;
     private Object arrayDatas; // when it's array
+    private Object extra;
 
     public NiObject(NiClass clz, int count) {
         this.clz = clz;
@@ -36,6 +37,14 @@ public class NiObject {
 
     public Object getArrayDatas() {
         return arrayDatas;
+    }
+
+    public Object getExtra() {
+        return extra;
+    }
+
+    public void setExtra(Object extra) {
+        this.extra = extra;
     }
 
     public byte[] abyte() {
