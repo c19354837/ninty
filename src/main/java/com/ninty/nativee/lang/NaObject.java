@@ -14,10 +14,10 @@ import com.ninty.runtime.heap.NiString;
 public class NaObject {
 
     public static void init() {
-        NaMethodManager.register("java/lang/Object", "getClass", "()Ljava/lang/Class", new getClass());
-        NaMethodManager.register("java/lang/Object", "getPrimitiveClass", "()Ljava/lang/Class", new getPrimitiveClass());
-        NaMethodManager.register("java/lang/Object", "getName0", "()Ljava/lang/Class", new getName0());
-        NaMethodManager.register("java/lang/Object", "desiredAssertionStatus0", "()Ljava/lang/Class", new desiredAssertionStatus0());
+        NaMethodManager.register("java/lang/Object", "getClass", "()Ljava/lang/Class;", new getClass());
+        NaMethodManager.register("java/lang/Class", "getPrimitiveClass", "(Ljava/lang/String;)Ljava/lang/Class;", new getPrimitiveClass());
+        NaMethodManager.register("java/lang/Class", "getName0", "()Ljava/lang/String;", new getName0());
+        NaMethodManager.register("java/lang/Class", "desiredAssertionStatus0", "(Ljava/lang/String;)Z", new desiredAssertionStatus0());
     }
 
     public static class getClass implements INativeMethod {
