@@ -25,6 +25,36 @@ public class NiMethod extends ClassMember {
             codes = ByteBuffer.wrap(attrCode.codes);
         }
         argsCount = calcArgsCount();
+        if(isNative()){
+            injectNativeCode(memberInfo.getDesc());
+        }
+    }
+
+    private void injectNativeCode(String desc) {
+        maxLocals = argsCount;
+        maxStack = 4;
+        char returnType = desc.charAt(desc.lastIndexOf(')') + 1);
+        switch (returnType){
+            case 'V':
+                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xb1});
+                break;
+            case 'D':
+                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xaf});
+                break;
+            case 'F':
+                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xae});
+                break;
+            case 'J':
+                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xad});
+                break;
+            case 'L':
+            case '[':
+                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xb0});
+                break;
+            default:
+                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xac}); //ireturn
+                break;
+        }
     }
 
     private int calcArgsCount() {

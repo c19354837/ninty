@@ -55,6 +55,10 @@ public class ClassMember {
         return (accessFlags & ClassConstant.ACC_FINAL) != 0;
     }
 
+    public boolean isNative() {
+        return (accessFlags & ClassConstant.ACC_NATIVE) != 0;
+    }
+
     public String getName() {
         return name;
     }

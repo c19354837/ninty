@@ -3,6 +3,7 @@ package com.ninty.cmd;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index16Cmd;
 import com.ninty.cmd.base.Index8Cmd;
+import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
@@ -515,6 +516,13 @@ public class CmdReferences {
                 throw new IllegalAccessError(" interface method should be public: " + method);
             }
             invokeMethod(frame, finalMethod);
+        }
+    }
+
+    public static class INVOKE_NATIVE extends NoOperandCmd{
+        @Override
+        public void exec(NiFrame frame) {
+
         }
     }
 }
