@@ -14,19 +14,9 @@ import com.ninty.runtime.heap.NiString;
 public class NaClass {
 
     public static void init() {
-        NaMethodManager.register("java/lang/Object", "getClass", "()Ljava/lang/Class;", new getClass());
         NaMethodManager.register("java/lang/Class", "getPrimitiveClass", "(Ljava/lang/String;)Ljava/lang/Class;", new getPrimitiveClass());
         NaMethodManager.register("java/lang/Class", "getName0", "()Ljava/lang/String;", new getName0());
         NaMethodManager.register("java/lang/Class", "desiredAssertionStatus0", "(Ljava/lang/String;)Z", new desiredAssertionStatus0());
-    }
-
-    public static class getClass implements INativeMethod {
-        @Override
-        public void invoke(NiFrame frame) {
-            NiObject self = frame.getLocalVars().getThis();
-            NiObject jClass = self.getClz().getjClass();
-            frame.getOperandStack().pushRef(jClass);
-        }
     }
 
     public static class getPrimitiveClass implements INativeMethod {
