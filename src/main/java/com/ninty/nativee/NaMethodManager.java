@@ -1,7 +1,6 @@
 package com.ninty.nativee;
 
-import com.ninty.nativee.lang.NaClass;
-import com.ninty.nativee.lang.NaObject;
+import com.ninty.nativee.lang.*;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiMethod;
@@ -14,11 +13,14 @@ import java.util.Map;
  */
 public class NaMethodManager {
 
-    public static Map<String, INativeMethod> methodMap = new HashMap<>(1 << 10);
+    private static Map<String, INativeMethod> methodMap = new HashMap<>(1 << 10);
 
     static {
         NaObject.init();
         NaClass.init();
+        NaSystem.init();
+        NaFloat.init();
+        NaDouble.init();
     }
 
     private final static INativeMethod EMPTY = new INativeMethod() {
