@@ -10,8 +10,10 @@ import com.ninty.runtime.heap.NiObject;
  */
 public class NaObject {
 
+    private final static String className = "java/lang/Object";
+
     public static void init() {
-        NaMethodManager.register("java/lang/Object", "getClass", "()Ljava/lang/Class;", new getClass());
+        NaMethodManager.register(className, "getClass", "()Ljava/lang/Class;", new getClass());
     }
 
     public static class getClass implements INativeMethod {
