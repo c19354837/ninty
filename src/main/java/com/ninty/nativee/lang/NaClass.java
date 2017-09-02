@@ -18,7 +18,7 @@ public class NaClass {
     public static void init() {
         NaMethodManager.register(className, "getPrimitiveClass", "(Ljava/lang/String;)Ljava/lang/Class;", new getPrimitiveClass());
         NaMethodManager.register(className, "getName0", "()Ljava/lang/String;", new getName0());
-        NaMethodManager.register(className, "desiredAssertionStatus0", "(Ljava/lang/String;)Z", new desiredAssertionStatus0());
+        NaMethodManager.register(className, "desiredAssertionStatus0", "(Ljava/lang/Class;)Z", new desiredAssertionStatus0());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
