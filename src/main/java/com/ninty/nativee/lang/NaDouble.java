@@ -13,6 +13,7 @@ public class NaDouble {
 
     public static void init() {
         NaMethodManager.register(className, "doubleToRawLongBits", "(D)J", new doubleToRawLongBits());
+        NaMethodManager.register(className, "longBitsToDouble", "(J)D", new longBitsToDouble());
     }
 
     public static class doubleToRawLongBits implements INativeMethod {
@@ -22,6 +23,16 @@ public class NaDouble {
             double value = localVars.getDouble(0);
             long result = Double.doubleToRawLongBits(value);
             frame.getOperandStack().pushLong(result);
+        }
+    }
+
+    public static class longBitsToDouble implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            long value = localVars.getLong(0);
+            double result = Double.longBitsToDouble(value);
+            frame.getOperandStack().pushDouble(result);
         }
     }
 }
