@@ -24,7 +24,7 @@ public class NiString {
         return strRef;
     }
 
-    public static boolean isString(NiObject ref){
+    public static boolean isString(NiObject ref) {
         return ref.getClz().className.equals(className);
     }
 

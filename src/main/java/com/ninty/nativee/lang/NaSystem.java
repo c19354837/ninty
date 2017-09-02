@@ -26,7 +26,7 @@ public class NaSystem {
             NiObject desc = localVars.getRef(2);
             int descPos = localVars.getInt(3);
             int length = localVars.getInt(4);
-            if(!src.getClz().isArray() || !desc.getClz().isArray()){
+            if (!src.getClz().isArray() || !desc.getClz().isArray()) {
                 throw new ArrayStoreException();
             }
             System.arraycopy(src.getArrayDatas(), srcPos, desc.getArrayDatas(), descPos, length);

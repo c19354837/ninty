@@ -1,6 +1,9 @@
 package com.ninty.cmd;
 
-import com.ninty.cmd.base.*;
+import com.ninty.cmd.base.ICmdBase;
+import com.ninty.cmd.base.Index16Cmd;
+import com.ninty.cmd.base.Index8Cmd;
+import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
@@ -65,7 +68,7 @@ public class CmdReferences {
                 break;
             default:
                 NiObject ref = stack.getRefFromTop();
-                if(NiString.isString(ref)){
+                if (NiString.isString(ref)) {
                     System.out.println(NiString.getString(ref));
                     return;
                 }
@@ -556,7 +559,7 @@ public class CmdReferences {
         public void exec(NiFrame frame) {
             NiMethod method = frame.getMethod();
             INativeMethod nativeMethod = NaMethodManager.findNativeMethod(method);
-            if(nativeMethod == null){
+            if (nativeMethod == null) {
                 throw new NativeMethodException("cannot found native method: " + method);
             }
             nativeMethod.invoke(frame);
