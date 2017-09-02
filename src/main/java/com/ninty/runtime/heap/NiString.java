@@ -24,6 +24,10 @@ public class NiString {
         return strRef;
     }
 
+    public static boolean isString(NiObject ref){
+        return ref.getClz().className.equals(className);
+    }
+
     public static String getString(NiObject ref) {
         NiField field = ref.getClz().findField("value", "[C");
         NiObject value = ref.getFields().getRef(field.getSlotId());

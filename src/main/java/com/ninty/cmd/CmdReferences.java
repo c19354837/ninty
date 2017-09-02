@@ -1,9 +1,6 @@
 package com.ninty.cmd;
 
-import com.ninty.cmd.base.ICmdBase;
-import com.ninty.cmd.base.Index16Cmd;
-import com.ninty.cmd.base.Index8Cmd;
-import com.ninty.cmd.base.NoOperandCmd;
+import com.ninty.cmd.base.*;
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
@@ -12,6 +9,7 @@ import com.ninty.runtime.NiThread;
 import com.ninty.runtime.OperandStack;
 import com.ninty.runtime.heap.*;
 import com.ninty.runtime.heap.constantpool.*;
+import com.sun.jdi.NativeMethodException;
 
 import java.nio.ByteBuffer;
 
@@ -32,9 +30,11 @@ public class CmdReferences {
                 slots.setSlot(i, stack.popSlot());
             }
         }
+        System.out.println("invoke method: " + method);
     }
 
-    private static void print(OperandStack stack, String desc) {
+    private static void print(NiFrame frame, String desc) {
+        OperandStack stack = frame.getOperandStack();
         switch (desc) {
             case "(Z)V":
                 System.out.println(stack.popInt() != 0);
@@ -64,7 +64,14 @@ public class CmdReferences {
                 System.out.println(NiString.getString(stack.popRef()));
                 break;
             default:
-                throw new RuntimeException("What happen");
+                NiObject ref = stack.popRef();
+//                if(NiString.isString(ref)){
+//                    System.out.println(NiString.getString(ref));
+//                    return;
+//                }
+                frame.restorePostion();
+                NiMethod method = ref.getClz().getToStringMethod();
+                invokeMethod(frame, method);
         }
     }
 
@@ -230,7 +237,7 @@ public class CmdReferences {
                 throw new IncompatibleClassChangeError(field.toString());
             }
             if (field.isFinal() &&
-                    (curClz != clz || !method.getName().equals("<linit>"))) {
+                    (curClz != clz || !method.getName().equals("<init>"))) {
                 throw new IllegalAccessError("access final field failed");
             }
 
@@ -476,9 +483,7 @@ public class CmdReferences {
             if (ref == null) {
                 //hack
                 if (methodRef.getName().equals("println")) {
-                    OperandStack stack = frame.getOperandStack();
-                    print(stack, methodRef.getDesc());
-                    stack.popRef();
+                    print(frame, methodRef.getDesc());
                     return;
                 }
                 //hack end
@@ -524,7 +529,6 @@ public class CmdReferences {
             NiConstantPool cps = getCP(frame);
             InterfaceMethodRef methodRef = (InterfaceMethodRef) cps.get(index);
             methodRef.resolve();
-            ;
             NiMethod method = methodRef.getMethod();
             if (method.isStatic() || method.isPrivate()) {
                 throw new IncompatibleClassChangeError();
@@ -552,6 +556,9 @@ public class CmdReferences {
         public void exec(NiFrame frame) {
             NiMethod method = frame.getMethod();
             INativeMethod nativeMethod = NaMethodManager.findNativeMethod(method);
+            if(nativeMethod == null){
+                throw new NativeMethodException("cannot found native method: " + method);
+            }
             nativeMethod.invoke(frame);
         }
     }

@@ -96,6 +96,10 @@ public class NiClass {
         return getMethod("<clinit>", "()V");
     }
 
+    public NiMethod getToStringMethod() {
+        return getMethod("toString", "()Ljava/lang/String;");
+    }
+
     private NiMethod getMethod(String name, String desc) {
         for (NiMethod method : methods) {
             if (method.getName().equals(name) && method.getDesc().equals(desc)) {
