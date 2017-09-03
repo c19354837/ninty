@@ -19,7 +19,7 @@ public class NaString {
     public static class intern implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
-            NiObject ref = frame.getLocalVars().getRef(0);
+            NiObject ref = frame.getLocalVars().getThis();
             NiString.intern(ref);
             frame.getOperandStack().pushRef(ref);
         }

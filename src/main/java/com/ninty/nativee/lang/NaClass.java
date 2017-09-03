@@ -24,7 +24,7 @@ public class NaClass {
     public static class getPrimitiveClass implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
-            NiObject ref = frame.getLocalVars().getRef(0);
+            NiObject ref = frame.getLocalVars().getThis();
             String name = NiString.getString(ref);
             NiClassLoader loader = frame.getMethod().getClz().getLoader();
             NiObject jClass = loader.loadClass(name).getjClass();
