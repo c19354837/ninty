@@ -14,6 +14,7 @@ public class NaObject {
 
     public static void init() {
         NaMethodManager.register(className, "getClass", "()Ljava/lang/Class;", new getClass());
+        NaMethodManager.register(className, "hashCode", "()I;", new hashCode());
     }
 
     public static class getClass implements INativeMethod {
@@ -24,4 +25,15 @@ public class NaObject {
             frame.getOperandStack().pushRef(jClass);
         }
     }
+
+    public static class hashCode implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            int hashCode = self.hashCode();
+            frame.getOperandStack().pushInt(hashCode);
+        }
+    }
+
+    // TODO clone()
 }
