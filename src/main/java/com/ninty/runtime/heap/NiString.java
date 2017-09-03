@@ -33,4 +33,15 @@ public class NiString {
         NiObject value = ref.getFields().getRef(field.getSlotId());
         return new String((char[]) value.getArrayDatas());
     }
+
+    public static NiObject intern(NiObject ref) {
+        if (!isString(ref)) {
+            throw new UnsupportedOperationException("need a String Object: " + ref);
+        }
+        String str = getString(ref);
+        if (!stringPool.containsKey(str)) {
+            stringPool.put(str, ref);
+        }
+        return stringPool.get(str);
+    }
 }
