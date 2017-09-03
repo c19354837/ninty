@@ -46,6 +46,7 @@ public class BootStartup {
 
     private void execThread(NiThread thread) {
         try {
+            long startTime = System.nanoTime();
             while (true) {
                 NiFrame frame = thread.topFrame();
                 ByteBuffer bb = frame.getCode();
@@ -59,10 +60,11 @@ public class BootStartup {
                 System.out.println();
 
                 if (thread.isEmpty()) {
-                    System.out.println("\n**done**");
-                    return;
+                    break;
                 }
             }
+            System.out.println("\nspend " + (System.nanoTime() - startTime) / Math.pow(10, 6) + "ms");
+            System.out.println("\n**done**");
         } catch (Exception e) {
             e.printStackTrace();
         }
