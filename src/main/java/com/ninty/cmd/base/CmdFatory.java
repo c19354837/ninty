@@ -90,6 +90,7 @@ public class CmdFatory {
     private static ICmdBase BASTORE = new BASTORE();
     private static ICmdBase SASTORE = new SASTORE();
     private static ICmdBase ARRAY_LENGTH = new ARRAY_LENGTH();
+    private static ICmdBase ATHROW = new ATHROW();
     private static ICmdBase BALOAD = new BALOAD();
     private static ICmdBase POP = new POP();
     private static ICmdBase POP2 = new POP2();
@@ -553,7 +554,7 @@ public class CmdFatory {
             case 0xbe:
                 return ARRAY_LENGTH;
             case 0xbf:
-                unsupport(code);//athrow
+                return ATHROW;
             case 0xc0:
                 return new CHECK_CAST();
             case 0xc1:

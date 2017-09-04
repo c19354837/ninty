@@ -7,11 +7,9 @@ public class NiThread {
     private int level;
     private NiStack stack;
 
-
     public NiThread(int maxStackSize) {
         stack = new NiStack(maxStackSize);
     }
-
 
     public NiFrame popFrame() {
         level--;

@@ -131,6 +131,10 @@ public class ClassFile {
         return methodInfos;
     }
 
+    public AttributeInfo[] getAttributeInfos() {
+        return attributeInfos;
+    }
+
     @Override
     public String toString() {
         return "ClassFile{" +

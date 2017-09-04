@@ -565,5 +565,29 @@ public class CmdReferences {
             nativeMethod.invoke(frame);
         }
     }
+
+    public static class ATHROW extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            NiObject exception = frame.getOperandStack().popRef();
+            if (exception == null) {
+                throw new NullPointerException("exception is null");
+            }
+
+            NiThread thread = frame.getThread();
+            while (!thread.isEmpty()) {
+                NiFrame topFrame = thread.topFrame();
+                int nextPC = topFrame.getMethod().findExceptionHandler(exception.getClz(), frame.getPosition() + 1);
+                if (nextPC > 0) {
+                    OperandStack stack = topFrame.getOperandStack();
+                    stack.clear();
+                    stack.pushRef(exception);
+                    frame.setPosition(nextPC);
+                    return;
+                }
+                thread.popFrame();
+            }
+        }
+    }
 }
 

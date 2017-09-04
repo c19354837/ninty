@@ -71,6 +71,15 @@ public class NiFrame {
         bb.position(position);
     }
 
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+        bb.position(position);
+    }
+
     @Override
     public String toString() {
         return "NiFrame{" +

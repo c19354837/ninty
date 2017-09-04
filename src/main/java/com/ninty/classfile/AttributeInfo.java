@@ -61,8 +61,8 @@ public class AttributeInfo {
         }
     }
 
-    static class AttrSourceFile extends AttributeInfo {
-        String sourceFile;
+    public static class AttrSourceFile extends AttributeInfo {
+        public String sourceFile;
 
         AttrSourceFile(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
@@ -97,8 +97,8 @@ public class AttributeInfo {
         }
     }
 
-    static class AttrLineNumberTable extends AttributeInfo {
-        LineNumberTable[] lineNumberTables;
+    public static class AttrLineNumberTable extends AttributeInfo {
+        public LineNumberTable[] lineNumberTables;
 
         AttrLineNumberTable(ByteBuffer bb) {
             skipAttributeLen(bb);
@@ -151,9 +151,9 @@ public class AttributeInfo {
         }
     }
 
-    private static class LineNumberTable {
-        int startPC;
-        int lineNumber;
+    public static class LineNumberTable {
+        public int startPC;
+        public int lineNumber;
 
         LineNumberTable(ByteBuffer bb) {
             startPC = bb.getChar();
@@ -177,11 +177,11 @@ public class AttributeInfo {
         }
     }
 
-    private static class ExceptionTable {
-        int startPc;
-        int endPc;
-        int handlerPc;
-        int catchType;
+    public static class ExceptionTable {
+        public int startPc;
+        public int endPc;
+        public int handlerPc;
+        public int catchType;
 
         ExceptionTable(ByteBuffer bb) {
             startPc = bb.getChar();

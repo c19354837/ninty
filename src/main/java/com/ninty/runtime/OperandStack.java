@@ -83,6 +83,12 @@ public class OperandStack {
         return slots[size];
     }
 
+    public void clear() {
+        for (int i = 0; i < size; i++) {
+            slots[i].ref = null;
+        }
+    }
+
     public NiObject getRefFromTop(int n) {
         return slots[size - n].ref;
     }

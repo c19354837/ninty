@@ -5,8 +5,7 @@ import com.ninty.classfile.constantpool.ConstantPoolInfos;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import static com.ninty.classfile.AttributeInfo.AttrCode;
-import static com.ninty.classfile.AttributeInfo.AttrConstantValue;
+import static com.ninty.classfile.AttributeInfo.*;
 
 /**
  * Created by ninty on 2017/7/9.
@@ -52,6 +51,15 @@ public class MemberInfo {
         for (AttributeInfo attr : attributeInfos) {
             if (attr instanceof AttrConstantValue) {
                 return (AttrConstantValue) attr;
+            }
+        }
+        return null;
+    }
+
+    public AttrLineNumberTable getAttrLineNumberTable() {
+        for (AttributeInfo attr : attributeInfos) {
+            if (attr instanceof AttrLineNumberTable) {
+                return (AttrLineNumberTable) attr;
             }
         }
         return null;

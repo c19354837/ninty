@@ -1,5 +1,6 @@
 package com.ninty.runtime.heap;
 
+import com.ninty.classfile.AttributeInfo;
 import com.ninty.classfile.ClassFile;
 import com.ninty.classfile.MemberInfo;
 import com.ninty.runtime.LocalVars;
@@ -24,6 +25,8 @@ public class NiClass {
     private NiConstantPool cps;
     private NiField[] fields;
     private NiMethod[] methods;
+
+    String sourceFile;
 
     NiClassLoader loader;
     LocalVars staticSlots;
@@ -59,6 +62,7 @@ public class NiClass {
         initCP(classFile);
         initFiled(classFile);
         initMethod(classFile);
+        initSourceFile(classFile);
     }
 
     public NiClass(int accessFlags, String className, String superClassName, String[] interfaceNames) {
@@ -86,6 +90,17 @@ public class NiClass {
         for (int i = 0; i < methodInfos.length; i++) {
             methods[i] = new NiMethod(this, methodInfos[i]);
         }
+    }
+
+    private void initSourceFile(ClassFile classFile) {
+        AttributeInfo[] attributeInfos = classFile.getAttributeInfos();
+        for (int i = 0; i < attributeInfos.length; i++) {
+            if (attributeInfos[i] instanceof AttributeInfo.AttrSourceFile) {
+                sourceFile = ((AttributeInfo.AttrSourceFile) attributeInfos[i]).sourceFile;
+                return;
+            }
+        }
+        sourceFile = "unknow";
     }
 
     public NiMethod getMainMethod() {
@@ -283,7 +298,7 @@ public class NiClass {
      * clz extend this
      */
     public boolean isSubClass(NiClass clz) {
-        return (clz.superClassName != null && clz.superClassName.equals(superClassName)) || this.isSubClass(clz.getSuperClass());
+        return clz != null && (clz.superClassName != null && clz.superClassName.equals(className) || this.isSubClass(clz.getSuperClass()));
     }
 
     /**
@@ -356,6 +371,10 @@ public class NiClass {
 
     public boolean isClinit() {
         return clinit;
+    }
+
+    public String getSourceFile() {
+        return sourceFile;
     }
 
     @Override
