@@ -22,6 +22,7 @@ public class NaMethodManager {
         NaFloat.init();
         NaDouble.init();
         NaString.init();
+        NaThrowable.init();
     }
 
     private final static INativeMethod EMPTY = new INativeMethod() {
