@@ -27,13 +27,12 @@ public class NaThrowable {
             int skip = distanceToObject(self.getClz()) + 2;
             int total = frame.getThread().getLevel();
             NiFrame prevFrame = frame;
-            StackTraceElement[] stes = new StackTraceElement[total];
-            for (int i = total - 1; i <= 0; i--) {
-                if (i > total - skip) {
-                    return;
+            StackTraceElement[] stes = new StackTraceElement[total - skip];
+            for (int i = total - 1; i >= 0; i--, prevFrame = prevFrame.prevFrame) {
+                if (i >= total - skip) {
+                    continue;
                 }
                 stes[i] = new StackTraceElement(prevFrame);
-                prevFrame = prevFrame.prevFrame;
             }
             self.setExtra(stes);
         }
