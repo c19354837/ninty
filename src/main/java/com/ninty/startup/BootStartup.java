@@ -56,9 +56,9 @@ public class BootStartup {
                 cmd.init(bb);
                 cmd.exec(frame);
 
-//                System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
-//                System.out.println(getT(thread.getLevel()) + frame);
-//                System.out.println();
+                System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
+                System.out.println(getT(thread.getLevel()) + frame);
+                System.out.println();
 
                 if (thread.isEmpty()) {
                     break;
