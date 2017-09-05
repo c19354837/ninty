@@ -33,7 +33,7 @@ public class CmdReferences {
                 slots.setSlot(i, stack.popSlot());
             }
         }
-        System.out.println("invoke method: " + method);
+//        System.out.println("invoke method: " + method);
     }
 
     private static void print(NiFrame frame, String desc) {
@@ -430,7 +430,11 @@ public class CmdReferences {
         public void exec(NiFrame frame) {
             NiConstantPool cps = frame.getMethod().getClz().getCps();
             MethodRef methodRef = (MethodRef) cps.get(index);
+            if(frame.getMethod().getClz().getClassName().equals("java/lang/Exception")){
+                System.out.println(1234);
+            }
             methodRef.resolve();
+
             NiMethod method = methodRef.getMethod();
             NiClass clz = methodRef.getClz();
             NiClass c = frame.getMethod().getClz();

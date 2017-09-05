@@ -75,7 +75,6 @@ public class NiClassLoader {
     private NiClass loadNonArrayClass(String className) {
         byte[] datas = readClass(className);
         NiClass clz = definedClass(datas);
-        classes.put(className, clz);
         link(clz);
         return clz;
     }
@@ -91,6 +90,7 @@ public class NiClassLoader {
     private NiClass definedClass(byte[] datas) {
         ClassFile cf = new ClassFile(datas);
         NiClass clz = new NiClass(cf);
+        classes.put(clz.className, clz);
         resolve(clz);
         return clz;
     }

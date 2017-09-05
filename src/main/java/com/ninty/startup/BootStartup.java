@@ -29,6 +29,7 @@ public class BootStartup {
         resolveClass();
     }
 
+    //TODO -XX
     private void resolveClass() {
         NiClassLoader loader = new NiClassLoader(cp);
         NiClass clz = loader.loadClass(className);
@@ -55,9 +56,9 @@ public class BootStartup {
                 cmd.init(bb);
                 cmd.exec(frame);
 
-                System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
-                System.out.println(getT(thread.getLevel()) + frame);
-                System.out.println();
+//                System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
+//                System.out.println(getT(thread.getLevel()) + frame);
+//                System.out.println();
 
                 if (thread.isEmpty()) {
                     break;
