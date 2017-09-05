@@ -126,9 +126,9 @@ public class CmdArray {
             classRef.resolve();
             OperandStack stack = frame.getOperandStack();
             int len = getLen(stack);
-            classRef.getClz().toArrayClass();
-            NiObject array = classRef.getClz().newArray(len);
-            stack.pushRef(array);
+            NiClass arrClz = classRef.getClz().getArrayClass();
+            NiObject arrObj = arrClz.newArray(len);
+            stack.pushRef(arrObj);
         }
     }
 

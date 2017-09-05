@@ -252,7 +252,8 @@ public class NiClass {
     /**
      * convert classname to Array class
      */
-    public void toArrayClass() {
+    public NiClass getArrayClass() {
+        String className = this.className;
         if (!isArray()) {
             String type = primitiveTypes.get(className);
             if (type == null) {
@@ -262,6 +263,7 @@ public class NiClass {
             }
         }
         className = "[" + className;
+        return getLoader().loadClass(className);
     }
 
     public NiClass componentClass() {
