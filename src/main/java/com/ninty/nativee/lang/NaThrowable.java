@@ -44,21 +44,34 @@ public class NaThrowable {
             }
             return distance;
         }
+    }
 
-        private static class StackTraceElement {
-            String fileName;
-            String className;
-            String methodName;
-            int lineNumber;
+    public static void print(NiObject ex) {
+        StackTraceElement[] stes = (StackTraceElement[]) ex.getExtra();
+        System.err.println("Exception " + ex.getClz().getClassName());
+        for (int i = stes.length -1; i >=0 ; i--) {
+            System.err.println("\t\t" + stes[i]);
+        }
+    }
 
-            StackTraceElement(NiFrame frame) {
-                NiMethod method = frame.getMethod();
-                NiClass clz = method.getClz();
-                fileName = clz.getSourceFile();
-                className = clz.getClassName();
-                methodName = method.getName();
-                lineNumber = method.getLineNumber(frame.getPosition());
-            }
+    private static class StackTraceElement {
+        String fileName;
+        String className;
+        String methodName;
+        int lineNumber;
+
+        StackTraceElement(NiFrame frame) {
+            NiMethod method = frame.getMethod();
+            NiClass clz = method.getClz();
+            fileName = clz.getSourceFile();
+            className = clz.getClassName();
+            methodName = method.getName();
+            lineNumber = method.getLineNumber(frame.getPosition());
+        }
+
+        @Override
+        public String toString() {
+            return "at " + className + "." + methodName + "(" + fileName + ":" + lineNumber + ")";
         }
     }
 

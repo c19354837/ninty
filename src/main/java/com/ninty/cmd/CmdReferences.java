@@ -6,6 +6,7 @@ import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
+import com.ninty.nativee.lang.NaThrowable;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
@@ -33,7 +34,7 @@ public class CmdReferences {
                 slots.setSlot(i, stack.popSlot());
             }
         }
-//        System.out.println("invoke method: " + method);
+        System.out.println("invoke method: " + method);
     }
 
     private static void print(NiFrame frame, String desc) {
@@ -587,6 +588,9 @@ public class CmdReferences {
                     return;
                 }
                 thread.popFrame();
+            }
+            if(thread.isEmpty()){
+                NaThrowable.print(exception);
             }
         }
     }
