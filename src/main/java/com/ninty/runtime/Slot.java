@@ -14,7 +14,7 @@ public class Slot {
             return this; //only reference object need duplicate
         }
         Slot slot = new Slot();
-        slot.ref = new NiObject(ref);
+        slot.ref = ref;
         return slot;
     }
 
