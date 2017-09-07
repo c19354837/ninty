@@ -10,7 +10,7 @@ import com.ninty.runtime.heap.NiMethod;
 public class InterfaceMethodRef extends MemberRef {
     private NiMethod method;
 
-    public InterfaceMethodRef(ConstantInfo.CPMemeber cp) {
+    InterfaceMethodRef(ConstantInfo.CPMemeber cp) {
         super(cp);
     }
 

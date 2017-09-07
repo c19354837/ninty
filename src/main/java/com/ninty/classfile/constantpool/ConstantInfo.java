@@ -13,9 +13,9 @@ public class ConstantInfo {
     public CPType type;
     public ConstantPoolInfos cps;
 
-    public static ConstantInfo generate(ConstantPoolInfos cps, ByteBuffer bb) {
+    static ConstantInfo generate(ConstantPoolInfos cps, ByteBuffer bb) {
         CPType type = CPType.get(bb.get());
-        ConstantInfo cp = null;
+        ConstantInfo cp;
         switch (type) {
             case cp_integer:
                 cp = new CPInteger(bb);
@@ -127,7 +127,7 @@ public class ConstantInfo {
         private int nameIndex;
         private int descIndex;
 
-        public CPNameAndType(ByteBuffer bb) {
+        CPNameAndType(ByteBuffer bb) {
             nameIndex = bb.getChar();
             descIndex = bb.getChar();
         }

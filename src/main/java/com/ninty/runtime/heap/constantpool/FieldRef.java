@@ -10,7 +10,7 @@ import com.ninty.runtime.heap.NiField;
 public class FieldRef extends MemberRef {
     private NiField field;
 
-    public FieldRef(ConstantInfo.CPMemeber cp) {
+    FieldRef(ConstantInfo.CPMemeber cp) {
         super(cp);
     }
 

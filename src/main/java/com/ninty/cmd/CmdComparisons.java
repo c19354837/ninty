@@ -73,14 +73,14 @@ public class CmdComparisons {
     public static class DCMPL extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            fcmp(frame, -1);
+            dcmp(frame, -1);
         }
     }
 
     public static class DCMPG extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            fcmp(frame, 1);
+            dcmp(frame, 1);
         }
     }
 

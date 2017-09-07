@@ -34,7 +34,6 @@ public class CmdArray {
         int index = stack.popInt();
         NiObject array = stack.popRef();
         nullChech(array);
-        Class clz = array.getClass();
         switch (type) {
             case 'b':
                 stack.pushInt(array.abyte()[index]);

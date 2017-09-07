@@ -10,17 +10,17 @@ import java.util.Arrays;
  * Created by ninty on 2017/7/9.
  */
 public class ClassFile {
-    int magic; //u4
-    int minorVersion; //u2
-    int majorVersion; //u2
-    ConstantPoolInfos cps;
-    int accessFlags; //u2
-    String className;
-    String superClassName;
-    String[] interfaceNames;
-    MemberInfo[] fieldInfos;
-    MemberInfo[] methodInfos;
-    AttributeInfo[] attributeInfos;
+    private int magic; //u4
+    private int minorVersion; //u2
+    private int majorVersion; //u2
+    private ConstantPoolInfos cps;
+    private int accessFlags; //u2
+    private String className;
+    private String superClassName;
+    private String[] interfaceNames;
+    private MemberInfo[] fieldInfos;
+    private MemberInfo[] methodInfos;
+    private AttributeInfo[] attributeInfos;
 
     public ClassFile(byte[] datas) {
         resolve(datas);

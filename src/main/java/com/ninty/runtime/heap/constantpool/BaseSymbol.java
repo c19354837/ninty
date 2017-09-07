@@ -9,7 +9,7 @@ public abstract class BaseSymbol extends NiConstant {
     String className;
     NiClass clz;
 
-    protected NiClass resolveClass() {
+    NiClass resolveClass() {
         if (clz == null) {
             NiClass c = cp.clz.getLoader().loadClass(className);
             if (!cp.clz.canAccess(c)) {

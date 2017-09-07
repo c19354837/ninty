@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  */
 public class AttributeInfo {
 
-    public static AttributeInfo generate(ConstantPoolInfos cps, ByteBuffer bb) {
+    static AttributeInfo generate(ConstantPoolInfos cps, ByteBuffer bb) {
         int nameIndex = bb.getChar();
         String name = cps.getUtf8(nameIndex);
         switch (name) {
@@ -22,7 +22,7 @@ public class AttributeInfo {
             case "SourceFile":
                 return new AttrSourceFile(cps, bb);
             case "ConstantValue":
-                return new AttrConstantValue(cps, bb);
+                return new AttrConstantValue(bb);
             case "Exceptions":
                 return new AttrExceptions(cps, bb);
             case "LineNumberTable":
@@ -74,7 +74,7 @@ public class AttributeInfo {
     public static class AttrConstantValue extends AttributeInfo {
         private int constantValueIndex;
 
-        AttrConstantValue(ConstantPoolInfos cps, ByteBuffer bb) {
+        AttrConstantValue(ByteBuffer bb) {
             skipAttributeLen(bb);
             constantValueIndex = bb.getChar();
         }
@@ -128,7 +128,7 @@ public class AttributeInfo {
         public int maxLocals;
         public byte[] codes;
         public ExceptionTable[] exceptionTables;
-        public AttributeInfo[] attributeInfos;
+        AttributeInfo[] attributeInfos;
 
         AttrCode(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);

@@ -26,7 +26,7 @@ public class NiClass {
     private NiField[] fields;
     private NiMethod[] methods;
 
-    String sourceFile;
+    private String sourceFile;
 
     NiClassLoader loader;
     LocalVars staticSlots;

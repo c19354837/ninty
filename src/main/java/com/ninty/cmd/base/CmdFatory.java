@@ -502,9 +502,9 @@ public class CmdFatory {
             case 0xa4:
                 return new IF_ICMPLE();
             case 0xa5:
-                return new IF_ICMPEQ();
+                return new IF_ACMPEQ();
             case 0xa6:
-                return new IF_ICMPNE();
+                return new IF_ACMPNE();
             case 0xa7:
                 return new GOTO();
             case 0xa8:

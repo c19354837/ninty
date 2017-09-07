@@ -60,7 +60,7 @@ public class NiConstant {
     public static class NiInteger extends NiConstant {
         public int value;
 
-        public NiInteger(ConstantInfo.CPInteger cp) {
+        NiInteger(ConstantInfo.CPInteger cp) {
             value = cp.value();
         }
     }
@@ -106,27 +106,27 @@ public class NiConstant {
     }
 
     public static class NiUtf8 extends NiConstant {
-        public String value;
+        String value;
 
-        public NiUtf8(ConstantInfo.CPUtf8 cp) {
+        NiUtf8(ConstantInfo.CPUtf8 cp) {
             value = cp.value();
         }
     }
 
     public static class NiInvokeDynamic extends NiConstant {
-        public NiInvokeDynamic(ConstantInfo.CPInvokeDynamic cp) {
+        NiInvokeDynamic(ConstantInfo.CPInvokeDynamic cp) {
             // TODO
         }
     }
 
     public static class NiMethodType extends NiConstant {
-        public NiMethodType(ConstantInfo.CPMethodType cp) {
+        NiMethodType(ConstantInfo.CPMethodType cp) {
             // TODO
         }
     }
 
     public static class NiMethodHandleInfo extends NiConstant {
-        public NiMethodHandleInfo(ConstantInfo.CPMethodHandleInfo cp) {
+        NiMethodHandleInfo(ConstantInfo.CPMethodHandleInfo cp) {
             // TODO
         }
     }
