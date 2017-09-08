@@ -19,7 +19,7 @@ public class NiMethod extends ClassMember {
 
     private ByteBuffer codes;
 
-    public NiMethod(NiClass clz, MemberInfo memberInfo) {
+    NiMethod(NiClass clz, MemberInfo memberInfo) {
         copyMemberInfo(memberInfo);
         this.clz = clz;
         AttributeInfo.AttrCode attrCode = memberInfo.getAttrCode();

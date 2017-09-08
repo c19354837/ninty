@@ -7,7 +7,7 @@ import com.ninty.classfile.MemberInfo;
  */
 public class ClassMember {
 
-    protected int accessFlags;
+    int accessFlags;
     protected String name;
     protected String desc;
     protected NiClass clz;

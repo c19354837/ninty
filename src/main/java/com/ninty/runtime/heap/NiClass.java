@@ -318,7 +318,7 @@ public class NiClass {
         return (accessFlags & ClassConstant.ACC_INTERFACE) != 0;
     }
 
-    public String packageName() {
+    private String packageName() {
         int indexOf = className.lastIndexOf('/');
         return indexOf > -1 ? className.substring(0, indexOf) : "";
     }
@@ -367,7 +367,7 @@ public class NiClass {
         return jClass;
     }
 
-    public void setjClass(NiObject jClass) {
+    void setjClass(NiObject jClass) {
         this.jClass = jClass;
     }
 

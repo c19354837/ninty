@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
  * Created by ninty on 2017/7/12.
  */
 public class NiFrame {
-    public NiFrame prevFrame;
+    NiFrame prevFrame;
 
     private NiThread thread;
     private NiMethod method;

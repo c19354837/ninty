@@ -5,10 +5,10 @@ import java.util.EmptyStackException;
 /**
  * Created by ninty on 2017/7/12.
  */
-public class NiStack {
-    int maxSize;
-    int size;
-    NiFrame top;
+class NiStack {
+    private int maxSize;
+    private int size;
+    private NiFrame top;
 
     NiStack(int maxSize) {
         this.maxSize = maxSize;

@@ -11,7 +11,7 @@ public class NiField extends ClassMember {
     int slotId;
     int constantValueIndex;
 
-    public NiField(NiClass clz, MemberInfo memberInfo) {
+    NiField(NiClass clz, MemberInfo memberInfo) {
         copyMemberInfo(memberInfo);
         copyAttr(memberInfo);
         this.clz = clz;
@@ -24,7 +24,7 @@ public class NiField extends ClassMember {
         }
     }
 
-    public boolean isLongOrDouble() {
+    boolean isLongOrDouble() {
         return desc.equals("J") || desc.equals("D");
     }
 

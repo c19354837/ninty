@@ -2,8 +2,6 @@ package com.ninty.startup;
 
 import org.apache.commons.cli.*;
 
-import java.util.Arrays;
-
 /**
  * Created by ninty on 2017/7/5.
  */
@@ -13,9 +11,8 @@ public class CommandLineInfo {
     public boolean help;
     public String cp;
     public String cls;
-    public String[] args;
 
-    public Options options = new Options();
+    private Options options = new Options();
 
     public CommandLineInfo(String[] args) {
         initOptions();
@@ -47,9 +44,6 @@ public class CommandLineInfo {
         String[] otherArgs = cmd.getArgs();
         if (otherArgs.length > 0) {
             cls = otherArgs[0];
-        }
-        if (otherArgs.length > 1) {
-            args = Arrays.copyOfRange(otherArgs, 1, otherArgs.length);
         }
     }
 

@@ -28,7 +28,7 @@ public class NaThrowable {
             int total = frame.getThread().getLevel();
             NiFrame prevFrame = frame;
             StackTraceElement[] stes = new StackTraceElement[total - skip];
-            for (int i = total - 1; i >= 0; i--, prevFrame = prevFrame.prevFrame) {
+            for (int i = total - 1; i >= 0; i--, prevFrame = prevFrame.getPrevFrame()) {
                 if (i >= total - skip) {
                     continue;
                 }

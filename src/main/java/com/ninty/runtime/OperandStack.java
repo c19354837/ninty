@@ -8,8 +8,8 @@ import java.util.Arrays;
  * Created by ninty on 2017/7/12.
  */
 public class OperandStack {
-    int size;
-    Slot[] slots;
+    private int size;
+    private Slot[] slots;
 
     OperandStack(int size) {
         slots = new Slot[size];
