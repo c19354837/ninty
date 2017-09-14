@@ -115,7 +115,7 @@ public class NiClass {
         return getMethod("toString", "()Ljava/lang/String;");
     }
 
-    private NiMethod getMethod(String name, String desc) {
+    public NiMethod getMethod(String name, String desc) {
         for (NiMethod method : methods) {
             if (method.getName().equals(name) && method.getDesc().equals(desc)) {
                 return method;

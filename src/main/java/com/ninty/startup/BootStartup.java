@@ -1,6 +1,7 @@
 package com.ninty.startup;
 
 import com.ninty.classpath.ClassPath;
+import com.ninty.cmd.CmdReferences;
 import com.ninty.cmd.base.CmdFatory;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.runtime.NiFrame;
@@ -59,14 +60,7 @@ public class BootStartup {
                     cmd.init(bb);
                     cmd.exec(frame);
                 }catch (Exception e){
-                    NiClass exClz = frame.getMethod().getClz().getLoader().loadClass(e.getClass().getName());
-                    NiObject exObj = exClz.newObject();
-                    OperandStack stack = frame.getOperandStack();
-                    stack.clear();
-                    stack.pushRef(exObj);
-
-                    ICmdBase athrow = CmdFatory.getCmd((byte) 0xbf);
-                    athrow.exec(frame);
+                    throwException(frame, e);
                 }
 
                 System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
@@ -82,6 +76,36 @@ public class BootStartup {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void throwException(NiFrame frame, Exception e){
+        // new
+        NiClass exClz = frame.getMethod().getClz().getLoader().loadClass(e.getClass().getName());
+
+        // dup
+        OperandStack stack = frame.getOperandStack();
+        NiObject exObj = exClz.newObject();
+        stack.clear();
+        stack.pushRef(exObj);
+        stack.pushRef(exObj);
+
+        // init
+        NiMethod initMethod = exClz.getMethod("<init>", "()V");
+        CmdReferences.invokeMethod(frame, initMethod);
+
+        NiFrame topFrame = frame.getThread().topFrame();
+        while (topFrame != frame){
+            ByteBuffer bb = topFrame.getCode();
+            byte opCode = topFrame.getOpCode();
+            ICmdBase cmd = CmdFatory.getCmd(opCode);
+            cmd.init(bb);
+            cmd.exec(topFrame);
+            topFrame = frame.getThread().topFrame();
+        }
+
+        // athrow
+        ICmdBase athrow = CmdFatory.getCmd((byte) 0xbf);
+        athrow.exec(frame);
     }
 
     private String getT(int level) {

@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
  */
 public class CmdReferences {
 
-    private static void invokeMethod(NiFrame frame, NiMethod method) {
+    public static void invokeMethod(NiFrame frame, NiMethod method) {
         NiThread thread = frame.getThread();
         NiFrame newFrame = new NiFrame(method);
         thread.pushFrame(newFrame);
