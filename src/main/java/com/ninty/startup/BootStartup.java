@@ -5,9 +5,11 @@ import com.ninty.cmd.base.CmdFatory;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
+import com.ninty.runtime.OperandStack;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiClassLoader;
 import com.ninty.runtime.heap.NiMethod;
+import com.ninty.runtime.heap.NiObject;
 
 import java.nio.ByteBuffer;
 
@@ -53,8 +55,19 @@ public class BootStartup {
                 ByteBuffer bb = frame.getCode();
                 byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
-                cmd.init(bb);
-                cmd.exec(frame);
+                try {
+                    cmd.init(bb);
+                    cmd.exec(frame);
+                }catch (Exception e){
+                    NiClass exClz = frame.getMethod().getClz().getLoader().loadClass(e.getClass().getName());
+                    NiObject exObj = exClz.newObject();
+                    OperandStack stack = frame.getOperandStack();
+                    stack.clear();
+                    stack.pushRef(exObj);
+
+                    ICmdBase athrow = CmdFatory.getCmd((byte) 0xbf);
+                    athrow.exec(frame);
+                }
 
                 System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
                 System.out.println(getT(thread.getLevel()) + frame);

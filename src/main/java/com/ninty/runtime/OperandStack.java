@@ -84,8 +84,8 @@ public class OperandStack {
     }
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            slots[i].ref = null;
+        while (size > 0){
+            popSlot();
         }
     }
 
