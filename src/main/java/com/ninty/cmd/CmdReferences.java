@@ -579,17 +579,17 @@ public class CmdReferences {
             NiThread thread = frame.getThread();
             while (!thread.isEmpty()) {
                 NiFrame topFrame = thread.topFrame();
-                int nextPC = topFrame.getMethod().findExceptionHandler(exception.getClz(), frame.getPosition() + 1);
+                int nextPC = topFrame.getMethod().findExceptionHandler(exception.getClz(), topFrame.getPosition() - 1);
                 if (nextPC > 0) {
                     OperandStack stack = topFrame.getOperandStack();
                     stack.clear();
                     stack.pushRef(exception);
-                    frame.setPosition(nextPC);
+                    topFrame.setPosition(nextPC);
                     return;
                 }
                 thread.popFrame();
             }
-            if(thread.isEmpty()){
+            if (thread.isEmpty()) {
                 NaThrowable.print(exception);
             }
         }

@@ -25,7 +25,8 @@ public class NaMethodManager {
         NaThrowable.init();
     }
 
-    private final static INativeMethod EMPTY = (NiFrame frame) -> {};
+    private final static INativeMethod EMPTY = (NiFrame frame) -> {
+    };
 
     public static void register(String className, String name, String desc, INativeMethod nativeMethod) {
         methodMap.put(getKey(className, name, desc), nativeMethod);

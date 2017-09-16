@@ -59,7 +59,7 @@ public class BootStartup {
                 try {
                     cmd.init(bb);
                     cmd.exec(frame);
-                }catch (Exception e){
+                } catch (Exception e) {
                     throwException(frame, e);
                 }
 
@@ -78,11 +78,15 @@ public class BootStartup {
         }
     }
 
-    private void throwException(NiFrame frame, Exception e){
+    private void throwException(NiFrame frame, Exception e) {
+        frame.restorePostion();
         // new
         NiClass exClz = frame.getMethod().getClz().getLoader().loadClass(e.getClass().getName());
 
         // dup
+        if (frame.getOperandStack().getSize() < 2) {
+            frame.setOperandStack(new OperandStack(2));
+        }
         OperandStack stack = frame.getOperandStack();
         NiObject exObj = exClz.newObject();
         stack.clear();
@@ -94,7 +98,7 @@ public class BootStartup {
         CmdReferences.invokeMethod(frame, initMethod);
 
         NiFrame topFrame = frame.getThread().topFrame();
-        while (topFrame != frame){
+        while (topFrame != frame) {
             ByteBuffer bb = topFrame.getCode();
             byte opCode = topFrame.getOpCode();
             ICmdBase cmd = CmdFatory.getCmd(opCode);

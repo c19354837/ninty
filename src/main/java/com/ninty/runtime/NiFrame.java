@@ -38,6 +38,10 @@ public class NiFrame {
         return operandStack;
     }
 
+    public void setOperandStack(OperandStack operandStack) {
+        this.operandStack = operandStack;
+    }
+
     public ByteBuffer getCode() {
         return bb;
     }

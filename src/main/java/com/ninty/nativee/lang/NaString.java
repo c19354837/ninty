@@ -20,7 +20,7 @@ public class NaString {
         @Override
         public void invoke(NiFrame frame) {
             NiObject ref = frame.getLocalVars().getThis();
-            NiObject internRef =  NiString.intern(ref);
+            NiObject internRef = NiString.intern(ref);
             frame.getOperandStack().pushRef(internRef);
         }
     }

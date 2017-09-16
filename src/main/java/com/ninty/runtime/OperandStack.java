@@ -11,7 +11,7 @@ public class OperandStack {
     private int size;
     private Slot[] slots;
 
-    OperandStack(int size) {
+    public OperandStack(int size) {
         slots = new Slot[size];
         for (int i = 0; i < size; i++) {
             slots[i] = new Slot();
@@ -84,9 +84,13 @@ public class OperandStack {
     }
 
     public void clear() {
-        while (size > 0){
+        while (size > 0) {
             popSlot();
         }
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public NiObject getRefFromTop(int n) {
