@@ -56,15 +56,6 @@ public class MemberInfo {
         return null;
     }
 
-    public AttrLineNumberTable getAttrLineNumberTable() {
-        for (AttributeInfo attr : attributeInfos) {
-            if (attr instanceof AttrLineNumberTable) {
-                return (AttrLineNumberTable) attr;
-            }
-        }
-        return null;
-    }
-
     public String getName() {
         return name;
     }

@@ -128,7 +128,7 @@ public class AttributeInfo {
         public int maxLocals;
         public byte[] codes;
         public ExceptionTable[] exceptionTables;
-        AttributeInfo[] attributeInfos;
+        private AttributeInfo[] attributeInfos;
 
         AttrCode(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
@@ -148,6 +148,16 @@ public class AttributeInfo {
             for (int i = 0; i < attrCount; i++) {
                 attributeInfos[i] = AttributeInfo.generate(cps, bb);
             }
+        }
+
+
+        public AttrLineNumberTable getAttrLineNumberTable() {
+            for (AttributeInfo attr : attributeInfos) {
+                if (attr instanceof AttrLineNumberTable) {
+                    return (AttrLineNumberTable) attr;
+                }
+            }
+            return null;
         }
     }
 

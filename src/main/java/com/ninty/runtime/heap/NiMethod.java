@@ -29,9 +29,10 @@ public class NiMethod extends ClassMember {
             codes = ByteBuffer.wrap(attrCode.codes);
 
             copyExceptionTable(attrCode.exceptionTables);
+
+            lineNumberTable = attrCode.getAttrLineNumberTable();
         }
 
-        lineNumberTable = memberInfo.getAttrLineNumberTable();
 
         argsCount = calcArgsCount();
         if (isNative()) {
