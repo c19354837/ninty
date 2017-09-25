@@ -11,10 +11,12 @@ import java.nio.ByteBuffer;
  * Created by ninty on 2017/7/23.
  */
 public class NiMethod extends ClassMember {
+    private static final ExceptionTable[] EMPTY_EX = new ExceptionTable[0];
+
     private int maxLocals;
     private int maxStack;
     private int argsCount;
-    private ExceptionTable[] exceptionTables;
+    private ExceptionTable[] exceptionTables = EMPTY_EX;
     private AttributeInfo.AttrLineNumberTable lineNumberTable;
 
     private ByteBuffer codes;
