@@ -4,6 +4,7 @@ import com.ninty.classpath.ClassPath;
 import com.ninty.cmd.CmdReferences;
 import com.ninty.cmd.base.CmdFatory;
 import com.ninty.cmd.base.ICmdBase;
+import com.ninty.nativee.NintyJavaCache;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.OperandStack;
@@ -35,6 +36,7 @@ public class BootStartup {
     //TODO -XX
     private void resolveClass() {
         NiClassLoader loader = new NiClassLoader(cp);
+        NintyJavaCache.setClassLoader(loader);
         NiClass clz = loader.loadClass(className);
         NiMethod mainMethod = clz.getMainMethod();
         if (mainMethod == null) {
@@ -51,6 +53,7 @@ public class BootStartup {
     private void execThread(NiThread thread) {
         try {
             long startTime = System.nanoTime();
+            System.out.println("start\n");
             while (true) {
                 NiFrame frame = thread.topFrame();
                 ByteBuffer bb = frame.getCode();
@@ -63,9 +66,9 @@ public class BootStartup {
                     throwException(frame, e);
                 }
 
-                System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
-                System.out.println(getT(thread.getLevel()) + frame);
-                System.out.println();
+//                System.out.println(getT(thread.getLevel()) + cmd.getClass().getSimpleName());
+//                System.out.println(getT(thread.getLevel()) + frame);
+//                System.out.println();
 
                 if (thread.isEmpty()) {
                     break;

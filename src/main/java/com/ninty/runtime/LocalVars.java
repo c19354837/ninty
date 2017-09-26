@@ -66,6 +66,10 @@ public class LocalVars {
         slots[index].ref = ref;
     }
 
+    public Slot getSlot(int index) {
+        return slots[index];
+    }
+
     public void setSlot(int index, Slot slot) {
         slots[index] = slot;
     }

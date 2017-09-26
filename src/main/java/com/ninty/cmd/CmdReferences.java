@@ -34,7 +34,7 @@ public class CmdReferences {
                 slots.setSlot(i, stack.popSlot());
             }
         }
-        System.out.println("invoke method: " + method);
+//        System.out.println("invoke method: " + method);
     }
 
     private static void print(NiFrame frame, String desc) {
