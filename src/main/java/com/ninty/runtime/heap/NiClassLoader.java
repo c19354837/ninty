@@ -46,8 +46,9 @@ public class NiClassLoader {
     private void fillJClass(NiClass clz) {
         NiClass jClass = loadClass(J_CLASS);
         if (clz.getjClass() == null) {
-            clz.setjClass(jClass.newObject());
-            clz.getjClass().setExtra(clz);
+            NiObject jObj = jClass.newObject();
+            jObj.setExtra(clz);
+            clz.setjClass(jObj);
         }
     }
 
