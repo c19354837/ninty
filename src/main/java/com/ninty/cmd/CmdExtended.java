@@ -3,6 +3,7 @@ package com.ninty.cmd;
 import com.ninty.cmd.base.BranchCmd;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index8Cmd;
+import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.NiFrame;
 
 import java.nio.ByteBuffer;
@@ -91,6 +92,20 @@ public class CmdExtended {
             if (ref != null) {
                 branch();
             }
+        }
+    }
+
+    public static class MONITOR_ENTER extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            frame.getOperandStack().popRef();
+        }
+    }
+
+    public static class MONITOR_EXIT extends NoOperandCmd {
+        @Override
+        public void exec(NiFrame frame) {
+            frame.getOperandStack().popRef();
         }
     }
 }

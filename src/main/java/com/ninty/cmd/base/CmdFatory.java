@@ -164,6 +164,8 @@ public class CmdFatory {
     private static ICmdBase DRETURN = new DRETURN();
     private static ICmdBase ARETURN = new ARETURN();
     private static ICmdBase INVOKE_NATIVE = new INVOKE_NATIVE();
+    private static ICmdBase MONITOR_ENTER = new MONITOR_ENTER();
+    private static ICmdBase MONITOR_EXIT = new MONITOR_EXIT();
 
     private CmdFatory() {
     }
@@ -560,9 +562,9 @@ public class CmdFatory {
             case 0xc1:
                 return new INSTANCE_OF();
             case 0xc2:
-                unsupport(code);//monitorenter
+                return MONITOR_ENTER;
             case 0xc3:
-                unsupport(code);//monitorexit
+                return MONITOR_EXIT;
             case 0xc4:
                 return new WIDE();
             case 0xc5:
