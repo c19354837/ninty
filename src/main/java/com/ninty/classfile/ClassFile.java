@@ -139,7 +139,7 @@ public class ClassFile {
     public String toString() {
         return "ClassFile{" + "magic=" + magic + ", minorVersion=" + minorVersion + ", majorVersion=" + majorVersion
                 + ", accessFlags=" + accessFlags + ", thisClass=" + className + ", superClass=" + superClassName + "," +
-                "" + " interfaceInfos=" + Arrays.toString(interfaceNames) + ", fieldInfos=" + Arrays.toString
+                "" + "" + " interfaceInfos=" + Arrays.toString(interfaceNames) + ", fieldInfos=" + Arrays.toString
                 (fieldInfos) + ", methodInfos=" + Arrays.toString(methodInfos) + '}';
     }
 }

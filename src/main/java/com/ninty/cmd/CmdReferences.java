@@ -522,8 +522,7 @@ public class CmdReferences {
             if (!self.getClz().isImplements(method.getClz())) {
                 throw new IncompatibleClassChangeError();
             }
-            NiMethod finalMethod = MethodRef.lookUpMethods(frame.getMethod().getClz(), methodRef.getName(), methodRef
-                    .getDesc());
+            NiMethod finalMethod = MethodRef.lookUpMethods(self.getClz(), methodRef.getName(), methodRef.getDesc());
             if (finalMethod == null || finalMethod.isAbstract()) {
                 throw new AbstractMethodError();
             }

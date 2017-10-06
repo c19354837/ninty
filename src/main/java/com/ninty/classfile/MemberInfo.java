@@ -68,6 +68,6 @@ public class MemberInfo {
     @Override
     public String toString() {
         return "MemberInfo{" + "accessFlag=" + accessFlag + ", name='" + name + '\'' + ", desc='" + desc + '\'' + ", " +
-                "" + "attributeInfos=" + Arrays.toString(attributeInfos) + '}';
+                "" + "" + "attributeInfos=" + Arrays.toString(attributeInfos) + '}';
     }
 }

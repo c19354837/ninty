@@ -26,7 +26,11 @@ package com.ninty.nativee.lang;
 
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
+import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.NiThread;
+import com.ninty.runtime.Slot;
+import com.ninty.runtime.heap.NiMethod;
 import com.ninty.runtime.heap.NiObject;
 
 /**
@@ -39,6 +43,7 @@ public class NaThread {
     public static void init() {
         NaMethodManager.register(className, "currentThread", "()Ljava/lang/Thread;", new currentThread());
         NaMethodManager.register(className, "setPriority0", "(I)V", new setPriority0());
+        NaMethodManager.register(className, "start0", "()V", new start0());
     }
 
     public static class currentThread implements INativeMethod {
@@ -52,6 +57,21 @@ public class NaThread {
     public static class setPriority0 implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
+
+        }
+    }
+
+    public static class start0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiThread newThread = new NiThread(64);
+            LocalVars localVars = frame.getLocalVars();
+            NiObject thread = localVars.getThis();
+            newThread.setCurrentThread(thread);
+            new Thread(() -> {
+                NiMethod runMethod = thread.getClz().getMethod("run", "()V");
+                newThread.execMethod(runMethod, new Slot(thread));
+            }).start();
         }
     }
 }

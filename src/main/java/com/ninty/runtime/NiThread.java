@@ -17,14 +17,14 @@ public class NiThread {
 
     private static final String CLZ_THREAD = "java/lang/Thread";
 
-    public NiThread(int maxStackSize, NiClassLoader loader) {
+    public NiThread(int maxStackSize) {
         stack = new NiStack(maxStackSize);
     }
 
     public void generateThread(NiObject threadGroup, NiClassLoader loader, String name) {
         NiClass clz = loader.loadClass(CLZ_THREAD);
         NiObject thread = clz.newObject();
-        thread.setField("priority", "I", Thread.NORM_PRIORITY);
+        thread.setFieldInt("priority", "I", Thread.NORM_PRIORITY);
         NiMethod constructor = clz.getInitMethod("(Ljava/lang/ThreadGroup;Ljava/lang/String;)V");
         currentThread = thread;
         execMethod(constructor, new Slot(thread), new Slot(threadGroup), new Slot(NiString.newString(loader, name)));
@@ -77,7 +77,7 @@ public class NiThread {
                 slots.setSlot(i, stack.popSlot());
             }
         }
-        System.out.println("invoke method: " + method);
+        //        System.out.println("invoke method: " + method);
     }
 
     public void execThread() {
@@ -89,12 +89,12 @@ public class NiThread {
                 ByteBuffer bb = frame.getCode();
                 byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
-                //                try {
-                cmd.init(bb);
-                cmd.exec(frame);
-                //                } catch (Exception e) {
-                //                    throwException(frame, e);
-                //                }
+                try {
+                    cmd.init(bb);
+                    cmd.exec(frame);
+                } catch (Exception e) {
+                    throwException(frame, e);
+                }
 
                 //                System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
                 //                System.out.println(getT(getLevel()) + frame);
@@ -155,6 +155,10 @@ public class NiThread {
 
     public NiObject getCurrentThread() {
         return currentThread;
+    }
+
+    public void setCurrentThread(NiObject currentThread) {
+        this.currentThread = currentThread;
     }
 
     public NiFrame topFrame() {

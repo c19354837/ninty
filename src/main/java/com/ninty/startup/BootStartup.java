@@ -42,7 +42,7 @@ public class BootStartup {
     }
 
     private NiThread prepare() {
-        NiThread thread = new NiThread(64, loader);
+        NiThread thread = new NiThread(64);
         NiObject threadGroup = newThreadGroup(thread);
         thread.generateThread(threadGroup, loader, "main");
         return thread;
