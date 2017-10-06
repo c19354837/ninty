@@ -158,11 +158,7 @@ public class NiMethod extends ClassMember {
 
     @Override
     public String toString() {
-        return "NiMethod{" +
-                "clz=" + clz +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                '}';
+        return "NiMethod{" + "clz=" + clz + ", name='" + name + '\'' + ", desc='" + desc + '\'' + '}';
     }
 
     private static class ExceptionTable {

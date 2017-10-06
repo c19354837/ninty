@@ -12,7 +12,8 @@ public class WildcardEntry extends ClassEntry {
     protected WildcardEntry(String path) {
         super(path);
         String basePath = path.substring(0, path.length() - 1);//remove *
-        File[] files = new File(basePath).listFiles((dir, name) -> name.toLowerCase().endsWith(".zip") || name.toLowerCase().endsWith("jar"));
+        File[] files = new File(basePath).listFiles((dir, name) -> name.toLowerCase().endsWith(".zip") || name
+                .toLowerCase().endsWith("jar"));
         entrys = new ClassEntry[files.length];
         for (int i = 0; i < files.length; i++) {
             entrys[i] = new zipEntry(files[i].getAbsolutePath());

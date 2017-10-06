@@ -11,8 +11,7 @@ import java.nio.ByteBuffer;
  */
 public class CmdConstants {
 
-    public static class NOP extends NoOperandCmd {
-    }
+    public static class NOP extends NoOperandCmd {}
 
     public static class ACONST_NULL extends NoOperandCmd {
         @Override

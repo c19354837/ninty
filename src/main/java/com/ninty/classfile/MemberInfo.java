@@ -5,7 +5,8 @@ import com.ninty.classfile.constantpool.ConstantPoolInfos;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import static com.ninty.classfile.AttributeInfo.*;
+import static com.ninty.classfile.AttributeInfo.AttrCode;
+import static com.ninty.classfile.AttributeInfo.AttrConstantValue;
 
 /**
  * Created by ninty on 2017/7/9.
@@ -66,11 +67,7 @@ public class MemberInfo {
 
     @Override
     public String toString() {
-        return "MemberInfo{" +
-                "accessFlag=" + accessFlag +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", attributeInfos=" + Arrays.toString(attributeInfos) +
-                '}';
+        return "MemberInfo{" + "accessFlag=" + accessFlag + ", name='" + name + '\'' + ", desc='" + desc + '\'' + ", " +
+                "" + "attributeInfos=" + Arrays.toString(attributeInfos) + '}';
     }
 }

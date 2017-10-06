@@ -179,7 +179,8 @@ public class CmdArray {
             if (counts.length > 1) {
                 NiObject[] refs = array.aobject();
                 for (int i = 0; i < count; i++) {
-                    refs[i] = newMultiDimensionalArray(Arrays.copyOfRange(counts, 1, counts.length), clz.componentClass());
+                    refs[i] = newMultiDimensionalArray(Arrays.copyOfRange(counts, 1, counts.length), clz
+                            .componentClass());
                 }
             }
             return array;

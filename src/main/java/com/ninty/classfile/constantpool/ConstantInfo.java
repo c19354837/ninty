@@ -236,8 +236,9 @@ public class ConstantInfo {
 
 
     public enum CPType {
-        cp_utf8(1), cp_integer(3), cp_float(4), cp_long(5), cp_double(6), cp_class(7), cp_string(8), cp_field(9), cp_method(10),
-        cp_interface_method(11), cp_name_type(12), cp_method_handle(15), cp_method_type(16), cp_invoke_dynamic(18);
+        cp_utf8(1), cp_integer(3), cp_float(4), cp_long(5), cp_double(6), cp_class(7), cp_string(8), cp_field(9),
+        cp_method(10), cp_interface_method(11), cp_name_type(12), cp_method_handle(15), cp_method_type(16),
+        cp_invoke_dynamic(18);
 
         int tag;
 

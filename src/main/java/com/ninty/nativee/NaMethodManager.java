@@ -1,6 +1,7 @@
 package com.ninty.nativee;
 
 import com.ninty.nativee.lang.*;
+import com.ninty.nativee.security.NaAccessController;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiMethod;
@@ -23,6 +24,8 @@ public class NaMethodManager {
         NaDouble.init();
         NaString.init();
         NaThrowable.init();
+        NaThread.init();
+        NaAccessController.init();
     }
 
     private final static INativeMethod EMPTY = (NiFrame frame) -> {

@@ -137,17 +137,10 @@ public class ClassFile {
 
     @Override
     public String toString() {
-        return "ClassFile{" +
-                "magic=" + magic +
-                ", minorVersion=" + minorVersion +
-                ", majorVersion=" + majorVersion +
-                ", accessFlags=" + accessFlags +
-                ", thisClass=" + className +
-                ", superClass=" + superClassName +
-                ", interfaceInfos=" + Arrays.toString(interfaceNames) +
-                ", fieldInfos=" + Arrays.toString(fieldInfos) +
-                ", methodInfos=" + Arrays.toString(methodInfos) +
-                '}';
+        return "ClassFile{" + "magic=" + magic + ", minorVersion=" + minorVersion + ", majorVersion=" + majorVersion
+                + ", accessFlags=" + accessFlags + ", thisClass=" + className + ", superClass=" + superClassName + "," +
+                "" + " interfaceInfos=" + Arrays.toString(interfaceNames) + ", fieldInfos=" + Arrays.toString
+                (fieldInfos) + ", methodInfos=" + Arrays.toString(methodInfos) + '}';
     }
 }
 

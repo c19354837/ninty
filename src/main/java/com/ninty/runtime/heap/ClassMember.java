@@ -73,11 +73,7 @@ public class ClassMember {
 
     @Override
     public String toString() {
-        return "ClassMember{" +
-                "accessFlags=" + accessFlags +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", clz=" + clz +
-                '}';
+        return "ClassMember{" + "accessFlags=" + accessFlags + ", name='" + name + '\'' + ", desc='" + desc + '\'' +
+                ", clz=" + clz + '}';
     }
 }

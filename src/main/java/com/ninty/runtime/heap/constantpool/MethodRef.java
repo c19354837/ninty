@@ -62,10 +62,7 @@ public class MethodRef extends MemberRef {
 
     @Override
     public String toString() {
-        return "MethodRef{" +
-                "className='" + className + '\'' +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                '}';
+        return "MethodRef{" + "className='" + className + '\'' + ", name='" + name + '\'' + ", desc='" + desc + '\''
+                + '}';
     }
 }

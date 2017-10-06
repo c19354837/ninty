@@ -23,18 +23,7 @@ import java.nio.ByteBuffer;
 public class CmdReferences {
 
     public static void invokeMethod(NiFrame frame, NiMethod method) {
-        NiThread thread = frame.getThread();
-        NiFrame newFrame = new NiFrame(method);
-        thread.pushFrame(newFrame);
-        int argsCount = method.getArgsCount();
-        OperandStack stack = frame.getOperandStack();
-        LocalVars slots = newFrame.getLocalVars();
-        if (argsCount > 0) {
-            for (int i = argsCount - 1; i >= 0; i--) {
-                slots.setSlot(i, stack.popSlot());
-            }
-        }
-//        System.out.println("invoke method: " + method);
+        frame.getThread().invokeMethod(method);
     }
 
     private static void print(NiFrame frame, String desc) {
@@ -144,8 +133,7 @@ public class CmdReferences {
             if (!field.isStatic()) {
                 throw new IncompatibleClassChangeError(field.toString());
             }
-            if (field.isFinal() &&
-                    (curClz != clz || !method.getName().equals("<clinit>"))) {
+            if (field.isFinal() && (curClz != clz || !method.getName().equals("<clinit>"))) {
                 throw new IllegalAccessError("access final field failed");
             }
 
@@ -240,8 +228,7 @@ public class CmdReferences {
             if (field.isStatic()) {
                 throw new IncompatibleClassChangeError(field.toString());
             }
-            if (field.isFinal() &&
-                    (curClz != clz || !method.getName().equals("<init>"))) {
+            if (field.isFinal() && (curClz != clz || !method.getName().equals("<init>"))) {
                 throw new IllegalAccessError("access final field failed");
             }
 
@@ -447,18 +434,13 @@ public class CmdReferences {
                 throw new NullPointerException("this cannot be null");
             }
 
-            if (method.isProtected()
-                    && c.isSubClass(clz)
-                    && !c.isSamePackge(clz)
-                    && ref.getClz() != c
-                    && !c.isSubClass(ref.getClz())) {
+            if (method.isProtected() && c.isSubClass(clz) && !c.isSamePackge(clz) && ref.getClz() != c && !c
+                    .isSubClass(ref.getClz())) {
                 throw new IllegalAccessError("only self or subclass can access the protected method");
             }
 
             NiMethod finalMethod = method;
-            if (method.isSuper()
-                    && c.isSubClass(clz)
-                    && !method.getName().equals("<init>")) {
+            if (method.isSuper() && c.isSubClass(clz) && !method.getName().equals("<init>")) {
                 finalMethod = MethodRef.lookUpMethods(c.getSuperClass(), methodRef.getName(), methodRef.getDesc());
             }
 
@@ -495,18 +477,13 @@ public class CmdReferences {
                 throw new NullPointerException("this cannot be null");
             }
 
-            if (method.isProtected()
-                    && c.isSubClass(clz)
-                    && !c.isSamePackge(clz)
-                    && ref.getClz() != c
-                    && !c.isSubClass(ref.getClz())) {
+            if (method.isProtected() && c.isSubClass(clz) && !c.isSamePackge(clz) && ref.getClz() != c && !c
+                    .isSubClass(ref.getClz())) {
                 throw new IllegalAccessError("only self or subclass can access the protected method");
             }
 
             NiMethod finalMethod = method;
-            if (method.isSuper()
-                    && c.isSubClass(clz)
-                    && !method.getName().equals("<init>")) {
+            if (method.isSuper() && c.isSubClass(clz) && !method.getName().equals("<init>")) {
                 finalMethod = MethodRef.lookUpMethods(clz, methodRef.getName(), methodRef.getDesc());
             }
 
@@ -545,7 +522,8 @@ public class CmdReferences {
             if (!self.getClz().isImplements(method.getClz())) {
                 throw new IncompatibleClassChangeError();
             }
-            NiMethod finalMethod = MethodRef.lookUpMethods(frame.getMethod().getClz(), methodRef.getName(), methodRef.getDesc());
+            NiMethod finalMethod = MethodRef.lookUpMethods(frame.getMethod().getClz(), methodRef.getName(), methodRef
+                    .getDesc());
             if (finalMethod == null || finalMethod.isAbstract()) {
                 throw new AbstractMethodError();
             }

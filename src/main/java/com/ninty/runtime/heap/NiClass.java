@@ -111,6 +111,15 @@ public class NiClass {
         return getMethod("<clinit>", "()V");
     }
 
+
+    public NiMethod getDefaultInitMethod() {
+        return getInitMethod("()V");
+    }
+
+    public NiMethod getInitMethod(String desc) {
+        return getMethod("<init>", desc);
+    }
+
     public NiMethod getToStringMethod() {
         return getMethod("toString", "()Ljava/lang/String;");
     }
@@ -300,7 +309,8 @@ public class NiClass {
      * clz extend this
      */
     public boolean isSubClass(NiClass clz) {
-        return clz != null && (clz.superClassName != null && clz.superClassName.equals(className) || this.isSubClass(clz.getSuperClass()));
+        return clz != null && (clz.superClassName != null && clz.superClassName.equals(className) || this.isSubClass
+                (clz.getSuperClass()));
     }
 
     /**

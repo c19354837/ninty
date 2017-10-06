@@ -84,8 +84,6 @@ public class LocalVars {
 
     @Override
     public String toString() {
-        return "LocalVars{" +
-                "slots=" + Arrays.toString(slots) +
-                '}';
+        return "LocalVars{" + "slots=" + Arrays.toString(slots) + '}';
     }
 }

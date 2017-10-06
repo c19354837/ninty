@@ -26,7 +26,6 @@ package com.ninty.nativee.lang;
 
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
-import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.heap.NiObject;
 
@@ -38,23 +37,21 @@ public class NaThread {
     private final static String className = "java/lang/Thread";
 
     public static void init() {
-        NaMethodManager.register(className, "currentThread", "()Ljava/lang/thread;", new currentThread());
+        NaMethodManager.register(className, "currentThread", "()Ljava/lang/Thread;", new currentThread());
+        NaMethodManager.register(className, "setPriority0", "(I)V", new setPriority0());
     }
 
     public static class currentThread implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
-            Thread currentThread = Thread.currentThread();
-            LocalVars localVars = frame.getLocalVars();
-            NiObject src = localVars.getRef(0);
-            int srcPos = localVars.getInt(1);
-            NiObject desc = localVars.getRef(2);
-            int descPos = localVars.getInt(3);
-            int length = localVars.getInt(4);
-            if (!src.getClz().isArray() || !desc.getClz().isArray()) {
-                throw new ArrayStoreException();
-            }
-            System.arraycopy(src.getArrayDatas(), srcPos, desc.getArrayDatas(), descPos, length);
+            NiObject currentThread = frame.getThread().getCurrentThread();
+            frame.getOperandStack().pushRef(currentThread);
+        }
+    }
+
+    public static class setPriority0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
         }
     }
 }

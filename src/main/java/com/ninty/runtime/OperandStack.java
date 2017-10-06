@@ -103,9 +103,6 @@ public class OperandStack {
 
     @Override
     public String toString() {
-        return "OperandStack{" +
-                "slots=" + Arrays.toString(slots) +
-                ", size=" + size +
-                '}';
+        return "OperandStack{" + "slots=" + Arrays.toString(slots) + ", size=" + size + '}';
     }
 }

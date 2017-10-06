@@ -59,10 +59,7 @@ public class FieldRef extends MemberRef {
 
     @Override
     public String toString() {
-        return "FieldRef{" +
-                "className='" + className + '\'' +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
+        return "FieldRef{" + "className='" + className + '\'' + ", name='" + name + '\'' + ", desc='" + desc + '\'' +
                 '}';
     }
 }

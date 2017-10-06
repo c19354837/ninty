@@ -86,10 +86,6 @@ public class NiFrame {
 
     @Override
     public String toString() {
-        return "NiFrame{" +
-                "method=" + method +
-                ",\nlocalVars=" + localVars +
-                ", operandStack=" + operandStack +
-                '}';
+        return "NiFrame{" + "method=" + method + ",\nlocalVars=" + localVars + ", operandStack=" + operandStack + '}';
     }
 }

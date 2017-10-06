@@ -67,7 +67,8 @@ public class NiClassLoader {
     }
 
     private NiClass loadArrayClass(String className) {
-        NiClass clz = new NiClass(ClassConstant.ACC_PUBLIC, className, "java/lang/Object", new String[]{"java/lang/Cloneable", "java/io/Serializable"});
+        NiClass clz = new NiClass(ClassConstant.ACC_PUBLIC, className, "java/lang/Object", new
+                String[]{"java/lang/Cloneable", "java/io/Serializable"});
         resolve(clz);
         classes.put(className, clz);
         return clz;

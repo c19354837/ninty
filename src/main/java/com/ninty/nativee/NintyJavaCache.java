@@ -47,7 +47,7 @@ public class NintyJavaCache {
      * convert Object to NiObject, then cache it.
      */
     public static NiObject cache(Object obj) {
-        if(obj == null){
+        if (obj == null) {
             return null;
         }
 
@@ -73,21 +73,21 @@ public class NintyJavaCache {
             NiField refField = refFields[i];
             Field declaredField = objClass.getDeclaredField(refField.getName());
             Class<?> type = declaredField.getType();
-            if(type == boolean.class){
+            if (type == boolean.class) {
                 refFieldVals.setInt(refField.getSlotId(), declaredField.getBoolean(obj) ? 1 : 0);
-            }else if(type == byte.class){
+            } else if (type == byte.class) {
                 refFieldVals.setInt(refField.getSlotId(), declaredField.getByte(obj));
-            }else if(type == short.class){
+            } else if (type == short.class) {
                 refFieldVals.setInt(refField.getSlotId(), declaredField.getShort(obj));
-            }else if(type == char.class){
+            } else if (type == char.class) {
                 refFieldVals.setInt(refField.getSlotId(), declaredField.getChar(obj));
-            }else if(type == int.class){
+            } else if (type == int.class) {
                 refFieldVals.setInt(refField.getSlotId(), declaredField.getInt(obj));
-            }else if(type == float.class){
+            } else if (type == float.class) {
                 refFieldVals.setFloat(refField.getSlotId(), declaredField.getFloat(obj));
-            }else if(type == long.class){
+            } else if (type == long.class) {
                 refFieldVals.setLong(refField.getSlotId(), declaredField.getLong(obj));
-            }else if(type == double.class){
+            } else if (type == double.class) {
                 refFieldVals.setDouble(refField.getSlotId(), declaredField.getDouble(obj));
             }
         }
