@@ -1,7 +1,6 @@
 package com.ninty.startup;
 
 import com.ninty.classpath.ClassPath;
-import com.ninty.nativee.NintyJavaCache;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.Slot;
 import com.ninty.runtime.heap.NiClass;
@@ -32,7 +31,6 @@ public class BootStartup {
     //TODO -XX
     private void resolveClass() {
         loader = new NiClassLoader(cp);
-        NintyJavaCache.setClassLoader(loader);
         NiClass clz = loader.loadClass(className);
         NiMethod mainMethod = clz.getMainMethod();
         if (mainMethod == null) {
