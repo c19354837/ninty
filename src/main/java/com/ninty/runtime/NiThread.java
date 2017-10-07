@@ -4,6 +4,7 @@ import com.ninty.cmd.CmdReferences;
 import com.ninty.cmd.base.CmdFatory;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.runtime.heap.*;
+import com.sun.jdi.NativeMethodException;
 
 import java.nio.ByteBuffer;
 
@@ -111,10 +112,14 @@ public class NiThread {
         }
     }
 
-    private void throwException(NiFrame frame, Exception e) {
+    private void throwException(NiFrame frame, Exception e) throws Exception {
+        Class eClz = e.getClass();
+        if (eClz == NativeMethodException.class) {
+            throw e;
+        }
         frame.restorePostion();
         // new
-        NiClass exClz = frame.getMethod().getClz().getLoader().loadClass(e.getClass().getName());
+        NiClass exClz = frame.getMethod().getClz().getLoader().loadClass(eClz.getName());
 
         // dup
         if (frame.getOperandStack().getSize() < 2) {
