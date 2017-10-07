@@ -22,7 +22,7 @@ public class ConstantPoolInfos {
         }
     }
 
-    ConstantInfo get(int index) {
+    public ConstantInfo get(int index) {
         ConstantInfo ci = cps[index];
         if (ci == null) {
             throw new NullPointerException("cannot find constant index:" + index);

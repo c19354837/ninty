@@ -1,5 +1,6 @@
 package com.ninty.classfile;
 
+import com.ninty.classfile.constantpool.ConstantInfo;
 import com.ninty.classfile.constantpool.ConstantPoolInfos;
 
 import java.nio.ByteBuffer;
@@ -29,6 +30,8 @@ public class AttributeInfo {
                 return new AttrLineNumberTable(bb);
             case "LocalVariableTable":
                 return new AttrLocalVariableTable(cps, bb);
+            case "BootstrapMethods":
+                return new BootstrapMethods(cps, bb);
             default:
                 return new UnkonwAttr(bb);
         }
@@ -198,6 +201,35 @@ public class AttributeInfo {
             endPc = bb.getChar();
             handlerPc = bb.getChar();
             catchType = bb.getChar();
+        }
+    }
+
+    public static class BootstrapMethods extends AttributeInfo {
+        BootstrapMethodInfo[] bootstarpMethods;
+
+        BootstrapMethods(ConstantPoolInfos cps, ByteBuffer bb) {
+            skipAttributeLen(bb);
+            int num = bb.getChar();
+            bootstarpMethods = new BootstrapMethodInfo[num];
+            for (int i = 0; i < num; i++) {
+                bootstarpMethods[i] = new BootstrapMethodInfo(cps, bb);
+            }
+        }
+    }
+
+    static class BootstrapMethodInfo {
+        ConstantInfo.CPMethodHandleInfo methodHandle;
+        ConstantInfo[] arguments;
+
+        BootstrapMethodInfo(ConstantPoolInfos cps, ByteBuffer bb) {
+            int mhIndex = bb.getChar();
+            methodHandle = (ConstantInfo.CPMethodHandleInfo) cps.get(mhIndex);
+            int argNum = bb.getChar();
+            arguments = new ConstantInfo[argNum];
+            for (int i = 0; i < argNum; i++) {
+                int cpIndex = bb.getChar();
+                arguments[i] = cps.get(cpIndex);
+            }
         }
     }
 

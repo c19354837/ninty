@@ -224,6 +224,10 @@ public class ConstantInfo {
             referenceKind = bb.get();
             referenceIndex = bb.getChar();
         }
+
+        public ConstantInfo getReference() {
+            return cps.get(referenceIndex);
+        }
     }
 
     public static class CPMethodType extends ConstantInfo {

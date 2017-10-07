@@ -126,8 +126,10 @@ public class NiConstant {
     }
 
     public static class NiMethodHandleInfo extends NiConstant {
+        NiConstant methodHandle;
+
         NiMethodHandleInfo(ConstantInfo.CPMethodHandleInfo cp) {
-            // TODO
+            methodHandle = generate(cp.getReference());
         }
     }
 }
