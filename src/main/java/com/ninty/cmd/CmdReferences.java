@@ -1,5 +1,6 @@
 package com.ninty.cmd;
 
+import com.ninty.classfile.AttributeInfo;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index16Cmd;
 import com.ninty.cmd.base.Index8Cmd;
@@ -542,6 +543,22 @@ public class CmdReferences {
                 throw new NativeMethodException("cannot found native method: " + method);
             }
             nativeMethod.invoke(frame);
+        }
+    }
+
+    public static class INVOKE_DYNAMIC extends Index16Cmd {
+        @Override
+        public void exec(NiFrame frame) {
+            NiConstantPool cps = getCP(frame);
+            NiConstant.NiInvokeDynamic dynamicInfo = (NiConstant.NiInvokeDynamic) cps.get(index);
+            AttributeInfo.BootstrapMethodInfo bootstrapMethodInfo = frame.getMethod().getClz().getBootstrapMethodInfo(dynamicInfo.bmaIndex);
+            NiConstant.NiMethodHandleInfo cp = (NiConstant.NiMethodHandleInfo) cps.get(bootstrapMethodInfo.bmhIndex);
+            NiConstant handle = cps.get(cp.mhIndex);
+            if (handle instanceof MethodRef) {
+                MethodRef ref = (MethodRef) handle;
+                ref.resolve();
+                // TODO
+            }
         }
     }
 

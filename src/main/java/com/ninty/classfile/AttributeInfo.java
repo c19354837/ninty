@@ -31,7 +31,7 @@ public class AttributeInfo {
             case "LocalVariableTable":
                 return new AttrLocalVariableTable(cps, bb);
             case "BootstrapMethods":
-                return new BootstrapMethods(cps, bb);
+                return new AttrBootstrapMethods(cps, bb);
             default:
                 return new UnkonwAttr(bb);
         }
@@ -204,10 +204,10 @@ public class AttributeInfo {
         }
     }
 
-    public static class BootstrapMethods extends AttributeInfo {
-        BootstrapMethodInfo[] bootstarpMethods;
+    public static class AttrBootstrapMethods extends AttributeInfo {
+        public BootstrapMethodInfo[] bootstarpMethods;
 
-        BootstrapMethods(ConstantPoolInfos cps, ByteBuffer bb) {
+        AttrBootstrapMethods(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
             int num = bb.getChar();
             bootstarpMethods = new BootstrapMethodInfo[num];
@@ -217,13 +217,12 @@ public class AttributeInfo {
         }
     }
 
-    static class BootstrapMethodInfo {
-        ConstantInfo.CPMethodHandleInfo methodHandle;
-        ConstantInfo[] arguments;
+    public static class BootstrapMethodInfo {
+        public int bmhIndex;
+        public ConstantInfo[] arguments;
 
         BootstrapMethodInfo(ConstantPoolInfos cps, ByteBuffer bb) {
-            int mhIndex = bb.getChar();
-            methodHandle = (ConstantInfo.CPMethodHandleInfo) cps.get(mhIndex);
+            bmhIndex = bb.getChar();
             int argNum = bb.getChar();
             arguments = new ConstantInfo[argNum];
             for (int i = 0; i < argNum; i++) {

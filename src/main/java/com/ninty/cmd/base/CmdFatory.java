@@ -546,7 +546,7 @@ public class CmdFatory {
             case 0xb9:
                 return new INVOKE_INTERFACE();
             case 0xba:
-                unsupport(code);//invokedynamic
+                return new INVOKE_DYNAMIC();
             case 0xbb:
                 return new NEW();
             case 0xbc:

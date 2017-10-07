@@ -214,6 +214,18 @@ public class ConstantInfo {
             bootstrapMethodAttrIndex = bb.getChar();
             nameAndTypeIndex = bb.getChar();
         }
+
+        public int bootIndex() {
+            return bootstrapMethodAttrIndex;
+        }
+
+        public String name() {
+            return ((CPNameAndType) cps.get(nameAndTypeIndex)).name();
+        }
+
+        public String desc() {
+            return ((CPNameAndType) cps.get(nameAndTypeIndex)).desc();
+        }
     }
 
     public static class CPMethodHandleInfo extends ConstantInfo {
@@ -225,8 +237,8 @@ public class ConstantInfo {
             referenceIndex = bb.getChar();
         }
 
-        public ConstantInfo getReference() {
-            return cps.get(referenceIndex);
+        public int getReference() {
+            return referenceIndex;
         }
     }
 

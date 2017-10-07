@@ -30,9 +30,6 @@ public class NiConstant {
             case cp_utf8:
                 nicp = new NiConstant.NiUtf8((ConstantInfo.CPUtf8) cp);
                 break;
-            case cp_name_type:
-                nicp = new NiNameAndType((ConstantInfo.CPNameAndType) cp);
-                break;
             case cp_class:
                 nicp = new ClassRef((ConstantInfo.CPClass) cp);
                 break;
@@ -116,19 +113,15 @@ public class NiConstant {
         }
     }
 
-    public static class NiNameAndType extends NiConstant {
-        String name;
-        String desc;
+    public static class NiInvokeDynamic extends NiConstant {
+        public int bmaIndex; // bootstrapMethodAttrIndex
+        public String name;
+        public String desc;
 
-        NiNameAndType(ConstantInfo.CPNameAndType cp) {
+        NiInvokeDynamic(ConstantInfo.CPInvokeDynamic cp) {
+            bmaIndex = cp.bootIndex();
             name = cp.name();
             desc = cp.desc();
-        }
-    }
-
-    public static class NiInvokeDynamic extends NiConstant {
-        NiInvokeDynamic(ConstantInfo.CPInvokeDynamic cp) {
-            // TODO
         }
     }
 
@@ -139,10 +132,10 @@ public class NiConstant {
     }
 
     public static class NiMethodHandleInfo extends NiConstant {
-        NiConstant methodHandle;
+        public int mhIndex;
 
         NiMethodHandleInfo(ConstantInfo.CPMethodHandleInfo cp) {
-            methodHandle = generate(cp.getReference());
+            mhIndex = cp.getReference();
         }
     }
 }

@@ -26,6 +26,8 @@ public class NiClass {
     private NiField[] fields;
     private NiMethod[] methods;
 
+    private AttributeInfo[] attributeInfos;
+
     private String sourceFile;
 
     NiClassLoader loader;
@@ -63,6 +65,7 @@ public class NiClass {
         initFiled(classFile);
         initMethod(classFile);
         initSourceFile(classFile);
+        attributeInfos = classFile.getAttributeInfos();
     }
 
     public NiClass(int accessFlags, String className, String superClassName, String[] interfaceNames) {
@@ -339,6 +342,19 @@ public class NiClass {
 
     public boolean canAccess(NiClass clz) {
         return clz.isPublic() || clz.packageName().equals(this.packageName());
+    }
+
+    public AttributeInfo.BootstrapMethodInfo getBootstrapMethodInfo(int index) {
+        AttributeInfo.AttrBootstrapMethods bootstrapMethods = null;
+        for (int i = 0; i < attributeInfos.length; i++) {
+            if (attributeInfos[i] instanceof AttributeInfo.AttrBootstrapMethods) {
+                bootstrapMethods = (AttributeInfo.AttrBootstrapMethods) attributeInfos[i];
+            }
+        }
+        if (bootstrapMethods == null) {
+            throw new ClassFormatError("can not find BootstrapMethods in: " + index + ", className: " + className);
+        }
+        return bootstrapMethods.bootstarpMethods[index];
     }
 
     public String getClassName() {
