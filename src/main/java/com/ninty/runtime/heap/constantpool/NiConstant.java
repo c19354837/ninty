@@ -13,16 +13,16 @@ public class NiConstant {
         NiConstant nicp;
         switch (cp.type) {
             case cp_integer:
-                nicp = new NiConstant.NiInteger((ConstantInfo.CPInteger) cp);
+                nicp = new NiInteger((ConstantInfo.CPInteger) cp);
                 break;
             case cp_long:
-                nicp = new NiConstant.NiLong((ConstantInfo.CPLong) cp);
+                nicp = new NiLong((ConstantInfo.CPLong) cp);
                 break;
             case cp_float:
-                nicp = new NiConstant.NiFloat((ConstantInfo.CPFloat) cp);
+                nicp = new NiFloat((ConstantInfo.CPFloat) cp);
                 break;
             case cp_double:
-                nicp = new NiConstant.NiDouble((ConstantInfo.CPDouble) cp);
+                nicp = new NiDouble((ConstantInfo.CPDouble) cp);
                 break;
             case cp_string:
                 nicp = new NiStr((ConstantInfo.CPString) cp);
