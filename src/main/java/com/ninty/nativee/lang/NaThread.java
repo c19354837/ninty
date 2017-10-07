@@ -44,6 +44,7 @@ public class NaThread {
         NaMethodManager.register(className, "currentThread", "()Ljava/lang/Thread;", new currentThread());
         NaMethodManager.register(className, "setPriority0", "(I)V", new setPriority0());
         NaMethodManager.register(className, "start0", "()V", new start0());
+        NaMethodManager.register(className, "sleep", "(J)V", new sleep());
     }
 
     public static class currentThread implements INativeMethod {
@@ -72,6 +73,20 @@ public class NaThread {
                 NiMethod runMethod = thread.getClz().getMethod("run", "()V");
                 newThread.execMethod(runMethod, new Slot(thread));
             }).start();
+        }
+    }
+
+    public static class sleep implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            long duration = localVars.getLong(0);
+            try {
+                // TODO native method exception handler
+                Thread.sleep(duration);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
