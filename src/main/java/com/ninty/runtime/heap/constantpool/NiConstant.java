@@ -30,6 +30,9 @@ public class NiConstant {
             case cp_utf8:
                 nicp = new NiConstant.NiUtf8((ConstantInfo.CPUtf8) cp);
                 break;
+            case cp_name_type:
+                nicp = new NiNameAndType((ConstantInfo.CPNameAndType) cp);
+                break;
             case cp_class:
                 nicp = new ClassRef((ConstantInfo.CPClass) cp);
                 break;
@@ -110,6 +113,16 @@ public class NiConstant {
 
         NiUtf8(ConstantInfo.CPUtf8 cp) {
             value = cp.value();
+        }
+    }
+
+    public static class NiNameAndType extends NiConstant {
+        String name;
+        String desc;
+
+        NiNameAndType(ConstantInfo.CPNameAndType cp) {
+            name = cp.name();
+            desc = cp.desc();
         }
     }
 
