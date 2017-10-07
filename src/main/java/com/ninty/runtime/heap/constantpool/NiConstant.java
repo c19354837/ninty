@@ -126,8 +126,10 @@ public class NiConstant {
     }
 
     public static class NiMethodType extends NiConstant {
+        public String desc;
+
         NiMethodType(ConstantInfo.CPMethodType cp) {
-            // TODO
+            desc = cp.desc();
         }
     }
 

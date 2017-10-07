@@ -248,6 +248,10 @@ public class ConstantInfo {
         public CPMethodType(ByteBuffer bb) {
             descriptorIndex = bb.getChar();
         }
+
+        public String desc(){
+            return ((CPUtf8) cps.get(descriptorIndex)).value;
+        }
     }
 
 
