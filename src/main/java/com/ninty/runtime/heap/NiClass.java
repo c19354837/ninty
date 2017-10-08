@@ -7,9 +7,7 @@ import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.heap.constantpool.NiConstantPool;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.ninty.utils.VMUtils;
 
 /**
  * Created by ninty on 2017/7/23.
@@ -37,20 +35,6 @@ public class NiClass {
 
     private boolean clinit;
     private NiObject jClass; // class's class, className=java/lang/Class
-
-    static Map<String, String> primitiveTypes = new HashMap<>(16);
-
-    static {
-        primitiveTypes.put("void", "V");
-        primitiveTypes.put("boolean", "Z");
-        primitiveTypes.put("byte", "B");
-        primitiveTypes.put("short", "S");
-        primitiveTypes.put("char", "C");
-        primitiveTypes.put("int", "I");
-        primitiveTypes.put("long", "L");
-        primitiveTypes.put("float", "F");
-        primitiveTypes.put("double", "D");
-    }
 
     public NiClass() {
     }
@@ -212,23 +196,27 @@ public class NiClass {
         return new NiObject(this, instantceSlotCount);
     }
 
-    public void clinit(NiThread thread) {
+    public boolean clinit(NiThread thread) {
         clinit = true;
-        scheduleClinit(thread);
-        initSuperClass(thread);
+        boolean result1 =  scheduleClinit(thread);
+        boolean result2 = initSuperClass(thread);
+        return result1 || result2;
     }
 
-    private void scheduleClinit(NiThread thread) {
+    private boolean scheduleClinit(NiThread thread) {
         NiMethod clinitMethod = getClinitMethod();
         if (clinitMethod != null) {
             thread.pushFrame(new NiFrame(clinitMethod));
+            return true;
         }
+        return false;
     }
 
-    private void initSuperClass(NiThread thread) {
+    private boolean initSuperClass(NiThread thread) {
         if (!isInterface() && superClass != null && !superClass.isClinit()) {
-            superClass.clinit(thread);
+            return superClass.clinit(thread);
         }
+        return false;
     }
 
     public NiObject newArray(int count) {
@@ -267,7 +255,7 @@ public class NiClass {
     public NiClass getArrayClass() {
         String className = this.className;
         if (!isArray()) {
-            String type = primitiveTypes.get(className);
+            String type = VMUtils.primitiveTypes.get(className);
             if (type == null) {
                 className = "L" + className + ";";
             } else {
@@ -280,24 +268,9 @@ public class NiClass {
 
     public NiClass componentClass() {
         if (isArray()) {
-            return loader.loadClass(toClassname(className.substring(1)));
+            return loader.loadClass(VMUtils.toClassname(className.substring(1)));
         }
         throw new IllegalAccessError("Current class is not an array:" + this);
-    }
-
-    private String toClassname(String desc) {
-        if (desc.charAt(0) == '[') {
-            return desc;
-        }
-        if (desc.charAt(0) == 'L') {
-            return desc.substring(0, desc.length() - 1);
-        }
-        for (String key : primitiveTypes.keySet()) {
-            if (primitiveTypes.get(key).equals(desc)) {
-                return key;
-            }
-        }
-        throw new IllegalArgumentException("invalid descriptor:" + desc);
     }
 
     public String javaName() {
@@ -355,6 +328,25 @@ public class NiClass {
             throw new ClassFormatError("can not find BootstrapMethods in: " + index + ", className: " + className);
         }
         return bootstrapMethods.bootstarpMethods[index];
+    }
+
+    public int getStaticInt(String name){
+        NiField field = findField(name, "I");
+        return staticSlots.getInt(field.getSlotId());
+    }
+
+    public NiObject getStaticRef(String name, String desc){
+        NiField field = findField(name, desc);
+        return staticSlots.getRef(field.getSlotId());
+    }
+
+    public void setStaticRef(String name, String desc, NiObject ref){
+        NiField field = findField(name, desc);
+        staticSlots.setRef(field.getSlotId(), ref);
+    }
+
+    public int getAccessFlags() {
+        return accessFlags;
     }
 
     public String getClassName() {

@@ -1,6 +1,7 @@
 package com.ninty.cmd;
 
 import com.ninty.classfile.AttributeInfo;
+import com.ninty.classfile.constantpool.ConstantInfo;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index16Cmd;
 import com.ninty.cmd.base.Index8Cmd;
@@ -8,12 +9,10 @@ import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.nativee.lang.NaThrowable;
-import com.ninty.runtime.LocalVars;
-import com.ninty.runtime.NiFrame;
-import com.ninty.runtime.NiThread;
-import com.ninty.runtime.OperandStack;
+import com.ninty.runtime.*;
 import com.ninty.runtime.heap.*;
 import com.ninty.runtime.heap.constantpool.*;
+import com.ninty.utils.VMUtils;
 import com.sun.jdi.NativeMethodException;
 
 import java.nio.ByteBuffer;
@@ -423,9 +422,9 @@ public class CmdReferences {
 
             NiMethod method = methodRef.getMethod();
             NiClass clz = methodRef.getClz();
-            NiClass c = frame.getMethod().getClz();
+
             if (method.getName().equals("<init>") && method.getClz() != clz) {
-                throw new NoSuchMethodError("should call <init> with same class, except:" + c + ", while:" + clz);
+                throw new NoSuchMethodError("should call <init> with same class, except:" + method.getClz() + ", while:" + clz);
             }
             if (method.isStatic()) {
                 throw new IncompatibleClassChangeError(method + " is static");
@@ -434,6 +433,7 @@ public class CmdReferences {
             if (ref == null) {
                 throw new NullPointerException("this cannot be null");
             }
+            NiClass c = ref.getClz();
 
             if (method.isProtected() && c.isSubClass(clz) && !c.isSamePackge(clz) && ref.getClz() != c && !c
                     .isSubClass(ref.getClz())) {
@@ -462,7 +462,6 @@ public class CmdReferences {
             methodRef.resolve();
             NiMethod method = methodRef.getMethod();
             NiClass clz = methodRef.getClz();
-            NiClass c = frame.getMethod().getClz();
 
             if (method.isStatic()) {
                 throw new IncompatibleClassChangeError(method + " is static");
@@ -477,16 +476,14 @@ public class CmdReferences {
                 //hack end
                 throw new NullPointerException("this cannot be null");
             }
+            NiClass c = ref.getClz();
 
             if (method.isProtected() && c.isSubClass(clz) && !c.isSamePackge(clz) && ref.getClz() != c && !c
                     .isSubClass(ref.getClz())) {
                 throw new IllegalAccessError("only self or subclass can access the protected method");
             }
 
-            NiMethod finalMethod = method;
-            if (method.isSuper() && c.isSubClass(clz) && !method.getName().equals("<init>")) {
-                finalMethod = MethodRef.lookUpMethods(clz, methodRef.getName(), methodRef.getDesc());
-            }
+            NiMethod finalMethod = MethodRef.lookUpMethods(c, methodRef.getName(), methodRef.getDesc());;
 
             if (finalMethod == null || finalMethod.isAbstract()) {
                 throw new AbstractMethodError();
@@ -547,6 +544,10 @@ public class CmdReferences {
     }
 
     public static class INVOKE_DYNAMIC extends Index16Cmd {
+        private final static String CLZ_METHOD_HANDLE = "java/lang/invoke/MethodHandle";
+        private final static String CLZ_METHOD_TYPE = "java/lang/invoke.MethodType";
+        private final static String CLZ_LOOK_UP = "java/lang/invoke/MethodHandles$Lookup";
+
         @Override
         public void exec(NiFrame frame) {
             NiConstantPool cps = getCP(frame);
@@ -554,10 +555,77 @@ public class CmdReferences {
             AttributeInfo.BootstrapMethodInfo bootstrapMethodInfo = frame.getMethod().getClz().getBootstrapMethodInfo(dynamicInfo.bmaIndex);
             NiConstant.NiMethodHandleInfo cp = (NiConstant.NiMethodHandleInfo) cps.get(bootstrapMethodInfo.bmhIndex);
             NiConstant handle = cps.get(cp.mhIndex);
+
             if (handle instanceof MethodRef) {
                 MethodRef ref = (MethodRef) handle;
                 ref.resolve();
-                // TODO
+                NiClassLoader loader = frame.getMethod().getClz().getLoader();
+                NiMethod method = ref.getMethod();
+                NiObject caller = getLookUp(frame);
+                NiObject invokedName = NiString.newString(loader, dynamicInfo.name);
+                NiObject invokedType = getMethodType(frame, dynamicInfo.desc);
+                NiObject samMethodType = getMethodType(frame, ((ConstantInfo.CPMethodType)bootstrapMethodInfo.arguments[0]).desc());
+                NiObject instantiatedMethodType = getMethodType(frame, ((ConstantInfo.CPMethodType)bootstrapMethodInfo.arguments[2]).desc());
+                ConstantInfo.CPMethodHandleInfo argument = (ConstantInfo.CPMethodHandleInfo) bootstrapMethodInfo.arguments[1];
+                MethodRef m = (MethodRef)cps.get(argument.getReference());
+                m.resolve();
+                NiObject implMethod = getMethodHandle(frame, caller, m.getMethod());
+
+                invoke(frame, method, caller, invokedName, invokedType, samMethodType, implMethod, instantiatedMethodType);
+            }
+        }
+
+        private NiObject getLookUp(NiFrame frame){
+            NiClassLoader loader = frame.getMethod().getClz().getLoader();
+            NiClass clzLookUp = loader.loadClass(CLZ_LOOK_UP);
+            NiObject objLookUp = clzLookUp.newObject();
+            objLookUp.setFieldRef("lookupClass", "Ljava/lang/Class;", frame.getMethod().getClz().getjClass());
+            objLookUp.setFieldInt("allowedModes", clzLookUp.getStaticInt("ALL_MODES"));
+            return objLookUp;
+        }
+
+        private NiObject getMethodType(NiFrame frame, String desc){
+            NiClassLoader loader = frame.getMethod().getClz().getLoader();
+            int index = desc.indexOf(')');
+            String paramDesc = desc.substring(1, index);
+            String[] params = VMUtils.toParams(paramDesc);
+            NiObject[] objP = new NiObject[params.length];
+            for (int i = 0; i < params.length; i++) {
+                objP[i] = loader.loadClass(params[i]).getjClass();
+            }
+
+            NiClass clzA = loader.loadClass("[Ljava/lang/Class");
+            NiObject pClzs = new NiObject(clzA, objP);
+
+            String ret = desc.substring(index + 1);
+            NiObject rClz = loader.loadClass(VMUtils.toClassname(ret)).getjClass();
+
+            NiClassLoader methodType = frame.getMethod().getClz().getLoader();
+            NiClass clzMethodType = loader.loadClass(CLZ_METHOD_TYPE);
+            NiObject objMethodType = clzMethodType.newObject();
+            objMethodType.setFieldRef("rtype", "Ljava/lang/Class;", rClz);
+            objMethodType.setFieldRef("ptypes", "[Ljava/lang/Class;", pClzs);
+            return objMethodType;
+        }
+
+        private NiObject getMethodHandle(NiFrame frame, NiObject lookUp, NiMethod method){
+            NiClassLoader loader = frame.getMethod().getClz().getLoader();
+            NiMethod findStatic = lookUp.getClz().getMethod("findStatic",
+                    "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;");
+            Slot ret = NiThread.execMethodDirectly(findStatic,
+                    new Slot(lookUp),
+                    new Slot(method.getClz().getjClass()),
+                    new Slot(NiString.newString(loader, method.getName())),
+                    new Slot(getMethodType(frame, method.getDesc())));
+            return ret.getRef();
+        }
+
+        private void invoke(NiFrame frame, NiMethod method, NiObject... params){
+            NiFrame newFrame = new NiFrame(method);
+            frame.getThread().pushFrame(newFrame);
+            LocalVars slots = newFrame.getLocalVars();
+            for (int i = 0; i < params.length; i++) {
+                slots.setRef(i, params[i]);
             }
         }
     }
@@ -573,7 +641,12 @@ public class CmdReferences {
             NiThread thread = frame.getThread();
             while (!thread.isEmpty()) {
                 NiFrame topFrame = thread.topFrame();
-                int nextPC = topFrame.getMethod().findExceptionHandler(exception.getClz(), topFrame.getPosition() - 1);
+                NiMethod method = topFrame.getMethod();
+                if(method == null){
+                    NaThrowable.print(exception);
+                    return;
+                }
+                int nextPC = method.findExceptionHandler(exception.getClz(), topFrame.getPosition() - 1);
                 if (nextPC > 0) {
                     OperandStack stack = topFrame.getOperandStack();
                     stack.clear();

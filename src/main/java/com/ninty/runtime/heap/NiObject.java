@@ -105,9 +105,14 @@ public class NiObject {
         return clz.isAssignableFrom(this.clz);
     }
 
-    public void setFieldInt(String name, String desc, int val) {
-        NiField field = clz.findField(name, desc);
+    public void setFieldInt(String name, int val) {
+        NiField field = clz.findField(name, "I");
         fields.setInt(field.getSlotId(), val);
+    }
+
+    public void setFieldRef(String name, String desc, NiObject ref) {
+        NiField field = clz.findField(name, desc);
+        fields.setRef(field.getSlotId(), ref);
     }
 
     public NiObject getFieldRef(String name, String desc) {

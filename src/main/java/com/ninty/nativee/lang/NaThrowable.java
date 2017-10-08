@@ -52,6 +52,7 @@ public class NaThrowable {
         for (int i = stes.length - 1; i >= 0; i--) {
             System.err.println("\t\t" + stes[i]);
         }
+        System.exit(1);
     }
 
     private static class StackTraceElement {
@@ -62,6 +63,9 @@ public class NaThrowable {
 
         StackTraceElement(NiFrame frame) {
             NiMethod method = frame.getMethod();
+            if(method == null){
+                return;
+            }
             NiClass clz = method.getClz();
             fileName = clz.getSourceFile();
             className = clz.getClassName();

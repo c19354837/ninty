@@ -13,7 +13,7 @@ public class NaString {
     private final static String className = "java/lang/String";
 
     public static void init() {
-        NaMethodManager.register(className, "intern", "()Ljava/lang/String;", new NaString.intern());
+        NaMethodManager.register(className, "intern", "()Ljava/lang/String;", new intern());
     }
 
     public static class intern implements INativeMethod {

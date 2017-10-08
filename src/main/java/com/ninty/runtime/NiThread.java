@@ -25,7 +25,7 @@ public class NiThread {
     public void generateThread(NiObject threadGroup, NiClassLoader loader, String name) {
         NiClass clz = loader.loadClass(CLZ_THREAD);
         NiObject thread = clz.newObject();
-        thread.setFieldInt("priority", "I", Thread.NORM_PRIORITY);
+        thread.setFieldInt("priority", Thread.NORM_PRIORITY);
         NiMethod constructor = clz.getInitMethod("(Ljava/lang/ThreadGroup;Ljava/lang/String;)V");
         currentThread = thread;
         execMethod(constructor, new Slot(thread), new Slot(threadGroup), new Slot(NiString.newString(loader, name)));
@@ -50,6 +50,46 @@ public class NiThread {
         frame.reset();
         frame.setThread(this);
         stack.push(frame);
+    }
+
+    public static Slot execMethodDirectly(NiMethod method, Slot... params) {
+        NiThread thread = new NiThread(64);
+        NiFrame returnFrame = new NiFrame();
+        thread.pushFrame(returnFrame);
+
+        NiFrame newFrame = new NiFrame(method);
+        thread.pushFrame(newFrame);
+        int argsCount = method.getArgsCount();
+        LocalVars slots = newFrame.getLocalVars();
+        if (params.length > 0) {
+            for (int i = argsCount - 1; i >= 0; i--) {
+                slots.setSlot(i, params[i]);
+            }
+        }
+
+        int count = 0;
+        while (true) {
+            NiFrame frame = thread.topFrame();
+            if (frame == returnFrame) {
+                break;
+            }
+            ByteBuffer bb = frame.getCode();
+            byte opCode = frame.getOpCode();
+            ICmdBase cmd = CmdFatory.getCmd(opCode);
+
+            System.out.println(count++);
+            System.out.println(thread.getT(thread.getLevel()) + cmd.getClass().getSimpleName());
+            System.out.println(thread.getT(thread.getLevel()) + frame);
+            System.out.println();
+
+            cmd.init(bb);
+            cmd.exec(frame);
+        }
+
+        if(returnFrame.getOperandStack().getSize() > 0){
+            return returnFrame.getOperandStack().popSlot();
+        }
+        return new Slot();
     }
 
     public void execMethod(NiMethod method, Slot... params) {
@@ -78,7 +118,7 @@ public class NiThread {
                 slots.setSlot(i, stack.popSlot());
             }
         }
-        //        System.out.println("invoke method: " + method);
+        System.out.println("invoke method: " + method);
     }
 
     public void execThread() {
@@ -90,16 +130,17 @@ public class NiThread {
                 ByteBuffer bb = frame.getCode();
                 byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
-                try {
-                    cmd.init(bb);
-                    cmd.exec(frame);
-                } catch (Exception e) {
-                    throwException(frame, e);
-                }
+//                try {
 
-                //                System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
-                //                System.out.println(getT(getLevel()) + frame);
-                //                System.out.println();
+//                System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
+//                System.out.println(getT(getLevel()) + frame);
+//                System.out.println();
+
+                cmd.init(bb);
+                cmd.exec(frame);
+//                } catch (Exception e) {
+//                    throwException(frame, e);
+//                }
 
                 if (isEmpty()) {
                     break;
@@ -112,7 +153,7 @@ public class NiThread {
         }
     }
 
-    private void throwException(NiFrame frame, Exception e) throws Exception {
+    private static void throwException(NiFrame frame, Exception e) throws Exception {
         Class eClz = e.getClass();
         if (eClz == NativeMethodException.class) {
             throw e;

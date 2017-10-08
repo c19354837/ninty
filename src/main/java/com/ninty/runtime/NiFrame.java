@@ -26,6 +26,12 @@ public class NiFrame {
         bb = method.getCodes();
     }
 
+    NiFrame(){
+        localVars = new LocalVars(1);
+        operandStack = new OperandStack(1);
+        bb = ByteBuffer.allocate(0);
+    }
+
     public NiFrame getPrevFrame() {
         return prevFrame;
     }

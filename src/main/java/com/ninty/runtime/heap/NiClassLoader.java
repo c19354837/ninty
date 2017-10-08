@@ -5,6 +5,7 @@ import com.ninty.classpath.ClassPath;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.heap.constantpool.NiConstant;
 import com.ninty.runtime.heap.constantpool.NiConstantPool;
+import com.ninty.utils.VMUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class NiClassLoader {
     }
 
     private void loadPrimitiveClasses() {
-        for (String classname : NiClass.primitiveTypes.keySet()) {
+        for (String classname : VMUtils.primitiveTypes.keySet()) {
             NiClass clz = new NiClass();
             clz.className = classname;
             clz.loader = this;

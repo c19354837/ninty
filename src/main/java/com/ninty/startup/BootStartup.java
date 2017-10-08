@@ -45,6 +45,16 @@ public class BootStartup {
         NiThread thread = new NiThread(64);
         NiObject threadGroup = newThreadGroup(thread);
         thread.generateThread(threadGroup, loader, "main");
+
+        NiClass clzSys = loader.loadClass("java/lang/System");
+        NiClass clzPro = loader.loadClass("java/util/Properties");
+        NiObject objPro = clzPro.newObject();
+        clzSys.setStaticRef("props", "Ljava/util/Properties;", objPro);
+        NiMethod init = clzPro.getMethod("<init>", "()V");
+        NiThread.execMethodDirectly(init, new Slot(objPro));
+//        NiMethod metInitializeSystemClass = clzSys.getMethod("initializeSystemClass", "()V");
+//        NiThread.execMethodDirectly(metInitializeSystemClass);
+
         return thread;
     }
 
