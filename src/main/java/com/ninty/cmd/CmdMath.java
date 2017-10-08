@@ -227,8 +227,8 @@ public class CmdMath {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
-            int num = stack.popInt();
-            stack.pushInt(-num);
+            long num = stack.popLong();
+            stack.pushLong(-num);
         }
     }
 
@@ -236,8 +236,8 @@ public class CmdMath {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
-            int num = stack.popInt();
-            stack.pushInt(-num);
+            float num = stack.popFloat();
+            stack.pushFloat(-num);
         }
     }
 
@@ -245,8 +245,8 @@ public class CmdMath {
         @Override
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
-            int num = stack.popInt();
-            stack.pushInt(-num);
+            double num = stack.popDouble();
+            stack.pushDouble(-num);
         }
     }
 
@@ -316,7 +316,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             int num1 = stack.popInt();
             int num2 = stack.popInt();
-            stack.pushLong(num1 & num2);
+            stack.pushInt(num1 & num2);
         }
     }
 
@@ -336,7 +336,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             int num1 = stack.popInt();
             int num2 = stack.popInt();
-            stack.pushLong(num1 | num2);
+            stack.pushInt(num1 | num2);
         }
     }
 
@@ -356,7 +356,7 @@ public class CmdMath {
             OperandStack stack = frame.getOperandStack();
             int num1 = stack.popInt();
             int num2 = stack.popInt();
-            stack.pushLong(num1 ^ num2);
+            stack.pushInt(num1 ^ num2);
         }
     }
 
