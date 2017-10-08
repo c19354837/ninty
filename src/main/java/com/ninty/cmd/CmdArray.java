@@ -33,7 +33,7 @@ public class CmdArray {
         OperandStack stack = frame.getOperandStack();
         int index = stack.popInt();
         NiObject array = stack.popRef();
-        nullChech(array);
+        nullCheck(array);
         switch (type) {
             case 'b':
                 stack.pushInt(array.abyte()[index]);
@@ -64,7 +64,7 @@ public class CmdArray {
         }
     }
 
-    private static void nullChech(NiObject array) {
+    private static void nullCheck(NiObject array) {
         if (array == null) {
             throw new NullPointerException("get null array ref");
         }
@@ -136,7 +136,7 @@ public class CmdArray {
         public void exec(NiFrame frame) {
             OperandStack stack = frame.getOperandStack();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             stack.pushInt(array.arrayLength());
         }
     }
@@ -250,7 +250,7 @@ public class CmdArray {
             NiObject val = stack.popRef();
             int index = stack.popInt();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             array.aobject()[index] = val;
         }
     }
@@ -262,7 +262,7 @@ public class CmdArray {
             byte val = (byte) stack.popInt();
             int index = stack.popInt();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             array.abyte()[index] = val;
         }
     }
@@ -274,7 +274,7 @@ public class CmdArray {
             char val = (char) stack.popInt();
             int index = stack.popInt();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             array.achar()[index] = val;
         }
     }
@@ -286,7 +286,7 @@ public class CmdArray {
             short val = (short) stack.popInt();
             int index = stack.popInt();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             array.ashort()[index] = val;
         }
     }
@@ -298,7 +298,7 @@ public class CmdArray {
             int val = stack.popInt();
             int index = stack.popInt();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             array.aint()[index] = val;
         }
     }
@@ -310,7 +310,7 @@ public class CmdArray {
             long val = stack.popLong();
             int index = stack.popInt();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             array.along()[index] = val;
         }
     }
@@ -322,7 +322,7 @@ public class CmdArray {
             float val = stack.popFloat();
             int index = stack.popInt();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             array.afloat()[index] = val;
         }
     }
@@ -334,7 +334,7 @@ public class CmdArray {
             double val = stack.popDouble();
             int index = stack.popInt();
             NiObject array = stack.popRef();
-            nullChech(array);
+            nullCheck(array);
             array.adouble()[index] = val;
         }
     }
