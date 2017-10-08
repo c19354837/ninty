@@ -14,7 +14,7 @@ public class NaObject {
 
     public static void init() {
         NaMethodManager.register(className, "getClass", "()Ljava/lang/Class;", new getClass());
-        NaMethodManager.register(className, "hashCode", "()I;", new hashCode());
+        NaMethodManager.register(className, "hashCode", "()I", new hashCode());
     }
 
     public static class getClass implements INativeMethod {
