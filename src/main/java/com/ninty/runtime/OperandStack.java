@@ -18,6 +18,11 @@ public class OperandStack {
         }
     }
 
+    public void pushBoolean(boolean flag){
+        slots[size].num = flag ? 1 : 0;
+        size++;
+    }
+
     public void pushInt(int val) {
         slots[size].num = val;
         size++;
