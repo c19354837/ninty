@@ -15,13 +15,23 @@ public class NaReflection {
     public static void init() {
         NaMethodManager.register(className, "getClassAccessFlags", "(Ljava/lang/Class;)I",
                 new getClassAccessFlags());
+        NaMethodManager.register(className, "getCallerClass", "()Ljava/lang/Class;",
+                new getCallerClass());
     }
 
     public static class getClassAccessFlags implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
-            NiObject self = frame.getLocalVars().getThis();
+            NiObject self = frame.getLocalVars().getRef(0);
             frame.getOperandStack().pushInt(((NiClass)self.getExtra()).getAccessFlags());
+        }
+    }
+
+    public static class getCallerClass implements INativeMethod{
+        @Override
+        public void invoke(NiFrame frame) {
+            NiClass clz = frame.getMethod().getClz();
+            frame.getOperandStack().pushRef(clz.getjClass());
         }
     }
 }

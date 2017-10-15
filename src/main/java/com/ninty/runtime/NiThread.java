@@ -77,10 +77,10 @@ public class NiThread {
             byte opCode = frame.getOpCode();
             ICmdBase cmd = CmdFatory.getCmd(opCode);
 
-            System.out.println(count++);
-            System.out.println(thread.getT(thread.getLevel()) + cmd.getClass().getSimpleName());
-            System.out.println(thread.getT(thread.getLevel()) + frame);
-            System.out.println();
+//            System.out.println(count++);
+//            System.out.println(thread.getT(thread.getLevel()) + cmd.getClass().getSimpleName());
+//            System.out.println(thread.getT(thread.getLevel()) + frame);
+//            System.out.println();
 
             cmd.init(bb);
             cmd.exec(frame);
@@ -118,7 +118,7 @@ public class NiThread {
                 slots.setSlot(i, stack.popSlot());
             }
         }
-        System.out.println("invoke method: " + method);
+//        System.out.println("invoke method: " + method);
     }
 
     public void execThread() {

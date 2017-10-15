@@ -102,7 +102,7 @@ public class NiObject {
     }
 
     public boolean isInstanceOf(NiClass clz) {
-        return clz.isAssignableFrom(this.clz);
+        return this.clz.isAssignableFrom(clz);
     }
 
     public void setFieldInt(String name, int val) {
