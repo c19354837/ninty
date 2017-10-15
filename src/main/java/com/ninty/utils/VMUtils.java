@@ -52,15 +52,15 @@ public class VMUtils {
         int end = 0;
         while (pos < desc.length()) {
             if (desc.charAt(pos) == '[') {
-                if(desc.charAt(pos+1) == 'L'){
+                if (desc.charAt(pos + 1) == 'L') {
                     end = desc.indexOf(';', pos) + 1;
                     params.add(desc.substring(pos, end - 1));
-                }else{
+                } else {
                     end = pos + 2;
                     params.add(desc.substring(pos, end));
                 }
             } else if (desc.charAt(pos) == 'L') {
-                end = desc.indexOf(';', pos+1) + 1;
+                end = desc.indexOf(';', pos + 1) + 1;
                 params.add(desc.substring(pos + 1, end - 1));
             } else {
                 for (String key : primitiveTypes.keySet()) {

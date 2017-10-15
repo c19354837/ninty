@@ -42,7 +42,7 @@ public class NaUnsafe {
             try {
                 Field field = Unsafe.class.getDeclaredField("theUnsafe");
                 field.setAccessible(true);
-                Unsafe theUnsafe = (Unsafe)field.get(null);
+                Unsafe theUnsafe = (Unsafe) field.get(null);
                 frame.getOperandStack().pushInt(theUnsafe.addressSize());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

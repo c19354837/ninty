@@ -63,7 +63,7 @@ public class NaThrowable {
 
         StackTraceElement(NiFrame frame) {
             NiMethod method = frame.getMethod();
-            if(method == null){
+            if (method == null) {
                 return;
             }
             NiClass clz = method.getClz();

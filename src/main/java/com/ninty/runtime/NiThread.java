@@ -86,7 +86,7 @@ public class NiThread {
             cmd.exec(frame);
         }
 
-        if(returnFrame.getOperandStack().getSize() > 0){
+        if (returnFrame.getOperandStack().getSize() > 0) {
             return returnFrame.getOperandStack().popSlot();
         }
         return new Slot();

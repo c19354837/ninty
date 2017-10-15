@@ -18,7 +18,7 @@ public class OperandStack {
         }
     }
 
-    public void pushBoolean(boolean flag){
+    public void pushBoolean(boolean flag) {
         slots[size].num = flag ? 1 : 0;
         size++;
     }

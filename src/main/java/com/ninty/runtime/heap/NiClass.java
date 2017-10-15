@@ -198,7 +198,7 @@ public class NiClass {
 
     public boolean clinit(NiThread thread) {
         clinit = true;
-        boolean result1 =  scheduleClinit(thread);
+        boolean result1 = scheduleClinit(thread);
         boolean result2 = initSuperClass(thread);
         return result1 || result2;
     }
@@ -330,17 +330,17 @@ public class NiClass {
         return bootstrapMethods.bootstarpMethods[index];
     }
 
-    public int getStaticInt(String name){
+    public int getStaticInt(String name) {
         NiField field = findField(name, "I");
         return staticSlots.getInt(field.getSlotId());
     }
 
-    public NiObject getStaticRef(String name, String desc){
+    public NiObject getStaticRef(String name, String desc) {
         NiField field = findField(name, desc);
         return staticSlots.getRef(field.getSlotId());
     }
 
-    public void setStaticRef(String name, String desc, NiObject ref){
+    public void setStaticRef(String name, String desc, NiObject ref) {
         NiField field = findField(name, desc);
         staticSlots.setRef(field.getSlotId(), ref);
     }

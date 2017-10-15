@@ -23,11 +23,11 @@ public class NaReflection {
         @Override
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getRef(0);
-            frame.getOperandStack().pushInt(((NiClass)self.getExtra()).getAccessFlags());
+            frame.getOperandStack().pushInt(((NiClass) self.getExtra()).getAccessFlags());
         }
     }
 
-    public static class getCallerClass implements INativeMethod{
+    public static class getCallerClass implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
             NiClass clz = frame.getMethod().getClz();

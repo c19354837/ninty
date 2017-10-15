@@ -249,7 +249,7 @@ public class ConstantInfo {
             descriptorIndex = bb.getChar();
         }
 
-        public String desc(){
+        public String desc() {
             return ((CPUtf8) cps.get(descriptorIndex)).value;
         }
     }

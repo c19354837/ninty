@@ -483,7 +483,8 @@ public class CmdReferences {
                 throw new IllegalAccessError("only self or subclass can access the protected method");
             }
 
-            NiMethod finalMethod = MethodRef.lookUpMethods(c, methodRef.getName(), methodRef.getDesc());;
+            NiMethod finalMethod = MethodRef.lookUpMethods(c, methodRef.getName(), methodRef.getDesc());
+            ;
 
             if (finalMethod == null || finalMethod.isAbstract()) {
                 throw new AbstractMethodError();
@@ -564,10 +565,10 @@ public class CmdReferences {
                 NiObject caller = getLookUp(frame);
                 NiObject invokedName = NiString.newString(loader, dynamicInfo.name);
                 NiObject invokedType = getMethodType(frame, dynamicInfo.desc);
-                NiObject samMethodType = getMethodType(frame, ((ConstantInfo.CPMethodType)bootstrapMethodInfo.arguments[0]).desc());
-                NiObject instantiatedMethodType = getMethodType(frame, ((ConstantInfo.CPMethodType)bootstrapMethodInfo.arguments[2]).desc());
+                NiObject samMethodType = getMethodType(frame, ((ConstantInfo.CPMethodType) bootstrapMethodInfo.arguments[0]).desc());
+                NiObject instantiatedMethodType = getMethodType(frame, ((ConstantInfo.CPMethodType) bootstrapMethodInfo.arguments[2]).desc());
                 ConstantInfo.CPMethodHandleInfo argument = (ConstantInfo.CPMethodHandleInfo) bootstrapMethodInfo.arguments[1];
-                MethodRef m = (MethodRef)cps.get(argument.getReference());
+                MethodRef m = (MethodRef) cps.get(argument.getReference());
                 m.resolve();
                 NiObject implMethod = getMethodHandle(frame, caller, m.getMethod());
 
@@ -575,7 +576,7 @@ public class CmdReferences {
             }
         }
 
-        private NiObject getLookUp(NiFrame frame){
+        private NiObject getLookUp(NiFrame frame) {
             NiClassLoader loader = frame.getMethod().getClz().getLoader();
             NiClass clzLookUp = loader.loadClass(CLZ_LOOK_UP);
             NiObject objLookUp = clzLookUp.newObject();
@@ -584,7 +585,7 @@ public class CmdReferences {
             return objLookUp;
         }
 
-        private NiObject getMethodType(NiFrame frame, String desc){
+        private NiObject getMethodType(NiFrame frame, String desc) {
             NiClassLoader loader = frame.getMethod().getClz().getLoader();
             int index = desc.indexOf(')');
             String paramDesc = desc.substring(1, index);
@@ -608,7 +609,7 @@ public class CmdReferences {
             return objMethodType;
         }
 
-        private NiObject getMethodHandle(NiFrame frame, NiObject lookUp, NiMethod method){
+        private NiObject getMethodHandle(NiFrame frame, NiObject lookUp, NiMethod method) {
             NiClassLoader loader = frame.getMethod().getClz().getLoader();
             NiMethod findStatic = lookUp.getClz().getMethod("findStatic",
                     "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;");
@@ -620,7 +621,7 @@ public class CmdReferences {
             return ret.getRef();
         }
 
-        private void invoke(NiFrame frame, NiMethod method, NiObject... params){
+        private void invoke(NiFrame frame, NiMethod method, NiObject... params) {
             NiFrame newFrame = new NiFrame(method);
             frame.getThread().pushFrame(newFrame);
             LocalVars slots = newFrame.getLocalVars();
@@ -642,7 +643,7 @@ public class CmdReferences {
             while (!thread.isEmpty()) {
                 NiFrame topFrame = thread.topFrame();
                 NiMethod method = topFrame.getMethod();
-                if(method == null){
+                if (method == null) {
                     NaThrowable.print(exception);
                     return;
                 }
