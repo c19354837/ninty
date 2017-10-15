@@ -45,6 +45,7 @@ public class NaThread {
         NaMethodManager.register(className, "setPriority0", "(I)V", new setPriority0());
         NaMethodManager.register(className, "start0", "()V", new start0());
         NaMethodManager.register(className, "sleep", "(J)V", new sleep());
+        NaMethodManager.register(className, "isAlive", "()Z", new isAlive());
     }
 
     public static class currentThread implements INativeMethod {
@@ -70,6 +71,7 @@ public class NaThread {
             NiObject thread = localVars.getThis();
             newThread.setCurrentThread(thread);
             new Thread(() -> {
+                thread.setExtra(Boolean.TRUE);
                 NiMethod runMethod = thread.getClz().getMethod("run", "()V");
                 newThread.execMethod(runMethod, new Slot(thread));
             }).start();
@@ -87,6 +89,14 @@ public class NaThread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static class isAlive implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            frame.getOperandStack().pushBoolean(self.getExtra() != null && self.getExtra() == Boolean.TRUE);
         }
     }
 }

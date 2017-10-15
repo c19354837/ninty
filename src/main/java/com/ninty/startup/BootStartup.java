@@ -37,15 +37,16 @@ public class BootStartup {
             throw new RuntimeException("Can't find main method in [" + className + "]");
         }
 
-        NiThread thread = prepare();
-        thread.execMethod(mainMethod);
+        NiThread mainThread = prepare();
+        NiThread.setMainThread(mainThread.getCurrentThread());
+        mainThread.getCurrentThread().setExtra(Boolean.TRUE);
+        mainThread.execMethod(mainMethod);
     }
 
     private NiThread prepare() {
         NiThread thread = new NiThread(64);
         NiObject threadGroup = newThreadGroup(thread);
         thread.generateThread(threadGroup, loader, "main");
-
         NiClass clzSys = loader.loadClass("java/lang/System");
         NiClass clzPro = loader.loadClass("java/util/Properties");
         NiObject objPro = clzPro.newObject();
