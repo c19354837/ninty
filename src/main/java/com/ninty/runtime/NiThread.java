@@ -16,6 +16,8 @@ public class NiThread {
     private NiStack stack;
     private NiObject currentThread; // java.lang.Thread
 
+    private static NiObject mainThread;
+
     private static final String CLZ_THREAD = "java/lang/Thread";
 
     public NiThread(int maxStackSize) {
@@ -201,6 +203,10 @@ public class NiThread {
 
     public NiObject getCurrentThread() {
         return currentThread;
+    }
+
+    public static void setMainThread(NiObject mainThread) {
+        NiThread.mainThread = mainThread;
     }
 
     public void setCurrentThread(NiObject currentThread) {
