@@ -2,6 +2,9 @@ package com.ninty.runtime.heap;
 
 import com.ninty.runtime.LocalVars;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ninty on 2017/7/23.
  */
@@ -10,6 +13,9 @@ public class NiObject {
     private LocalVars fields;
     private Object arrayDatas; // when it's array
     private Object extra;
+
+    private Thread lockThread;
+    private Map<Thread, Integer> waitList = new HashMap<>();
 
     public NiObject(NiClass clz, int count) {
         this.clz = clz;
@@ -118,6 +124,30 @@ public class NiObject {
     public NiObject getFieldRef(String name, String desc) {
         NiField field = clz.findField(name, desc);
         return fields.getRef(field.getSlotId());
+    }
+
+    synchronized public void lock() {
+        Thread thread = Thread.currentThread();
+        if (waitList.containsKey(thread)) {
+            waitList.put(thread, waitList.get(thread) + 1);
+        } else {
+            waitList.put(thread, 1);
+        }
+        if (waitList.size() > 1 && waitList.get(thread) == 1) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    synchronized public void unlock() {
+        Thread thread = Thread.currentThread();
+        int count = waitList.get(thread);
+        if (count - 1 == 0) {
+            notifyAll();
+        }
     }
 
     @Override

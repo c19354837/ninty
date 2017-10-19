@@ -5,6 +5,7 @@ import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.heap.NiObject;
 
 import java.nio.ByteBuffer;
 
@@ -98,14 +99,16 @@ public class CmdExtended {
     public static class MONITOR_ENTER extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            frame.getOperandStack().popRef();
+            NiObject ref = frame.getOperandStack().popRef();
+            ref.lock();
         }
     }
 
     public static class MONITOR_EXIT extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
-            frame.getOperandStack().popRef();
+            NiObject ref = frame.getOperandStack().popRef();
+            ref.unlock();
         }
     }
 }
