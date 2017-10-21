@@ -58,14 +58,15 @@ public class CmdReferences {
                 break;
             default:
                 NiObject ref = stack.getRefFromTop();
-                if (NiString.isString(ref)) {
-                    System.out.println(NiString.getString(ref));
+                if (!NiString.isString(ref)) {
+                    frame.restorePostion();
+                    NiMethod method = ref.getClz().getToStringMethod();
+                    invokeMethod(frame, method);
                     return;
                 }
-                frame.restorePostion();
-                NiMethod method = ref.getClz().getToStringMethod();
-                invokeMethod(frame, method);
+                System.out.println(NiString.getString(ref));
         }
+        stack.popRef();// pop System.out
     }
 
     private static NiConstantPool getCP(NiFrame frame) {
