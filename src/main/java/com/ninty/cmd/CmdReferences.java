@@ -55,10 +55,11 @@ public class CmdReferences {
                 System.out.println(NiString.getString(stack.popRef()));
                 break;
             default:
-                NiObject ref = stack.getRefFromTop();
+                NiObject ref = stack.popRef();
                 if (!NiString.isString(ref)) {
                     frame.restorePostion();
                     NiMethod method = ref.getClz().getToStringMethod();
+                    stack.pushRef(ref);
                     invokeMethod(frame, method);
                     return;
                 }
