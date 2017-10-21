@@ -156,9 +156,9 @@ public class NiClass {
                 }
             } else {
                 if (t.isInterface()) {
-                    return s.isImplements(t);
+                    return s.isImplements(t); // s implements t
                 } else {
-                    return s.isSubClass(t);
+                    return t.isSubClass(s); // s extends t
                 }
             }
         }

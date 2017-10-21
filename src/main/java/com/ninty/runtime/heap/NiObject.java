@@ -107,8 +107,9 @@ public class NiObject {
         throw new IllegalAccessError("Only array can access length");
     }
 
+    // this.clz instanceof clz
     public boolean isInstanceOf(NiClass clz) {
-        return this.clz.isAssignableFrom(clz);
+        return clz.isAssignableFrom(this.clz);
     }
 
     public void setFieldInt(String name, int val) {
