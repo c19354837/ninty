@@ -1,6 +1,8 @@
 package com.ninty.nativee;
 
+import com.ninty.nativee.io.NaFileDescriptor;
 import com.ninty.nativee.io.NaFileInputStream;
+import com.ninty.nativee.io.NaFileOutputStream;
 import com.ninty.nativee.lang.*;
 import com.ninty.nativee.security.NaAccessController;
 import com.ninty.nativee.sun.misc.NaUnsafe;
@@ -35,6 +37,8 @@ public class NaMethodManager {
         NaVM.init();
         NaFileInputStream.init();
         NaUnsafe.init();
+        NaFileDescriptor.init();
+        NaFileOutputStream.init();
     }
 
     private final static INativeMethod EMPTY = (NiFrame frame) -> {

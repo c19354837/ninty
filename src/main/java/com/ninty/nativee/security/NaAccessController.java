@@ -16,6 +16,8 @@ public class NaAccessController {
                 new getStackAccessControlContext());
         NaMethodManager.register(className, "doPrivileged", "(Ljava/security/PrivilegedAction;)Ljava/lang/Object;",
                 new doPrivileged());
+        NaMethodManager.register(className, "doPrivileged", "(Ljava/security/PrivilegedExceptionAction;)Ljava/lang/Object;",
+                new doPrivileged());
     }
 
     public static class getStackAccessControlContext implements INativeMethod {
