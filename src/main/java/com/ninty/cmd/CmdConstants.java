@@ -3,8 +3,7 @@ package com.ninty.cmd;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.NiFrame;
-
-import java.nio.ByteBuffer;
+import com.ninty.runtime.heap.CodeBytes;
 
 /**
  * Created by ninty on 2017/7/16.
@@ -123,7 +122,7 @@ public class CmdConstants {
         int val;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             val = bb.get();
         }
 
@@ -137,7 +136,7 @@ public class CmdConstants {
         int val;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             val = bb.getShort();
         }
 

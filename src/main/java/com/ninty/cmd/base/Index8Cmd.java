@@ -1,6 +1,6 @@
 package com.ninty.cmd.base;
 
-import java.nio.ByteBuffer;
+import com.ninty.runtime.heap.CodeBytes;
 
 import static com.ninty.utils.VMUtils.toUInt;
 
@@ -12,7 +12,7 @@ public abstract class Index8Cmd implements ICmdBase {
     public int index;
 
     @Override
-    public void init(ByteBuffer bb) {
+    public void init(CodeBytes bb) {
         index = toUInt(bb.get());
     }
 }

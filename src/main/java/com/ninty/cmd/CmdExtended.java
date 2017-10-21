@@ -5,9 +5,8 @@ import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.heap.CodeBytes;
 import com.ninty.runtime.heap.NiObject;
-
-import java.nio.ByteBuffer;
 
 import static com.ninty.utils.VMUtils.toUInt;
 
@@ -19,13 +18,13 @@ public class CmdExtended {
     public static class WIDE implements ICmdBase {
         private ICmdBase cmd;
 
-        private void initIndex8Cmd(Index8Cmd cmd, ByteBuffer bb) {
+        private void initIndex8Cmd(Index8Cmd cmd, CodeBytes bb) {
             cmd.index = bb.getChar();
             this.cmd = cmd;
         }
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             int code = toUInt(bb.get());
             switch (code) {
                 case 0x15:
@@ -99,16 +98,20 @@ public class CmdExtended {
     public static class MONITOR_ENTER extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
+            System.out.println(Thread.currentThread() + ": enter---");
             NiObject ref = frame.getOperandStack().popRef();
             ref.lock();
+            System.out.println(Thread.currentThread() + ": enter");
         }
     }
 
     public static class MONITOR_EXIT extends NoOperandCmd {
         @Override
         public void exec(NiFrame frame) {
+            System.out.println(Thread.currentThread() + ": exit");
             NiObject ref = frame.getOperandStack().popRef();
             ref.unlock();
+            System.out.println(Thread.currentThread() + ": exit---");
         }
     }
 }

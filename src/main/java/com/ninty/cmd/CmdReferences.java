@@ -15,8 +15,6 @@ import com.ninty.runtime.heap.constantpool.*;
 import com.ninty.utils.VMUtils;
 import com.sun.jdi.NativeMethodException;
 
-import java.nio.ByteBuffer;
-
 /**
  * Created by ninty on 2017/7/27.
  */
@@ -500,7 +498,7 @@ public class CmdReferences {
         private int index;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             index = bb.getChar();
             bb.get(); //args count
             bb.get(); //must be 0

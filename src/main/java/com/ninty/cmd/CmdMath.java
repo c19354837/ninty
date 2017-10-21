@@ -4,8 +4,7 @@ import com.ninty.cmd.base.ICmdBase;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.OperandStack;
-
-import java.nio.ByteBuffer;
+import com.ninty.runtime.heap.CodeBytes;
 
 import static com.ninty.utils.VMUtils.toUInt;
 
@@ -375,7 +374,7 @@ public class CmdMath {
         int inc;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             index = toUInt(bb.get());
             inc = bb.get();
         }

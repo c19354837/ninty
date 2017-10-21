@@ -5,13 +5,13 @@ import com.ninty.cmd.base.Index16Cmd;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.OperandStack;
+import com.ninty.runtime.heap.CodeBytes;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiClassLoader;
 import com.ninty.runtime.heap.NiObject;
 import com.ninty.runtime.heap.constantpool.ClassRef;
 import com.ninty.runtime.heap.constantpool.NiConstantPool;
 
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import static com.ninty.utils.VMUtils.toUInt;
@@ -74,7 +74,7 @@ public class CmdArray {
         private int type;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             type = bb.get();
         }
 
@@ -146,7 +146,7 @@ public class CmdArray {
         private int dimensions;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             index = bb.getChar();
             dimensions = toUInt(bb.get());
         }

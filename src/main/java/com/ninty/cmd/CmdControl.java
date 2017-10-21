@@ -5,8 +5,7 @@ import com.ninty.cmd.base.DataCmd;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
-
-import java.nio.ByteBuffer;
+import com.ninty.runtime.heap.CodeBytes;
 
 /**
  * Created by ninty on 2017/7/16.
@@ -36,7 +35,7 @@ public class CmdControl {
         }
     }
 
-    private static void skipPadding(ByteBuffer bb) {
+    private static void skipPadding(CodeBytes bb) {
         while (bb.position() % 4 != 0) {
             bb.position(bb.position() + 1);
         }
@@ -53,7 +52,7 @@ public class CmdControl {
         private int offset;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             super.init(bb);
             offset = bb.getInt();
         }
@@ -71,7 +70,7 @@ public class CmdControl {
         private int[] jumpOffsets;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             super.init(bb);
             skipPadding(bb);
             defaultOffset = bb.getInt();
@@ -101,7 +100,7 @@ public class CmdControl {
         private int[] matchOffsets;
 
         @Override
-        public void init(ByteBuffer bb) {
+        public void init(CodeBytes bb) {
             super.init(bb);
             skipPadding(bb);
             defaultOffset = bb.getInt();

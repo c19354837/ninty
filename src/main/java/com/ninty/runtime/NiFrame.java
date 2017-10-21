@@ -1,8 +1,7 @@
 package com.ninty.runtime;
 
+import com.ninty.runtime.heap.CodeBytes;
 import com.ninty.runtime.heap.NiMethod;
-
-import java.nio.ByteBuffer;
 
 /**
  * Created by ninty on 2017/7/12.
@@ -16,8 +15,8 @@ public class NiFrame {
     private LocalVars localVars;
     private OperandStack operandStack;
 
-    private ByteBuffer bb;
-    private int position;
+    private CodeBytes bb;
+    private ThreadLocal<Integer> position = new ThreadLocal<>();
 
     public NiFrame(NiMethod method) {
         this.method = method;
@@ -29,7 +28,7 @@ public class NiFrame {
     NiFrame() {
         localVars = new LocalVars(1);
         operandStack = new OperandStack(1);
-        bb = ByteBuffer.allocate(0);
+        bb = CodeBytes.allocate(0);
     }
 
     public NiFrame getPrevFrame() {
@@ -48,7 +47,7 @@ public class NiFrame {
         this.operandStack = operandStack;
     }
 
-    public ByteBuffer getCode() {
+    public CodeBytes getCode() {
         return bb;
     }
 
@@ -74,19 +73,19 @@ public class NiFrame {
     }
 
     public void savePosition() {
-        position = bb.position();
+        position.set(bb.position());
     }
 
     public void restorePostion() {
-        bb.position(position);
+        bb.position(position.get());
     }
 
     public int getPosition() {
-        return position;
+        return position.get();
     }
 
     public void setPosition(int position) {
-        this.position = position;
+        this.position.set(position);
         bb.position(position);
     }
 

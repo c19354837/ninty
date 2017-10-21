@@ -5,8 +5,6 @@ import com.ninty.classfile.MemberInfo;
 import com.ninty.runtime.heap.constantpool.ClassRef;
 import com.ninty.runtime.heap.constantpool.NiConstantPool;
 
-import java.nio.ByteBuffer;
-
 /**
  * Created by ninty on 2017/7/23.
  */
@@ -19,7 +17,7 @@ public class NiMethod extends ClassMember {
     private ExceptionTable[] exceptionTables = EMPTY_EX;
     private AttributeInfo.AttrLineNumberTable lineNumberTable;
 
-    private ByteBuffer codes;
+    private CodeBytes codes;
 
     NiMethod(NiClass clz, MemberInfo memberInfo) {
         copyMemberInfo(memberInfo);
@@ -28,7 +26,7 @@ public class NiMethod extends ClassMember {
         if (attrCode != null) {
             maxLocals = attrCode.maxLocals;
             maxStack = attrCode.maxStack;
-            codes = ByteBuffer.wrap(attrCode.codes);
+            codes = CodeBytes.wrap(attrCode.codes);
 
             copyExceptionTable(attrCode.exceptionTables);
 
@@ -55,23 +53,23 @@ public class NiMethod extends ClassMember {
         char returnType = desc.charAt(desc.lastIndexOf(')') + 1);
         switch (returnType) {
             case 'V':
-                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xb1});
+                codes = CodeBytes.wrap(new byte[]{(byte) 0xfe, (byte) 0xb1});
                 break;
             case 'D':
-                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xaf});
+                codes = CodeBytes.wrap(new byte[]{(byte) 0xfe, (byte) 0xaf});
                 break;
             case 'F':
-                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xae});
+                codes = CodeBytes.wrap(new byte[]{(byte) 0xfe, (byte) 0xae});
                 break;
             case 'J':
-                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xad});
+                codes = CodeBytes.wrap(new byte[]{(byte) 0xfe, (byte) 0xad});
                 break;
             case 'L':
             case '[':
-                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xb0});
+                codes = CodeBytes.wrap(new byte[]{(byte) 0xfe, (byte) 0xb0});
                 break;
             default:
-                codes = ByteBuffer.wrap(new byte[]{(byte) 0xfe, (byte) 0xac}); //ireturn
+                codes = CodeBytes.wrap(new byte[]{(byte) 0xfe, (byte) 0xac}); //ireturn
                 break;
         }
     }
@@ -152,7 +150,7 @@ public class NiMethod extends ClassMember {
         return argsCount;
     }
 
-    public ByteBuffer getCodes() {
+    public CodeBytes getCodes() {
         return codes;
     }
 

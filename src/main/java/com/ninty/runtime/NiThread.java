@@ -6,8 +6,6 @@ import com.ninty.cmd.base.ICmdBase;
 import com.ninty.runtime.heap.*;
 import com.sun.jdi.NativeMethodException;
 
-import java.nio.ByteBuffer;
-
 /**
  * Created by ninty on 2017/7/12.
  */
@@ -56,6 +54,10 @@ public class NiThread {
 
     public static Slot execMethodDirectly(NiMethod method, Slot... params) {
         NiThread thread = new NiThread(64);
+        if (mainThread == null) {
+            throw new NullPointerException("mainThread is null");
+        }
+        thread.setCurrentThread(mainThread);
         NiFrame returnFrame = new NiFrame();
         thread.pushFrame(returnFrame);
 
@@ -75,7 +77,7 @@ public class NiThread {
             if (frame == returnFrame) {
                 break;
             }
-            ByteBuffer bb = frame.getCode();
+            CodeBytes bb = frame.getCode();
             byte opCode = frame.getOpCode();
             ICmdBase cmd = CmdFatory.getCmd(opCode);
 
@@ -104,7 +106,7 @@ public class NiThread {
                 slots.setSlot(i, params[i]);
             }
         }
-        System.out.println("invoke method: " + method);
+//        System.out.println("invoke method: " + method);
         execThread();
     }
 
@@ -129,7 +131,7 @@ public class NiThread {
             System.out.println("start\n");
             while (true) {
                 NiFrame frame = topFrame();
-                ByteBuffer bb = frame.getCode();
+                CodeBytes bb = frame.getCode();
                 byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
 //                try {
@@ -180,7 +182,7 @@ public class NiThread {
 
         NiFrame topFrame = frame.getThread().topFrame();
         while (topFrame != frame) {
-            ByteBuffer bb = topFrame.getCode();
+            CodeBytes bb = topFrame.getCode();
             byte opCode = topFrame.getOpCode();
             ICmdBase cmd = CmdFatory.getCmd(opCode);
             cmd.init(bb);

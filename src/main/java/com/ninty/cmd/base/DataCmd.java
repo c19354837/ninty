@@ -1,16 +1,16 @@
 package com.ninty.cmd.base;
 
-import java.nio.ByteBuffer;
+import com.ninty.runtime.heap.CodeBytes;
 
 /**
  * Created by ninty on 2017/7/20.
  */
 public abstract class DataCmd implements ICmdBase {
-    protected ByteBuffer bb;
+    protected CodeBytes bb;
     private int index;
 
     @Override
-    public void init(ByteBuffer bb) {
+    public void init(CodeBytes bb) {
         this.bb = bb;
         index = bb.position() - 1;
     }
