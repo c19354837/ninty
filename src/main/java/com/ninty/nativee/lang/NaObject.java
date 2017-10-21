@@ -15,6 +15,10 @@ public class NaObject {
     public static void init() {
         NaMethodManager.register(className, "getClass", "()Ljava/lang/Class;", new getClass());
         NaMethodManager.register(className, "hashCode", "()I", new hashCode());
+        NaMethodManager.register(className, "notify", "()V", new notify());
+        NaMethodManager.register(className, "notifyAll", "()V", new notifyAll());
+        NaMethodManager.register(className, "wait", "()V", new wait());
+        NaMethodManager.register(className, "wait", "(J)V", new wait_j());
     }
 
     public static class getClass implements INativeMethod {
@@ -32,6 +36,54 @@ public class NaObject {
             NiObject self = frame.getLocalVars().getThis();
             int hashCode = self.hashCode();
             frame.getOperandStack().pushInt(hashCode);
+        }
+    }
+
+    public static class notify implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            synchronized (self) {
+                self.notify();
+            }
+        }
+    }
+
+    public static class notifyAll implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            synchronized (self) {
+                self.notifyAll();
+            }
+        }
+    }
+
+    public static class wait implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            NaObject.wait(self, 0);
+        }
+    }
+
+    public static class wait_j implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            long waitTime = frame.getLocalVars().getInt(1);
+            NaObject.wait(self, waitTime);
+        }
+    }
+
+    private static void wait(NiObject self, long waitTime) {
+        synchronized (self) {
+            try {
+                self.unlock();
+                self.wait(waitTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

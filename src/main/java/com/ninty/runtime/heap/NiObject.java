@@ -2,8 +2,8 @@ package com.ninty.runtime.heap;
 
 import com.ninty.runtime.LocalVars;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by ninty on 2017/7/23.
@@ -14,8 +14,7 @@ public class NiObject {
     private Object arrayDatas; // when it's array
     private Object extra;
 
-    private Thread lockThread;
-    private Map<Thread, Integer> waitList = new HashMap<>();
+    private Lock lock = new ReentrantLock();
 
     public NiObject(NiClass clz, int count) {
         this.clz = clz;
@@ -127,35 +126,12 @@ public class NiObject {
         return fields.getRef(field.getSlotId());
     }
 
-    synchronized public void lock() {
-        Thread thread = Thread.currentThread();
-        if (waitList.containsKey(thread)) {
-            waitList.put(thread, waitList.get(thread) + 1);
-        } else {
-            waitList.put(thread, 1);
-        }
-        if (waitList.size() > 1 && waitList.get(thread) == 1) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public void lock() {
+        lock.lock();
     }
 
-    synchronized public void unlock() {
-        Thread thread = Thread.currentThread();
-        int count = waitList.get(thread);
-        boolean release = false;
-        if(count > 1){
-            waitList.put(thread, count -1);
-        }else{
-            waitList.remove(thread);
-            release = true;
-        }
-        if (release) {
-            notifyAll();
-        }
+    public void unlock() {
+        lock.unlock();
     }
 
     @Override
