@@ -131,7 +131,13 @@ public class NiObject {
     }
 
     public void unlock() {
-        lock.unlock();
+        try {
+            lock.unlock();
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(Thread.currentThread());
+            System.exit(1);
+        }
     }
 
     @Override

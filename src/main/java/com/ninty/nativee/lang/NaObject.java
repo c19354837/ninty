@@ -42,6 +42,7 @@ public class NaObject {
     public static class notify implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
+            System.out.println(Thread.currentThread() + ": notify");
             NiObject self = frame.getLocalVars().getThis();
             synchronized (self) {
                 self.notify();
@@ -77,14 +78,16 @@ public class NaObject {
     }
 
     private static void wait(NiObject self, long waitTime) {
+        System.out.println(Thread.currentThread() + ": wait");
         synchronized (self) {
+            self.unlock();
             try {
-                self.unlock();
                 self.wait(waitTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        self.lock();
     }
 
     // TODO clone()
