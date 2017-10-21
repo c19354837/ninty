@@ -39,6 +39,7 @@ public class BootStartup {
 
         NiThread mainThread = prepare();
         NiThread.setMainThread(mainThread.getCurrentThread());
+        hackSystem();
         mainThread.getCurrentThread().setExtra(Boolean.TRUE);
         mainThread.execMethod(mainMethod);
     }
@@ -47,16 +48,22 @@ public class BootStartup {
         NiThread thread = new NiThread(64);
         NiObject threadGroup = newThreadGroup(thread);
         thread.generateThread(threadGroup, loader, "main");
+        return thread;
+    }
+
+    //    NiMethod metInitializeSystemClass = clzSys.getMethod("initializeSystemClass", "()V");
+    //    NiThread.execMethodDirectly(metInitializeSystemClass);
+    private void hackSystem() {
         NiClass clzSys = loader.loadClass("java/lang/System");
         NiClass clzPro = loader.loadClass("java/util/Properties");
         NiObject objPro = clzPro.newObject();
         clzSys.setStaticRef("props", "Ljava/util/Properties;", objPro);
         NiMethod init = clzPro.getMethod("<init>", "()V");
         NiThread.execMethodDirectly(init, new Slot(objPro));
-//        NiMethod metInitializeSystemClass = clzSys.getMethod("initializeSystemClass", "()V");
-//        NiThread.execMethodDirectly(metInitializeSystemClass);
 
-        return thread;
+//            NiMethod metInitializeSystemClass = clzSys.getMethod("initializeSystemClass", "()V");
+//            NiThread.execMethodDirectly(metInitializeSystemClass);
+
     }
 
     private NiObject newThreadGroup(NiThread thread) {
