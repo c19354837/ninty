@@ -145,7 +145,14 @@ public class NiObject {
     synchronized public void unlock() {
         Thread thread = Thread.currentThread();
         int count = waitList.get(thread);
-        if (count - 1 == 0) {
+        boolean release = false;
+        if(count > 1){
+            waitList.put(thread, count -1);
+        }else{
+            waitList.remove(thread);
+            release = true;
+        }
+        if (release) {
             notifyAll();
         }
     }
