@@ -11,6 +11,7 @@ public class CommandLineInfo {
     public boolean help;
     public String cp;
     public String cls;
+    public String[] args;
 
     private Options options = new Options();
 
@@ -44,6 +45,12 @@ public class CommandLineInfo {
         String[] otherArgs = cmd.getArgs();
         if (otherArgs.length > 0) {
             cls = otherArgs[0];
+        }
+        if (otherArgs.length > 1) {
+            args = new String[otherArgs.length - 1];
+            for (int i = 0; i < args.length; i++) {
+                args[i] = otherArgs[i + 1];
+            }
         }
     }
 

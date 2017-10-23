@@ -19,7 +19,7 @@ public class Ninty {
         } else if (cmd.help || cmd.cls == null) {
             cmd.printUsage();
         } else {
-            new BootStartup(cmd.cp, cmd.cls);
+            new BootStartup(cmd.cp, cmd.cls, cmd.args);
         }
     }
 }

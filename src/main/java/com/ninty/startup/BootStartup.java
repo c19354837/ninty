@@ -3,10 +3,7 @@ package com.ninty.startup;
 import com.ninty.classpath.ClassPath;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.Slot;
-import com.ninty.runtime.heap.NiClass;
-import com.ninty.runtime.heap.NiClassLoader;
-import com.ninty.runtime.heap.NiMethod;
-import com.ninty.runtime.heap.NiObject;
+import com.ninty.runtime.heap.*;
 
 /**
  * Created by ninty on 2017/7/5.
@@ -22,14 +19,14 @@ public class BootStartup {
 
     private static final String CLZ_THREAD_GROUP = "java/lang/ThreadGroup";
 
-    public BootStartup(String userCP, String className) {
+    public BootStartup(String userCP, String className, String[] args) {
         this.className = className;
         cp = new ClassPath(null, userCP);
-        resolveClass();
+        resolveClass(args);
     }
 
     //TODO -XX
-    private void resolveClass() {
+    private void resolveClass(String[] args) {
         loader = new NiClassLoader(cp);
         NiClass clz = loader.loadClass(className);
         NiMethod mainMethod = clz.getMainMethod();
@@ -41,7 +38,17 @@ public class BootStartup {
         NiThread.setMainThread(mainThread.getCurrentThread());
         hackSystem();
         mainThread.getCurrentThread().setExtra(Boolean.TRUE);
-        mainThread.execMethod(mainMethod);
+        mainThread.execMethod(mainMethod, new Slot(getArgs(args)));
+    }
+
+    private NiObject getArgs(String[] args) {
+        NiClass astrClz = loader.loadClass("[java/lang/String;");
+        NiObject astrObj = astrClz.newArray(1);
+        NiObject[] arrayDatas = (NiObject[]) astrObj.getArrayDatas();
+        for (int i = 0; i < arrayDatas.length; i++) {
+            arrayDatas[i] = NiString.newString(loader, args[i]);
+        }
+        return astrObj;
     }
 
     private NiThread prepare() {
