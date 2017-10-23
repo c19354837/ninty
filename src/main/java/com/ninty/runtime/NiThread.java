@@ -68,7 +68,7 @@ public class NiThread {
     }
 
     public void execMethod(NiMethod method, Slot... params) {
-        fillParas(method, params);
+        pushFrameWithParams(method, params);
         execThread();
     }
 
@@ -81,10 +81,10 @@ public class NiThread {
                 params[i] = stack.popSlot();
             }
         }
-        fillParas(method, params);
+        pushFrameWithParams(method, params);
     }
 
-    private void fillParas(NiMethod method, Slot... params) {
+    private void pushFrameWithParams(NiMethod method, Slot... params) {
         NiFrame newFrame = new NiFrame(method);
         pushFrame(newFrame);
         int argsCount = method.getArgsCount();
