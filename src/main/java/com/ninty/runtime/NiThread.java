@@ -91,11 +91,7 @@ public class NiThread {
         LocalVars slots = newFrame.getLocalVars();
         if (argsCount > 0) {
             for (int i = argsCount - 1; i >= 0; i--) {
-                try {
-                    slots.setSlot(i, params[i]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                slots.setSlot(i, params[i]);
             }
         }
     }
@@ -113,10 +109,9 @@ public class NiThread {
                 byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
                 try {
-
-                    System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
-                    System.out.println(getT(getLevel()) + frame);
-                    System.out.println();
+//                    System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
+//                    System.out.println(getT(getLevel()) + frame);
+//                    System.out.println();
 
                     cmd.init(bb);
                     cmd.exec(frame);
