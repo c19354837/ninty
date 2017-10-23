@@ -51,6 +51,10 @@ public class ClassMember {
         return (accessFlags & ClassConstant.ACC_STATIC) != 0;
     }
 
+    public boolean isSynchronized() {
+        return (accessFlags & ClassConstant.ACC_SYNCHRONIZED) != 0;
+    }
+
     public boolean isFinal() {
         return (accessFlags & ClassConstant.ACC_FINAL) != 0;
     }

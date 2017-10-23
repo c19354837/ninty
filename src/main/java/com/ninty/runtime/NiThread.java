@@ -33,6 +33,7 @@ public class NiThread {
     public NiFrame popFrame() {
         level--;
         NiFrame frame = stack.pop();
+        frame.unlockCheck();
         NiFrame top = topFrame();
         if (top != null) {
             top.restorePostion();
@@ -49,6 +50,7 @@ public class NiThread {
         frame.reset();
         frame.setThread(this);
         stack.push(frame);
+        frame.lockCheck();
     }
 
     public static Slot execMethodDirectly(NiMethod method, Slot... params) {
@@ -86,7 +88,6 @@ public class NiThread {
 
     private void pushFrameWithParams(NiMethod method, Slot... params) {
         NiFrame newFrame = new NiFrame(method);
-        pushFrame(newFrame);
         int argsCount = method.getArgsCount();
         LocalVars slots = newFrame.getLocalVars();
         if (argsCount > 0) {
@@ -94,6 +95,7 @@ public class NiThread {
                 slots.setSlot(i, params[i]);
             }
         }
+        pushFrame(newFrame);
     }
 
     private void execThread() {

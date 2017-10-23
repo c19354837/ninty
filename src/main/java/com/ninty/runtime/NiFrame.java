@@ -2,6 +2,7 @@ package com.ninty.runtime;
 
 import com.ninty.runtime.heap.CodeBytes;
 import com.ninty.runtime.heap.NiMethod;
+import com.ninty.runtime.heap.NiObject;
 
 /**
  * Created by ninty on 2017/7/12.
@@ -90,6 +91,26 @@ public class NiFrame {
     public void setPosition(int position) {
         this.position.set(position);
         bb.position(position);
+    }
+
+    public void lockCheck(){
+        if(method !=null && method.isSynchronized()){
+            getLockObj().lock();
+        }
+    }
+
+    public void unlockCheck(){
+        if(method !=null && method.isSynchronized()){
+            getLockObj().unlock();
+        }
+    }
+
+    private NiObject getLockObj(){
+        if(method.isStatic()){
+            return method.getClz().getjClass();
+        }else{
+            return localVars.getThis();
+        }
     }
 
     @Override
