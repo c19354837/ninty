@@ -484,7 +484,6 @@ public class CmdReferences {
             }
 
             NiMethod finalMethod = MethodRef.lookUpMethods(c, methodRef.getName(), methodRef.getDesc());
-            ;
 
             if (finalMethod == null || finalMethod.isAbstract()) {
                 throw new AbstractMethodError();
