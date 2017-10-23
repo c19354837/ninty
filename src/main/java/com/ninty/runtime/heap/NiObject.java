@@ -133,7 +133,7 @@ public class NiObject {
     public void unlock() {
         try {
             lock.unlock();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println(Thread.currentThread());
             System.exit(1);
