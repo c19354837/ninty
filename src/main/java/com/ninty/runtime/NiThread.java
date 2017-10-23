@@ -1,6 +1,5 @@
 package com.ninty.runtime;
 
-import com.ninty.cmd.CmdReferences;
 import com.ninty.cmd.base.CmdFatory;
 import com.ninty.cmd.base.ICmdBase;
 import com.ninty.runtime.heap.*;
@@ -58,38 +57,10 @@ public class NiThread {
             throw new NullPointerException("mainThread is null");
         }
         thread.setCurrentThread(mainThread);
-        NiFrame returnFrame = new NiFrame();
+        NiFrame returnFrame = NiFrame.RETURN_FRAME;
         thread.pushFrame(returnFrame);
 
-        NiFrame newFrame = new NiFrame(method);
-        thread.pushFrame(newFrame);
-        int argsCount = method.getArgsCount();
-        LocalVars slots = newFrame.getLocalVars();
-        if (params.length > 0) {
-            for (int i = argsCount - 1; i >= 0; i--) {
-                slots.setSlot(i, params[i]);
-            }
-        }
-
-        int count = 0;
-        while (true) {
-            NiFrame frame = thread.topFrame();
-            if (frame == returnFrame) {
-                break;
-            }
-            CodeBytes bb = frame.getCode();
-            byte opCode = frame.getOpCode();
-            ICmdBase cmd = CmdFatory.getCmd(opCode);
-
-//            System.out.println(count++);
-//            System.out.println(thread.getT(thread.getLevel()) + cmd.getClass().getSimpleName());
-//            System.out.println(thread.getT(thread.getLevel()) + frame);
-//            System.out.println();
-
-            cmd.init(bb);
-            cmd.exec(frame);
-        }
-
+        thread.execMethod(method, params);
         if (returnFrame.getOperandStack().getSize() > 0) {
             return returnFrame.getOperandStack().popSlot();
         }
@@ -97,54 +68,61 @@ public class NiThread {
     }
 
     public void execMethod(NiMethod method, Slot... params) {
-        NiFrame newFrame = new NiFrame(method);
-        pushFrame(newFrame);
-        int argsCount = method.getArgsCount();
-        LocalVars slots = newFrame.getLocalVars();
-        if (params.length > 0) {
-            for (int i = argsCount - 1; i >= 0; i--) {
-                slots.setSlot(i, params[i]);
-            }
-        }
-//        System.out.println("invoke method: " + method);
+        fillParas(method, params);
         execThread();
     }
 
     public void invokeMethod(NiMethod method) {
-        NiFrame frame = topFrame();
+        int argsCount = method.getArgsCount();
+        Slot[] params = new Slot[argsCount];
+        OperandStack stack = topFrame().getOperandStack();
+        if (argsCount > 0) {
+            for (int i = argsCount - 1; i >= 0; i--) {
+                params[i] = stack.popSlot();
+            }
+        }
+        fillParas(method, params);
+    }
+
+    private void fillParas(NiMethod method, Slot... params) {
         NiFrame newFrame = new NiFrame(method);
         pushFrame(newFrame);
         int argsCount = method.getArgsCount();
-        OperandStack stack = frame.getOperandStack();
         LocalVars slots = newFrame.getLocalVars();
         if (argsCount > 0) {
             for (int i = argsCount - 1; i >= 0; i--) {
-                slots.setSlot(i, stack.popSlot());
+                try {
+                    slots.setSlot(i, params[i]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-//        System.out.println("invoke method: " + method);
     }
 
-    public void execThread() {
+    private void execThread() {
         try {
             long startTime = System.nanoTime();
             System.out.println("start\n");
             while (true) {
                 NiFrame frame = topFrame();
+                if (frame == NiFrame.RETURN_FRAME) {
+                    break;
+                }
                 CodeBytes bb = frame.getCode();
                 byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
-//                try {
+                try {
 
-//                System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
-//                System.out.println(getT(getLevel()) + frame);
-//                System.out.println();
+                    System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
+                    System.out.println(getT(getLevel()) + frame);
+                    System.out.println();
 
-                cmd.init(bb);
-                cmd.exec(frame);
-//                } catch (Exception e) {
-//                    throwException(frame, e);
-//                }
+                    cmd.init(bb);
+                    cmd.exec(frame);
+                } catch (Exception e) {
+                    throwException(frame, e);
+                }
 
                 if (isEmpty()) {
                     break;
@@ -178,7 +156,7 @@ public class NiThread {
 
         // init
         NiMethod initMethod = exClz.getMethod("<init>", "()V");
-        CmdReferences.invokeMethod(frame, initMethod);
+        frame.getThread().invokeMethod(initMethod);
 
         NiFrame topFrame = frame.getThread().topFrame();
         while (topFrame != frame) {

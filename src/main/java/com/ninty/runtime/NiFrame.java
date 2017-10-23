@@ -7,6 +7,8 @@ import com.ninty.runtime.heap.NiMethod;
  * Created by ninty on 2017/7/12.
  */
 public class NiFrame {
+    public final static NiFrame RETURN_FRAME = new NiFrame();
+
     NiFrame prevFrame;
 
     private NiThread thread;
@@ -17,6 +19,7 @@ public class NiFrame {
 
     private CodeBytes bb;
     private ThreadLocal<Integer> position = new ThreadLocal<>();
+
 
     public NiFrame(NiMethod method) {
         this.method = method;
