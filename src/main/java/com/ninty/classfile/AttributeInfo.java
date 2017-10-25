@@ -33,7 +33,6 @@ public class AttributeInfo {
             case "BootstrapMethods":
                 return new AttrBootstrapMethods(cps, bb);
             default:
-                System.out.println(nameIndex);
                 return new UnkonwAttr(name, bb);
         }
     }
