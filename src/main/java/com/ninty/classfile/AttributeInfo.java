@@ -33,7 +33,8 @@ public class AttributeInfo {
             case "BootstrapMethods":
                 return new AttrBootstrapMethods(cps, bb);
             default:
-                return new UnkonwAttr(bb);
+                System.out.println(nameIndex);
+                return new UnkonwAttr(name, bb);
         }
     }
 
@@ -46,7 +47,9 @@ public class AttributeInfo {
     }
 
     static class UnkonwAttr extends AttributeInfo {
-        UnkonwAttr(ByteBuffer bb) {
+        private String name;
+        UnkonwAttr(String name, ByteBuffer bb) {
+            this.name = name;
             long len = bb.getInt();
             skip(bb, (int) len);
         }
