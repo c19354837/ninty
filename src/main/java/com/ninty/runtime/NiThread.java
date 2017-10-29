@@ -2,8 +2,8 @@ package com.ninty.runtime;
 
 import com.ninty.cmd.base.CmdFatory;
 import com.ninty.cmd.base.ICmdBase;
+import com.ninty.nativee.NativeMethodException;
 import com.ninty.runtime.heap.*;
-import com.sun.jdi.NativeMethodException;
 
 /**
  * Created by ninty on 2017/7/12.

@@ -8,12 +8,12 @@ import com.ninty.cmd.base.Index8Cmd;
 import com.ninty.cmd.base.NoOperandCmd;
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
+import com.ninty.nativee.NativeMethodException;
 import com.ninty.nativee.lang.NaThrowable;
 import com.ninty.runtime.*;
 import com.ninty.runtime.heap.*;
 import com.ninty.runtime.heap.constantpool.*;
 import com.ninty.utils.VMUtils;
-import com.sun.jdi.NativeMethodException;
 
 /**
  * Created by ninty on 2017/7/27.

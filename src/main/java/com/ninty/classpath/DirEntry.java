@@ -1,6 +1,5 @@
 package com.ninty.classpath;
 
-import com.sun.istack.internal.Nullable;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -15,8 +14,7 @@ public class DirEntry extends ClassEntry {
         super(path);
     }
 
-    public @Nullable
-    byte[] readClass(String className) {
+    public byte[] readClass(String className) {
         String classFile = path + className;
         File file = new File(classFile);
         if (file.exists()) {
