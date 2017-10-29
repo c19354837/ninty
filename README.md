@@ -25,6 +25,8 @@ $ java -jar ninty.jar       // print help
 
 因为需要查看 class 文件的字节码，使用了作者写的 [classpy](https://github.com/zxh0/classpy)，非常好用，还顺手帮改了个 bug -_-!
 
+开发与测试使用 `JDK 1.8.0_40`
+
 ## 不同之处
 
 虽说是抄了一遍，但也不是无脑抄，比如最后一章我抄了一半就放弃了；也有地方是因为语言不同而没法抄，如解析启动参数部分用了[commons-cli](http://commons.apache.org/proper/commons-cli/)；按着书本写完还进行了一些扩展，实现多线程部分的内容。
