@@ -42,7 +42,7 @@ public class NaUnsafe {
         NaMethodManager.register(className, "getByte", "(J)B",
                 new getByte());
         NaMethodManager.register(className, "freeMemory", "(J)V",
-                new getByte());
+                new freeMemory());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -80,7 +80,7 @@ public class NaUnsafe {
         public void invoke(NiFrame frame) {
             LocalVars localVars = frame.getLocalVars();
             long l1 = localVars.getLong(1);
-            long l2 = localVars.getLong(2);
+            long l2 = localVars.getLong(3);
             unsafe.putLong(l1, l2);
         }
     }
