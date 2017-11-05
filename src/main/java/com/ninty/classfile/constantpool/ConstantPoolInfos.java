@@ -43,8 +43,13 @@ public class ConstantPoolInfos {
         return index == 0 ? "" : getClassName(index);
     }
 
+    @Deprecated
     public String getUtf8(int index) {
         return ((ConstantInfo.CPUtf8) get(index)).value();
+    }
+
+    public String getUtf8(ByteBuffer bb) {
+        return ((ConstantInfo.CPUtf8) get(bb.getChar())).value();
     }
 }
 

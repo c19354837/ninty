@@ -32,6 +32,10 @@ public class AttributeInfo {
                 return new AttrLocalVariableTable(cps, bb);
             case "BootstrapMethods":
                 return new AttrBootstrapMethods(cps, bb);
+            case "RuntimeVisibleAnnotations":
+                return new AnnotationAttr.RuntimeVisibleAnnotations(cps, bb);
+            case "RuntimeInvisibleAnnotations":
+                return new AnnotationAttr.RuntimeInvisibleAnnotations(cps, bb);
             default:
                 return new UnkonwAttr(name, bb);
         }
@@ -47,6 +51,7 @@ public class AttributeInfo {
 
     static class UnkonwAttr extends AttributeInfo {
         private String name;
+
         UnkonwAttr(String name, ByteBuffer bb) {
             this.name = name;
             long len = bb.getInt();
@@ -233,5 +238,4 @@ public class AttributeInfo {
             }
         }
     }
-
 }
