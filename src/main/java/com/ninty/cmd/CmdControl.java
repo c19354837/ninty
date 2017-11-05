@@ -116,7 +116,7 @@ public class CmdControl {
             int index = frame.getOperandStack().popInt();
             for (int i = 0; i < npairs * 2; i += 2) {
                 if (matchOffsets[i] == index) {
-                    jumpTo(matchOffsets[i] + 1);
+                    jumpTo(matchOffsets[i + 1]);
                     return;
                 }
             }
