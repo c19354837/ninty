@@ -105,8 +105,8 @@ public class CmdControl {
             skipPadding(bb);
             defaultOffset = bb.getInt();
             npairs = bb.getInt();
-            matchOffsets = new int[npairs];
-            for (int i = 0; i < npairs; i++) {
+            matchOffsets = new int[npairs*2];
+            for (int i = 0; i < npairs*2; i++) {
                 matchOffsets[i] = bb.getInt();
             }
         }
@@ -114,7 +114,7 @@ public class CmdControl {
         @Override
         public void exec(NiFrame frame) {
             int index = frame.getOperandStack().popInt();
-            for (int i = 0; i < npairs * 2; i++) {
+            for (int i = 0; i < npairs * 2; i += 2) {
                 if (matchOffsets[i] == index) {
                     jumpTo(matchOffsets[i] + 1);
                     return;
