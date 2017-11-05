@@ -58,8 +58,7 @@ public class AnnotationAttr {
         public ElementValuePairs[] evps;
 
         AnnotationInfo(ConstantPoolInfos cps, ByteBuffer bb) {
-            int index = bb.getChar();
-            type = cps.getUtf8(index);
+            type = cps.getUtf8(bb);
             int num = bb.getChar();
             evps = new ElementValuePairs[num];
             for (int i = 0; i < num; i++) {

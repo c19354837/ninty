@@ -22,8 +22,8 @@ public class MemberInfo {
     MemberInfo(ConstantPoolInfos cps, ByteBuffer bb) {
         this.cps = cps;
         accessFlag = bb.getChar();
-        name = cps.getUtf8(bb.getChar());
-        desc = cps.getUtf8(bb.getChar());
+        name = cps.getUtf8(bb);
+        desc = cps.getUtf8(bb);
         fillAttributes(cps, bb);
     }
 

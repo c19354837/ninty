@@ -11,8 +11,7 @@ import java.nio.ByteBuffer;
 public class AttributeInfo {
 
     static AttributeInfo generate(ConstantPoolInfos cps, ByteBuffer bb) {
-        int nameIndex = bb.getChar();
-        String name = cps.getUtf8(nameIndex);
+        String name = cps.getUtf8(bb);
         switch (name) {
             case "Code":
                 return new AttrCode(cps, bb);
@@ -76,8 +75,7 @@ public class AttributeInfo {
 
         AttrSourceFile(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
-            int sourceFileIndex = bb.getChar();
-            sourceFile = cps.getUtf8(sourceFileIndex);
+            sourceFile = cps.getUtf8(bb);
         }
     }
 
@@ -191,8 +189,8 @@ public class AttributeInfo {
         LocalVariable(ConstantPoolInfos cps, ByteBuffer bb) {
             startPC = bb.getChar();
             length = bb.getChar();
-            name = cps.getUtf8(bb.getChar());
-            desc = cps.getUtf8(bb.getChar());
+            name = cps.getUtf8(bb);
+            desc = cps.getUtf8(bb);
             index = bb.getChar();
         }
     }
