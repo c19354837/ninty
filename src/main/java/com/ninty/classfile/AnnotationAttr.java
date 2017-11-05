@@ -36,9 +36,14 @@ public class AnnotationAttr {
 
     public static class RuntimeVisibleAnnotations extends AttributeInfo {
         public AnnotationInfo[] annotationInfos;
+        public byte[] annotationDatas;
 
         RuntimeVisibleAnnotations(ConstantPoolInfos cps, ByteBuffer bb) {
-            skipAttributeLen(bb);
+            int len = bb.getInt();
+            annotationDatas = new byte[len];
+            int position = bb.position();
+            bb.get(annotationDatas);
+            bb.position(position);
             int num = bb.getChar();
             annotationInfos = new AnnotationInfo[num];
             for (int i = 0; i < num; i++) {

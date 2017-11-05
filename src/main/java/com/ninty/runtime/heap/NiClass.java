@@ -1,5 +1,6 @@
 package com.ninty.runtime.heap;
 
+import com.ninty.classfile.AnnotationAttr;
 import com.ninty.classfile.AttributeInfo;
 import com.ninty.classfile.ClassFile;
 import com.ninty.classfile.MemberInfo;
@@ -25,6 +26,7 @@ public class NiClass {
     private NiMethod[] methods;
 
     private AttributeInfo[] attributeInfos;
+    private byte[] annotationDatas;
 
     private String sourceFile;
 
@@ -49,7 +51,8 @@ public class NiClass {
         initFiled(classFile);
         initMethod(classFile);
         initSourceFile(classFile);
-        attributeInfos = classFile.getAttributeInfos();
+        initAnnotation(classFile);
+
     }
 
     public NiClass(int accessFlags, String className, String superClassName, String[] interfaceNames) {
@@ -88,6 +91,15 @@ public class NiClass {
             }
         }
         sourceFile = "unknow";
+    }
+
+    private void initAnnotation(ClassFile classFile) {
+        attributeInfos = classFile.getAttributeInfos();
+        for (int i = 0; i < attributeInfos.length; i++) {
+            if(attributeInfos[i] instanceof AnnotationAttr.RuntimeVisibleAnnotations){
+                annotationDatas = ((AnnotationAttr.RuntimeVisibleAnnotations)attributeInfos[i]).annotationDatas;
+            }
+        }
     }
 
     public NiMethod getMainMethod() {
@@ -395,6 +407,10 @@ public class NiClass {
 
     public String getSourceFile() {
         return sourceFile;
+    }
+
+    public byte[] getAnnotationDatas() {
+        return annotationDatas;
     }
 
     @Override
