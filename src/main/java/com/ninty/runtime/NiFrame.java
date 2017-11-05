@@ -93,22 +93,22 @@ public class NiFrame {
         bb.position(position);
     }
 
-    public void lockCheck(){
-        if(method !=null && method.isSynchronized()){
+    public void lockCheck() {
+        if (method != null && method.isSynchronized()) {
             getLockObj().lock();
         }
     }
 
-    public void unlockCheck(){
-        if(method !=null && method.isSynchronized()){
+    public void unlockCheck() {
+        if (method != null && method.isSynchronized()) {
             getLockObj().unlock();
         }
     }
 
-    private NiObject getLockObj(){
-        if(method.isStatic()){
+    private NiObject getLockObj() {
+        if (method.isStatic()) {
             return method.getClz().getjClass();
-        }else{
+        } else {
             return localVars.getThis();
         }
     }

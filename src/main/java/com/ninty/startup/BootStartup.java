@@ -42,11 +42,11 @@ public class BootStartup {
     }
 
     private NiObject getArgs(String[] args) {
-        if(args == null){
+        if (args == null) {
             return null;
         }
         NiClass astrClz = loader.loadClass("[java/lang/String;");
-        NiObject astrObj = astrClz.newArray(args.length );
+        NiObject astrObj = astrClz.newArray(args.length);
         NiObject[] arrayDatas = (NiObject[]) astrObj.getArrayDatas();
         for (int i = 0; i < arrayDatas.length; i++) {
             arrayDatas[i] = NiString.newString(loader, args[i]);
