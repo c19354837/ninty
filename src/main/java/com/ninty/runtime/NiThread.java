@@ -110,16 +110,16 @@ public class NiThread {
                 CodeBytes bb = frame.getCode();
                 byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
-                try {
+//                try {
 //                    System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
 //                    System.out.println(getT(getLevel()) + frame);
 //                    System.out.println();
 
                     cmd.init(bb);
                     cmd.exec(frame);
-                } catch (Exception e) {
-                    throwException(frame, e);
-                }
+//                } catch (Exception e) {
+//                    throwException(frame, e);
+//                }
 
                 if (isEmpty()) {
                     break;

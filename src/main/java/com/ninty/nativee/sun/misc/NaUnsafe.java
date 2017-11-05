@@ -2,6 +2,7 @@ package com.ninty.nativee.sun.misc;
 
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
+import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import sun.misc.Unsafe;
 
@@ -11,6 +12,20 @@ import java.lang.reflect.Field;
  * Created by ninty on 2017/10/8.
  */
 public class NaUnsafe {
+    private static Unsafe unsafe;
+    static {
+        Field field;
+        try {
+            field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            unsafe = (Unsafe) field.get(null);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
     private final static String className = "sun/misc/Unsafe";
 
     public static void init() {
@@ -20,6 +35,14 @@ public class NaUnsafe {
                 new arrayIndexScale());
         NaMethodManager.register(className, "addressSize", "()I",
                 new addressSize());
+        NaMethodManager.register(className, "allocateMemory", "(J)J",
+                new allocateMemory());
+        NaMethodManager.register(className, "putLong", "(JJ)V",
+                new putLong());
+        NaMethodManager.register(className, "getByte", "(J)B",
+                new getByte());
+        NaMethodManager.register(className, "freeMemory", "(J)V",
+                new getByte());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -39,16 +62,45 @@ public class NaUnsafe {
     public static class addressSize implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
-            try {
-                Field field = Unsafe.class.getDeclaredField("theUnsafe");
-                field.setAccessible(true);
-                Unsafe theUnsafe = (Unsafe) field.get(null);
-                frame.getOperandStack().pushInt(theUnsafe.addressSize());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+            frame.getOperandStack().pushInt(unsafe.addressSize());
+        }
+    }
+
+    public static class allocateMemory implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            long size = frame.getLocalVars().getLong(1);
+            long addr = unsafe.allocateMemory(size);
+            frame.getOperandStack().pushLong(addr);
+        }
+    }
+
+    public static class putLong implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            long l1 = localVars.getLong(1);
+            long l2 = localVars.getLong(2);
+            unsafe.putLong(l1, l2);
+        }
+    }
+
+    public static class getByte implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            long addr = localVars.getLong(1);
+            byte data = unsafe.getByte(addr);
+            frame.getOperandStack().pushInt(data);
+        }
+    }
+
+    public static class freeMemory implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            long addr = localVars.getLong(1);
+            unsafe.freeMemory(addr);
         }
     }
 }

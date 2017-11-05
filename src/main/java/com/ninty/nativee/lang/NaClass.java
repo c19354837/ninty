@@ -28,6 +28,8 @@ public class NaClass {
         NaMethodManager.register(className, "getEnclosingMethod0", "()[Ljava/lang/Object;", new getEnclosingMethod0());
         NaMethodManager.register(className, "getModifiers", "()I", new getModifiers());
         NaMethodManager.register(className, "isPrimitive", "()Z", new isPrimitive());
+        NaMethodManager.register(className, "getRawAnnotations", "()[B", new getRawAnnotations());
+        NaMethodManager.register(className, "getConstantPool", "()Lsun/reflect/ConstantPool;", new getConstantPool());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
@@ -94,6 +96,33 @@ public class NaClass {
             NiObject self = frame.getLocalVars().getThis();
             boolean isPrimitive = VMUtils.primitiveTypes.containsKey(self.getClz().getClassName());
             frame.getOperandStack().pushBoolean(isPrimitive);
+        }
+    }
+
+    public static class getRawAnnotations implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            NiClass clz = (NiClass) self.getExtra();
+            byte[] annotationDatas = clz.getAnnotationDatas();
+            if(annotationDatas == null){
+                frame.getOperandStack().pushRef(null);
+            }else{
+                NiClass arrClz = frame.getMethod().getClz().getLoader().loadClass("[B");
+                NiObject obj = new NiObject(arrClz, annotationDatas);
+                frame.getOperandStack().pushRef(obj);
+            }
+        }
+    }
+
+    public static class getConstantPool implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            NiClass clz = (NiClass) self.getExtra();
+            NiObject obj = clz.getLoader().loadClass("sun/reflect/ConstantPool").newObject();
+            obj.setExtra(clz.getCps());
+            frame.getOperandStack().pushRef(obj);
         }
     }
 }
