@@ -106,7 +106,7 @@ public class NiConstant {
     }
 
     public static class NiUtf8 extends NiConstant {
-        String value;
+        public String value;
 
         NiUtf8(ConstantInfo.CPUtf8 cp) {
             value = cp.value();

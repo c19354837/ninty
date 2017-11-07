@@ -7,6 +7,7 @@ import com.ninty.nativee.lang.*;
 import com.ninty.nativee.security.NaAccessController;
 import com.ninty.nativee.sun.misc.NaUnsafe;
 import com.ninty.nativee.sun.misc.NaVM;
+import com.ninty.nativee.sun.reflect.NaConstantPool;
 import com.ninty.nativee.sun.reflect.NaReflection;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.heap.NiClass;
@@ -39,6 +40,7 @@ public class NaMethodManager {
         NaUnsafe.init();
         NaFileDescriptor.init();
         NaFileOutputStream.init();
+        NaConstantPool.init();
     }
 
     private final static INativeMethod EMPTY = (NiFrame frame) -> {

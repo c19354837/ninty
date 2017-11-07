@@ -105,8 +105,8 @@ public class CmdControl {
             skipPadding(bb);
             defaultOffset = bb.getInt();
             npairs = bb.getInt();
-            matchOffsets = new int[npairs*2];
-            for (int i = 0; i < npairs*2; i++) {
+            matchOffsets = new int[npairs * 2];
+            for (int i = 0; i < npairs * 2; i++) {
                 matchOffsets[i] = bb.getInt();
             }
         }

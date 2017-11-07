@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
  */
 public class NaUnsafe {
     private static Unsafe unsafe;
+
     static {
         Field field;
         try {

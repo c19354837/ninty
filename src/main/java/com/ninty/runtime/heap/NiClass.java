@@ -96,8 +96,8 @@ public class NiClass {
     private void initAnnotation(ClassFile classFile) {
         attributeInfos = classFile.getAttributeInfos();
         for (int i = 0; i < attributeInfos.length; i++) {
-            if(attributeInfos[i] instanceof AnnotationAttr.RuntimeVisibleAnnotations){
-                annotationDatas = ((AnnotationAttr.RuntimeVisibleAnnotations)attributeInfos[i]).annotationDatas;
+            if (attributeInfos[i] instanceof AnnotationAttr.RuntimeVisibleAnnotations) {
+                annotationDatas = ((AnnotationAttr.RuntimeVisibleAnnotations) attributeInfos[i]).annotationDatas;
             }
         }
     }

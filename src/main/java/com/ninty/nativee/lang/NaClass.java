@@ -2,6 +2,7 @@ package com.ninty.nativee.lang;
 
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
+import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiClassLoader;
@@ -30,6 +31,7 @@ public class NaClass {
         NaMethodManager.register(className, "isPrimitive", "()Z", new isPrimitive());
         NaMethodManager.register(className, "getRawAnnotations", "()[B", new getRawAnnotations());
         NaMethodManager.register(className, "getConstantPool", "()Lsun/reflect/ConstantPool;", new getConstantPool());
+        NaMethodManager.register(className, "forName0", "(Ljava/lang/String;ZLjava/lang/ClassLoader;Ljava/lang/Class;)Ljava/lang/Class;", new forName0());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
@@ -105,9 +107,9 @@ public class NaClass {
             NiObject self = frame.getLocalVars().getThis();
             NiClass clz = (NiClass) self.getExtra();
             byte[] annotationDatas = clz.getAnnotationDatas();
-            if(annotationDatas == null){
+            if (annotationDatas == null) {
                 frame.getOperandStack().pushRef(null);
-            }else{
+            } else {
                 NiClass arrClz = frame.getMethod().getClz().getLoader().loadClass("[B");
                 NiObject obj = new NiObject(arrClz, annotationDatas);
                 frame.getOperandStack().pushRef(obj);
@@ -123,6 +125,27 @@ public class NaClass {
             NiObject obj = clz.getLoader().loadClass("sun/reflect/ConstantPool").newObject();
             obj.setExtra(clz.getCps());
             frame.getOperandStack().pushRef(obj);
+        }
+    }
+
+    public static class forName0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject classname = localVars.getRef(0);
+            boolean inited = localVars.getInt(1) == 1;
+//            NiObject classLoader = localVars.getRef(2);
+//            NiObject caller = localVars.getRef(3);
+
+            String name = NiString.getString(classname);
+            name = name.replace('.', '/');
+            NiClass clz = frame.getMethod().getClz().getLoader().loadClass(name);
+            if (inited) {
+                frame.restorePostion();
+                clz.clinit(frame.getThread());
+            } else {
+                frame.getOperandStack().pushRef(clz.getjClass());
+            }
         }
     }
 }
