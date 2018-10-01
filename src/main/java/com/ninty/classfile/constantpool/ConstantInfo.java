@@ -4,6 +4,8 @@ import com.sun.org.apache.bcel.internal.classfile.ClassFormatException;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ninty on 2017/7/9.
@@ -232,6 +234,20 @@ public class ConstantInfo {
         private int referenceKind;
         private int referenceIndex;
 
+        private static Map<Integer, String> kindMap = new HashMap<>(16);
+
+        {
+            kindMap.put(1, "findGetter");
+            kindMap.put(2, "findStaticGetter");
+            kindMap.put(3, "findSetter");
+            kindMap.put(4, "findStaticSetter");
+            kindMap.put(5, "findVirtual");
+            kindMap.put(6, "findStatic");
+            kindMap.put(7, "findSpecial");
+            kindMap.put(8, "findConstructor");
+            kindMap.put(9, "findVirtual");
+        }
+
         public CPMethodHandleInfo(ByteBuffer bb) {
             referenceKind = bb.get();
             referenceIndex = bb.getChar();
@@ -239,6 +255,10 @@ public class ConstantInfo {
 
         public int getReference() {
             return referenceIndex;
+        }
+
+        public String getKind() {
+            return kindMap.get(referenceKind);
         }
     }
 
