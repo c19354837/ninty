@@ -17,6 +17,14 @@ public class LocalVars {
         }
     }
 
+    public boolean getBoolean(int index) {
+        return slots[index].num == 1;
+    }
+
+    public void setBoolean(int index, boolean val) {
+        slots[index].num = val ? 1 : 0;
+    }
+
     public int getInt(int index) {
         return slots[index].num;
     }
