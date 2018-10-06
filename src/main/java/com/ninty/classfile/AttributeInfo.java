@@ -31,6 +31,8 @@ public class AttributeInfo {
                 return new AttrLocalVariableTable(cps, bb);
             case "BootstrapMethods":
                 return new AttrBootstrapMethods(cps, bb);
+            case "Signature":
+                return new AnnotationAttr.RuntimeInvisibleAnnotations(cps, bb);
             case "RuntimeVisibleAnnotations":
                 return new AnnotationAttr.RuntimeVisibleAnnotations(cps, bb);
             case "RuntimeInvisibleAnnotations":
@@ -234,6 +236,16 @@ public class AttributeInfo {
                 int cpIndex = bb.getChar();
                 arguments[i] = cps.get(cpIndex);
             }
+        }
+    }
+
+    public static class Signature extends AttributeInfo{
+        public String signature;
+
+        Signature(ConstantPoolInfos cps, ByteBuffer bb){
+            skipAttributeLen(bb);
+            int index = bb.getChar();
+            signature = cps.getUtf8(index);
         }
     }
 }

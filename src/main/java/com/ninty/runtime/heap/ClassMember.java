@@ -11,11 +11,17 @@ public class ClassMember {
     protected String name;
     protected String desc;
     protected NiClass clz;
+    private String signature;
 
     void copyMemberInfo(MemberInfo memberInfo) {
         accessFlags = memberInfo.getAccessFlag();
         name = memberInfo.getName();
         desc = memberInfo.getDesc();
+
+        signature = memberInfo.getAttrSignature();
+        if (signature == null) {
+            signature = "";
+        }
     }
 
     public boolean canAccess(NiClass c) {
@@ -29,6 +35,14 @@ public class ClassMember {
             return clz.isSamePackge(c);
         }
         return clz.isSame(c);
+    }
+
+    public int getAccessFlags() {
+        return accessFlags;
+    }
+
+    public String getSignature() {
+        return signature;
     }
 
     public boolean isSuper() {
