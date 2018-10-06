@@ -16,6 +16,10 @@ public class Slot {
         this.ref = ref;
     }
 
+    public Slot(int num) {
+        this.num = num;
+    }
+
     public Slot duplicate() {
         Slot slot = new Slot();
         slot.num = num;
