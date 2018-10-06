@@ -32,6 +32,7 @@ public class NaClass {
         NaMethodManager.register(className, "getRawAnnotations", "()[B", new getRawAnnotations());
         NaMethodManager.register(className, "getConstantPool", "()Lsun/reflect/ConstantPool;", new getConstantPool());
         NaMethodManager.register(className, "forName0", "(Ljava/lang/String;ZLjava/lang/ClassLoader;Ljava/lang/Class;)Ljava/lang/Class;", new forName0());
+        NaMethodManager.register(className, "isInterface", "()Z", new isInterface());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
@@ -133,7 +134,7 @@ public class NaClass {
         public void invoke(NiFrame frame) {
             LocalVars localVars = frame.getLocalVars();
             NiObject classname = localVars.getRef(0);
-            boolean inited = localVars.getInt(1) == 1;
+            boolean inited = localVars.getBoolean(1);
 //            NiObject classLoader = localVars.getRef(2);
 //            NiObject caller = localVars.getRef(3);
 
