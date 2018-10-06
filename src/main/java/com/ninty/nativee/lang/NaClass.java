@@ -149,4 +149,15 @@ public class NaClass {
             }
         }
     }
+
+    public static class isInterface implements INativeMethod {
+
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            boolean result = self.getClz().isInterface();
+            frame.getOperandStack().pushBoolean(result);
+        }
+    }
 }
+
