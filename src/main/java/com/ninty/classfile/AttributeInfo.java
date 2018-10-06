@@ -32,7 +32,7 @@ public class AttributeInfo {
             case "BootstrapMethods":
                 return new AttrBootstrapMethods(cps, bb);
             case "Signature":
-                return new AnnotationAttr.RuntimeInvisibleAnnotations(cps, bb);
+                return new Signature(cps, bb);
             case "RuntimeVisibleAnnotations":
                 return new AnnotationAttr.RuntimeVisibleAnnotations(cps, bb);
             case "RuntimeInvisibleAnnotations":
