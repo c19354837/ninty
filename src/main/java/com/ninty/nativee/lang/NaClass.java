@@ -4,11 +4,12 @@ import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
-import com.ninty.runtime.heap.NiClass;
-import com.ninty.runtime.heap.NiClassLoader;
-import com.ninty.runtime.heap.NiObject;
-import com.ninty.runtime.heap.NiString;
+import com.ninty.runtime.NiThread;
+import com.ninty.runtime.Slot;
+import com.ninty.runtime.heap.*;
 import com.ninty.utils.VMUtils;
+
+import java.util.Arrays;
 
 /**
  * Created by ninty on 2017/8/13.
@@ -32,6 +33,7 @@ public class NaClass {
         NaMethodManager.register(className, "getRawAnnotations", "()[B", new getRawAnnotations());
         NaMethodManager.register(className, "getConstantPool", "()Lsun/reflect/ConstantPool;", new getConstantPool());
         NaMethodManager.register(className, "forName0", "(Ljava/lang/String;ZLjava/lang/ClassLoader;Ljava/lang/Class;)Ljava/lang/Class;", new forName0());
+        NaMethodManager.register(className, "getDeclaredFields0", "(Z)[Ljava/lang/reflect/Field;", new getDeclaredFields0());
         NaMethodManager.register(className, "isInterface", "()Z", new isInterface());
     }
 
@@ -146,6 +148,47 @@ public class NaClass {
                 clz.clinit(frame.getThread());
             } else {
                 frame.getOperandStack().pushRef(clz.getjClass());
+            }
+        }
+    }
+
+    public static class getDeclaredFields0 implements INativeMethod {
+
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject self = localVars.getThis();
+            boolean publicOnly = localVars.getBoolean(1);
+            NiField[] fields = Arrays.stream(self.getClz().getFields()).filter((field) -> !publicOnly || field.isPublic()).toArray(NiField[]::new);
+
+            NiClass clz = (NiClass) self.getExtra();
+            NiClassLoader loader = clz.getLoader();
+            NiClass fieldsClz = loader.loadClass("[java/lang/reflect/Field");
+            int count = fields.length;
+            NiObject result = fieldsClz.newArray(count);
+            frame.getOperandStack().pushRef(result);
+
+            if (count == 0) {
+                return;
+            }
+
+            NiClass fieldClz = loader.loadClass("java/lang/reflect/Field");
+            for (int i = 0; i < count; i++) {
+                NiField field = fields[i];
+
+                NiObject fieldObj = fieldClz.newObject();
+                NiMethod initMethod = fieldObj.getClz().getInitMethod("(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;IILjava/lang/String;[B)V");
+                NiThread.execMethodDirectly(initMethod,
+                        new Slot(fieldObj),
+                        new Slot(self),
+                        new Slot(NiString.newString(loader, field.getName())),
+                        new Slot(field.getType().getjClass()),
+                        new Slot(field.getAccessFlags()),
+                        new Slot(field.getSlotId()),
+                        new Slot(NiString.newString(loader, field.getSignature())),
+                        new Slot(loader.loadClass("[B").newArray(0)) // TODO: annotation bytes
+                );
+                result.aobject()[i] = fieldObj;
             }
         }
     }
