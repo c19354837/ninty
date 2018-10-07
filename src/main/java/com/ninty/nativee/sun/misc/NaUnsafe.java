@@ -4,6 +4,7 @@ import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.heap.NiObject;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -44,6 +45,8 @@ public class NaUnsafe {
                 new getByte());
         NaMethodManager.register(className, "freeMemory", "(J)V",
                 new freeMemory());
+        NaMethodManager.register(className, "objectFieldOffset", "(Ljava/lang/reflect/Field;)J",
+                new objectFieldOffset());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -102,6 +105,15 @@ public class NaUnsafe {
             LocalVars localVars = frame.getLocalVars();
             long addr = localVars.getLong(1);
             unsafe.freeMemory(addr);
+        }
+    }
+
+    public static class objectFieldOffset implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject fieldObj = localVars.getRef(1);
+            frame.getOperandStack().pushLong(fieldObj.getFieldInt("slot"));
         }
     }
 }

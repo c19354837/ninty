@@ -116,6 +116,11 @@ public class NiObject {
         fields.setInt(field.getSlotId(), val);
     }
 
+    public int getFieldInt(String name) {
+        NiField field = clz.findField(name, "I");
+        return fields.getInt(field.getSlotId());
+    }
+
     public void setFieldRef(String name, String desc, NiObject ref) {
         NiField field = clz.findField(name, desc);
         fields.setRef(field.getSlotId(), ref);
