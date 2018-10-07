@@ -163,7 +163,7 @@ public class NaClass {
 
             NiClass clz = (NiClass) self.getExtra();
             NiClassLoader loader = clz.getLoader();
-            NiClass fieldsClz = loader.loadClass("[java/lang/reflect/Field");
+            NiClass fieldsClz = loader.loadClass("[Ljava/lang/reflect/Field;");
             int count = fields.length;
             NiObject result = fieldsClz.newArray(count);
             frame.getOperandStack().pushRef(result);
