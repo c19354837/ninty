@@ -537,7 +537,7 @@ public class CmdReferences {
             NiMethod method = frame.getMethod();
             INativeMethod nativeMethod = NaMethodManager.findNativeMethod(method);
             if (nativeMethod == null) {
-                throw new NativeMethodException("cannot found native method: " + method);
+                throw new NativeMethodException("cannot find native method: " + method);
             }
             nativeMethod.invoke(frame);
         }
