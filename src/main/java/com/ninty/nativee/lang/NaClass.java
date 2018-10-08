@@ -159,7 +159,7 @@ public class NaClass {
             LocalVars localVars = frame.getLocalVars();
             NiObject self = localVars.getThis();
             boolean publicOnly = localVars.getBoolean(1);
-            NiField[] fields = Arrays.stream(self.getClz().getFields()).filter((field) -> !publicOnly || field.isPublic()).toArray(NiField[]::new);
+            NiField[] fields = Arrays.stream(((NiClass)self.getExtra()).getFields()).filter((field) -> !publicOnly || field.isPublic()).toArray(NiField[]::new);
 
             NiClass clz = (NiClass) self.getExtra();
             NiClassLoader loader = clz.getLoader();
