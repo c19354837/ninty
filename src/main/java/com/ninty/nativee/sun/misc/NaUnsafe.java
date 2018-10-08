@@ -49,6 +49,8 @@ public class NaUnsafe {
                 new objectFieldOffset());
         NaMethodManager.register(className, "compareAndSwapObject", "(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z",
                 new compareAndSwapObject());
+        NaMethodManager.register(className, "getIntVolatile", "(Ljava/lang/Object;J)I",
+                new getIntVolatile());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -134,6 +136,18 @@ public class NaUnsafe {
             } else {
                 frame.getOperandStack().pushBoolean(false);
             }
+        }
+    }
+
+    public static class getIntVolatile implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject obj = localVars.getRef(1);
+            long offset = localVars.getLong(2);
+            LocalVars fields = obj.getFields();
+            int result = fields.getInt((int) offset);
+            frame.getOperandStack().pushInt(result);
         }
     }
 }
