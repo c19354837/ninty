@@ -47,6 +47,8 @@ public class NaUnsafe {
                 new freeMemory());
         NaMethodManager.register(className, "objectFieldOffset", "(Ljava/lang/reflect/Field;)J",
                 new objectFieldOffset());
+        NaMethodManager.register(className, "compareAndSwapObject", "(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z",
+                new compareAndSwapObject());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -114,6 +116,24 @@ public class NaUnsafe {
             LocalVars localVars = frame.getLocalVars();
             NiObject fieldObj = localVars.getRef(1);
             frame.getOperandStack().pushLong(fieldObj.getFieldInt("slot"));
+        }
+    }
+
+    // TODO: CAS
+    public static class compareAndSwapObject implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject obj = localVars.getRef(1);
+            int offset = (int) localVars.getLong(2);
+            NiObject expect = localVars.getRef(4);
+            NiObject update = localVars.getRef(5);
+            if (obj.getFields().getRef(offset) == expect) {
+                obj.getFields().setRef(offset, update);
+                frame.getOperandStack().pushBoolean(true);
+            } else {
+                frame.getOperandStack().pushBoolean(false);
+            }
         }
     }
 }
