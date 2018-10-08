@@ -27,6 +27,7 @@ public class NiClassLoader {
     }
 
     private void loadBasicClasses() {
+        loadClass(J_CLASS);
         for (String className : classes.keySet()) {
             NiClass clz = classes.get(className);
             fillJClass(clz);
@@ -63,7 +64,10 @@ public class NiClassLoader {
         } else {
             clz = loadNonArrayClass(className);
         }
-        fillJClass(clz);
+        if (classes.containsKey(J_CLASS)) {
+            fillJClass(clz);
+        }
+        classes.put(className, clz);
         return clz;
     }
 
@@ -71,7 +75,6 @@ public class NiClassLoader {
         NiClass clz = new NiClass(ClassConstant.ACC_PUBLIC, className, "java/lang/Object", new
                 String[]{"java/lang/Cloneable", "java/io/Serializable"});
         resolve(clz);
-        classes.put(className, clz);
         return clz;
     }
 
@@ -93,7 +96,6 @@ public class NiClassLoader {
     private NiClass definedClass(byte[] datas) {
         ClassFile cf = new ClassFile(datas);
         NiClass clz = new NiClass(cf);
-        classes.put(clz.className, clz);
         resolve(clz);
         return clz;
     }
