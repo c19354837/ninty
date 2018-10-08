@@ -49,6 +49,8 @@ public class NaUnsafe {
                 new objectFieldOffset());
         NaMethodManager.register(className, "compareAndSwapObject", "(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z",
                 new compareAndSwapObject());
+        NaMethodManager.register(className, "compareAndSwapInt", "(Ljava/lang/Object;JII)Z",
+                new compareAndSwapInt());
         NaMethodManager.register(className, "getIntVolatile", "(Ljava/lang/Object;J)I",
                 new getIntVolatile());
     }
@@ -132,6 +134,22 @@ public class NaUnsafe {
             NiObject update = localVars.getRef(5);
             if (obj.getFields().getRef(offset) == expect) {
                 obj.getFields().setRef(offset, update);
+                frame.getOperandStack().pushBoolean(true);
+            } else {
+                frame.getOperandStack().pushBoolean(false);
+            }
+        }
+    }
+    public static class compareAndSwapInt implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject obj = localVars.getRef(1);
+            int offset = (int) localVars.getLong(2);
+            int expect = localVars.getInt(4);
+            int update = localVars.getInt(5);
+            if (obj.getFields().getInt(offset) == expect) {
+                obj.getFields().setInt(offset, update);
                 frame.getOperandStack().pushBoolean(true);
             } else {
                 frame.getOperandStack().pushBoolean(false);
