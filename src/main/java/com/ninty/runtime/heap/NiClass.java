@@ -60,6 +60,7 @@ public class NiClass {
         this.className = className;
         this.superClassName = superClassName;
         this.interfaceNames = interfaceNames;
+        methods = new NiMethod[0];
     }
 
     private void initCP(ClassFile classFile) {
