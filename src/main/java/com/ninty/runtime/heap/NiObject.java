@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by ninty on 2017/7/23.
  */
-public class NiObject {
+public class NiObject implements Cloneable {
     private NiClass clz;
     private LocalVars fields;
     private Object arrayDatas; // when it's array
@@ -143,6 +143,53 @@ public class NiObject {
             System.out.println(Thread.currentThread());
             System.exit(1);
         }
+    }
+
+    @Override
+    public NiObject clone() throws CloneNotSupportedException {
+        NiClassLoader loader = clz.getLoader();
+        NiClass cloneable = loader.loadClass("java/lang/Cloneable");
+        if (!clz.isImplements(cloneable)) {
+            throw new CloneNotSupportedException();
+        }
+
+        NiObject cloneObj;
+        switch (clz.getClassName().substring(0, 2)) {
+            case "[Z":
+            case "[B":
+                cloneObj = new NiObject(clz, abyte().clone());
+                break;
+            case "[C":
+                cloneObj = new NiObject(clz, achar().clone());
+                break;
+            case "[S":
+                cloneObj = new NiObject(clz, ashort().clone());
+                break;
+            case "[I":
+                cloneObj = new NiObject(clz, aint().clone());
+                break;
+            case "[J":
+                cloneObj = new NiObject(clz, along().clone());
+                break;
+            case "[F":
+                cloneObj = new NiObject(clz, afloat().clone());
+                break;
+            case "[D":
+                cloneObj = new NiObject(clz, adouble().clone());
+                break;
+            case "[L":
+                cloneObj = new NiObject(clz, aobject().clone());
+                break;
+            default:
+                cloneObj = new NiObject(clz, fields.length());
+                for (int i = 0; i < fields.length(); i++) {
+                    // TODO: call slot's clone() if it implement Cloneable
+                    cloneObj.fields.setSlot(i, fields.getSlot(i).duplicate());
+                }
+                break;
+        }
+
+        return cloneObj;
     }
 
     @Override

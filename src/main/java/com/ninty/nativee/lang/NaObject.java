@@ -19,6 +19,7 @@ public class NaObject {
         NaMethodManager.register(className, "notifyAll", "()V", new notifyAll());
         NaMethodManager.register(className, "wait", "()V", new wait());
         NaMethodManager.register(className, "wait", "(J)V", new wait_j());
+        NaMethodManager.register(className, "clone", "()Ljava/lang/Object;", new clone());
     }
 
     public static class getClass implements INativeMethod {
@@ -90,5 +91,16 @@ public class NaObject {
         self.lock();
     }
 
-    // TODO clone()
+
+    public static class clone implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            try {
+                frame.getOperandStack().pushRef(self.clone());
+            } catch (CloneNotSupportedException e) {
+                throw new UnsupportedOperationException("CloneNotSupportedException");
+            }
+        }
+    }
 }
