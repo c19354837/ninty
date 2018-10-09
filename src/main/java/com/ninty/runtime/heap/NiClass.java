@@ -238,7 +238,6 @@ public class NiClass {
         }
         switch (className.substring(0, 2)) {
             case "[Z":
-                return new NiObject(this, new byte[count]);
             case "[B":
                 return new NiObject(this, new byte[count]);
             case "[C":
