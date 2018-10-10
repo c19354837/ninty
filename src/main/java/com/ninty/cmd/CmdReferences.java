@@ -545,7 +545,7 @@ public class CmdReferences {
 
     public static class INVOKE_DYNAMIC extends Index16Cmd {
         private final static String CLZ_METHOD_HANDLE = "java/lang/invoke/MethodHandle";
-        private final static String CLZ_METHOD_TYPE = "java/lang/invoke.MethodType";
+        private final static String CLZ_METHOD_TYPE = "java/lang/invoke/MethodType";
         private final static String CLZ_LOOK_UP = "java/lang/invoke/MethodHandles$Lookup";
 
         @Override
