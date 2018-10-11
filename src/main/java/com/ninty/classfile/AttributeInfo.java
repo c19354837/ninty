@@ -239,10 +239,10 @@ public class AttributeInfo {
         }
     }
 
-    public static class Signature extends AttributeInfo{
+    public static class Signature extends AttributeInfo {
         public String signature;
 
-        Signature(ConstantPoolInfos cps, ByteBuffer bb){
+        Signature(ConstantPoolInfos cps, ByteBuffer bb) {
             skipAttributeLen(bb);
             int index = bb.getChar();
             signature = cps.getUtf8(index);

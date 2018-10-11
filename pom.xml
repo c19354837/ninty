@@ -6,7 +6,7 @@
 
     <groupId>com.ninty</groupId>
     <artifactId>ninty</artifactId>
-    <version>1.0    </version>
+    <version>1.0</version>
 
     <dependencies>
         <dependency>

@@ -140,6 +140,7 @@ public class NaUnsafe {
             }
         }
     }
+
     public static class compareAndSwapInt implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
