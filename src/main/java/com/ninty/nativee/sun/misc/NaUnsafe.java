@@ -53,6 +53,8 @@ public class NaUnsafe {
                 new compareAndSwapInt());
         NaMethodManager.register(className, "getIntVolatile", "(Ljava/lang/Object;J)I",
                 new getIntVolatile());
+        NaMethodManager.register(className, "getObjectVolatile", "(Ljava/lang/Object;J)Ljava/lang/Object;",
+                new getObjectVolatile());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -164,9 +166,27 @@ public class NaUnsafe {
             LocalVars localVars = frame.getLocalVars();
             NiObject obj = localVars.getRef(1);
             long offset = localVars.getLong(2);
-            LocalVars fields = obj.getFields();
-            int result = fields.getInt((int) offset);
-            frame.getOperandStack().pushInt(result);
+            if (obj.getClz().isArray()) {
+                frame.getOperandStack().pushInt(obj.aint()[(int) offset]);
+            } else {
+                LocalVars fields = obj.getFields();
+                frame.getOperandStack().pushInt(fields.getInt((int) offset));
+            }
+        }
+    }
+
+    public static class getObjectVolatile implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject obj = localVars.getRef(1);
+            long offset = localVars.getLong(2);
+            if (obj.getClz().isArray()) {
+                frame.getOperandStack().pushRef(obj.aobject()[(int) offset]);
+            } else {
+                LocalVars fields = obj.getFields();
+                frame.getOperandStack().pushRef(fields.getRef((int) offset));
+            }
         }
     }
 }
