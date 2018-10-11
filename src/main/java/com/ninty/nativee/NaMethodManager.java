@@ -43,6 +43,7 @@ public class NaMethodManager {
         NaFileOutputStream.init();
         NaConstantPool.init();
         NaMethodHandleNatives.init();
+        NaRuntime.init();
     }
 
     private final static INativeMethod EMPTY = (NiFrame frame) -> {
