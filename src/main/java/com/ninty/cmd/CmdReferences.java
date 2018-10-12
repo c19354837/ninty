@@ -600,12 +600,17 @@ public class CmdReferences {
             String ret = desc.substring(index + 1);
             NiObject rClz = loader.loadClass(VMUtils.toClassname(ret)).getjClass();
 
-            NiClassLoader methodType = frame.getMethod().getClz().getLoader();
             NiClass clzMethodType = loader.loadClass(CLZ_METHOD_TYPE);
-            NiObject objMethodType = clzMethodType.newObject();
-            objMethodType.setFieldRef("rtype", "Ljava/lang/Class;", rClz);
-            objMethodType.setFieldRef("ptypes", "[Ljava/lang/Class;", pClzs);
-            return objMethodType;
+//            NiObject objMethodType = clzMethodType.newObject();
+//            objMethodType.setFieldRef("rtype", "Ljava/lang/Class;", rClz);
+//            objMethodType.setFieldRef("ptypes", "[Ljava/lang/Class;", pClzs);
+
+            NiMethod methodTypeMethod = clzMethodType.getMethod("methodType",
+                    "(Ljava/lang/Class;[Ljava/lang/Class;)Ljava/lang/invoke/MethodType;");
+            Slot mt = NiThread.execMethodDirectly(methodTypeMethod,
+                    new Slot(rClz),
+                    new Slot(pClzs));
+            return mt.getRef();
         }
 
         private NiObject getMethodHandle(NiFrame frame, NiObject lookUp, NiMethod method) {
