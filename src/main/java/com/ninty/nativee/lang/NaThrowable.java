@@ -6,6 +6,7 @@ import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiMethod;
 import com.ninty.runtime.heap.NiObject;
+import com.ninty.runtime.heap.NiString;
 
 /**
  * Created by ninty on 2017/8/13.
@@ -48,8 +49,8 @@ public class NaThrowable {
 
     public static void print(NiObject ex) {
         StackTraceElement[] stes = (StackTraceElement[]) ex.getExtra();
-        // TODO: print message
-        System.err.println("Exception " + ex.getClz().getClassName());
+        String detailMessage = NiString.getString(ex.getFieldRef("detailMessage", "Ljava/lang/String;"));
+        System.err.println("Exception " + ex.getClz().getClassName() + detailMessage);
         for (int i = stes.length - 1; i >= 0; i--) {
             System.err.println("\t\t" + stes[i]);
         }
