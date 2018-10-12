@@ -55,6 +55,8 @@ public class NaUnsafe {
                 new getIntVolatile());
         NaMethodManager.register(className, "getObjectVolatile", "(Ljava/lang/Object;J)Ljava/lang/Object;",
                 new getObjectVolatile());
+        NaMethodManager.register(className, "compareAndSwapLong", "(Ljava/lang/Object;JJJ)Z",
+                new compareAndSwapLong());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -171,6 +173,32 @@ public class NaUnsafe {
             } else {
                 if (obj.getFields().getInt(offset) == expect) {
                     obj.getFields().setInt(offset, update);
+                    frame.getOperandStack().pushBoolean(true);
+                } else {
+                    frame.getOperandStack().pushBoolean(false);
+                }
+            }
+        }
+    }
+
+    public static class compareAndSwapLong implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject obj = localVars.getRef(1);
+            int offset = (int) localVars.getLong(2);
+            long expect = localVars.getInt(4);
+            long update = localVars.getInt(6);
+            if (obj.getClz().isArray()) {
+                if (obj.along()[offset] == expect) {
+                    obj.along()[offset] = update;
+                    frame.getOperandStack().pushBoolean(true);
+                } else {
+                    frame.getOperandStack().pushBoolean(false);
+                }
+            } else {
+                if (obj.getFields().getLong(offset) == expect) {
+                    obj.getFields().setLong(offset, update);
                     frame.getOperandStack().pushBoolean(true);
                 } else {
                     frame.getOperandStack().pushBoolean(false);
