@@ -3,6 +3,7 @@ package com.ninty.nativee.lang.invoke;
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiObject;
 
 public class NaMethodHandleNatives {
@@ -29,6 +30,10 @@ public class NaMethodHandleNatives {
         @Override
         public void invoke(NiFrame frame) {
             NiObject memberName = frame.getLocalVars().getRef(0);
+            NiObject caller = frame.getLocalVars().getRef(1);
+            NiClass callerClz = (NiClass) caller.getExtra();
+            int flags = memberName.getFieldInt("flags");
+            memberName.setFieldInt("flags", flags & callerClz.getAccessFlags());
             frame.getOperandStack().pushRef(memberName);
         }
     }
