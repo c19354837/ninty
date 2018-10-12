@@ -48,6 +48,7 @@ public class NaThrowable {
 
     public static void print(NiObject ex) {
         StackTraceElement[] stes = (StackTraceElement[]) ex.getExtra();
+        // TODO: print message
         System.err.println("Exception " + ex.getClz().getClassName());
         for (int i = stes.length - 1; i >= 0; i--) {
             System.err.println("\t\t" + stes[i]);
