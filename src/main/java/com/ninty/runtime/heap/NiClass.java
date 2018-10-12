@@ -139,6 +139,9 @@ public class NiClass {
                 return field;
             }
         }
+        if(this.superClass != null){
+            return this.superClass.findField(name, desc);
+        }
         return null;
     }
 
