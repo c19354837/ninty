@@ -9,6 +9,8 @@ public class Slot {
     int num;
     NiObject ref;
 
+    public static final Slot NULL_SLOT = new Slot();
+
     public Slot() {
     }
 
