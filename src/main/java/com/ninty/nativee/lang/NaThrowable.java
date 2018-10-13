@@ -50,7 +50,7 @@ public class NaThrowable {
     public static void print(NiObject ex) {
         StackTraceElement[] stes = (StackTraceElement[]) ex.getExtra();
         String detailMessage = NiString.getString(ex.getFieldRef("detailMessage", "Ljava/lang/String;"));
-        System.err.println("Exception " + ex.getClz().getClassName() + detailMessage);
+        System.err.println("Exception " + ex.getClz().getClassName() + " -> " + detailMessage);
         for (int i = stes.length - 1; i >= 0; i--) {
             System.err.println("\t\t" + stes[i]);
         }
