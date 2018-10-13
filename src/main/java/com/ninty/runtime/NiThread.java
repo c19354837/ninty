@@ -66,7 +66,21 @@ public class NiThread {
         if (returnFrame.getOperandStack().getSize() > 0) {
             return returnFrame.getOperandStack().popSlot();
         }
-        return new Slot();
+        return Slot.NULL_SLOT;
+    }
+
+    public static Slot execMethodAtCurrent(NiFrame frame, NiMethod method, Slot... params) {
+        NiThread thread = frame.getThread();
+        NiFrame returnFrame = NiFrame.RETURN_FRAME;
+        thread.pushFrame(returnFrame);
+
+        thread.execMethod(method, params);
+        Slot result = Slot.NULL_SLOT;
+        if (returnFrame.getOperandStack().getSize() > 0) {
+            result = returnFrame.getOperandStack().popSlot();
+        }
+        thread.popFrame();
+        return result;
     }
 
     public void execMethod(NiMethod method, Slot... params) {
@@ -110,24 +124,15 @@ public class NiThread {
                 CodeBytes bb = frame.getCode();
                 byte opCode = frame.getOpCode();
                 ICmdBase cmd = CmdFatory.getCmd(opCode);
-//                try {
-//                    System.out.println(getT(getLevel()) + cmd.getClass().getSimpleName());
-//                    System.out.println(getT(getLevel()) + frame);
-//                    System.out.println();
-
-                    cmd.init(bb);
-                    cmd.exec(frame);
-//                } catch (Exception e) {
-//                    throwException(frame, e);
-//                }
-
+                cmd.init(bb);
+                cmd.exec(frame);
                 if (isEmpty()) {
                     break;
                 }
             }
             System.out.println("\nspend " + (System.nanoTime() - startTime) / Math.pow(10, 6) + "ms");
             System.out.println("\n**done**");
-        } catch (Exception e) {
+        } catch (Error e) {
             e.printStackTrace();
         }
     }
@@ -168,14 +173,6 @@ public class NiThread {
         // athrow
         ICmdBase athrow = CmdFatory.getCmd((byte) 0xbf);
         athrow.exec(frame);
-    }
-
-    private String getT(int level) {
-        StringBuilder t = new StringBuilder(level);
-        for (int i = 1; i < level; i++) {
-            t.append('\t');
-        }
-        return t.toString();
     }
 
     public NiObject getCurrentThread() {
