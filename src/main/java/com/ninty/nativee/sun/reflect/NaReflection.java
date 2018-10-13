@@ -30,7 +30,11 @@ public class NaReflection {
     public static class getCallerClass implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
-            NiClass clz = frame.getMethod().getClz();
+            NiFrame callerFrame = frame.getThread().topFrame().getPrevFrame().getPrevFrame();
+            if (callerFrame == NiFrame.RETURN_FRAME) {
+                callerFrame = callerFrame.getPrevFrame();
+            }
+            NiClass clz = callerFrame.getMethod().getClz();
             frame.getOperandStack().pushRef(clz.getjClass());
         }
     }
