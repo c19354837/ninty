@@ -35,6 +35,7 @@ public class NaClass {
         NaMethodManager.register(className, "forName0", "(Ljava/lang/String;ZLjava/lang/ClassLoader;Ljava/lang/Class;)Ljava/lang/Class;", new forName0());
         NaMethodManager.register(className, "getDeclaredFields0", "(Z)[Ljava/lang/reflect/Field;", new getDeclaredFields0());
         NaMethodManager.register(className, "isInterface", "()Z", new isInterface());
+        NaMethodManager.register(className, "getComponentType", "()Ljava/lang/Class;", new getComponentType());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
@@ -200,6 +201,15 @@ public class NaClass {
             NiObject self = frame.getLocalVars().getThis();
             boolean result = self.getClz().isInterface();
             frame.getOperandStack().pushBoolean(result);
+        }
+    }
+
+    public static class getComponentType implements INativeMethod {
+
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            frame.getOperandStack().pushRef(((NiClass)self.getExtra()).componentClass().getjClass());
         }
     }
 }
