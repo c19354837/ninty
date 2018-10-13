@@ -544,7 +544,7 @@ public class CmdReferences {
     }
 
     public static class INVOKE_DYNAMIC extends Index16Cmd {
-        private final static String CLZ_METHOD_HANDLE = "java/lang/invoke/MethodHandle";
+        private final static String CLZ_METHOD_HANDLES = "java/lang/invoke/MethodHandles";
         private final static String CLZ_METHOD_TYPE = "java/lang/invoke/MethodType";
         private final static String CLZ_LOOK_UP = "java/lang/invoke/MethodHandles$Lookup";
 
@@ -577,11 +577,11 @@ public class CmdReferences {
 
         private NiObject getLookUp(NiFrame frame) {
             NiClassLoader loader = frame.getMethod().getClz().getLoader();
-            NiClass clzLookUp = loader.loadClass(CLZ_LOOK_UP);
-            NiObject objLookUp = clzLookUp.newObject();
-            objLookUp.setFieldRef("lookupClass", "Ljava/lang/Class;", frame.getMethod().getClz().getjClass());
-            objLookUp.setFieldInt("allowedModes", clzLookUp.getStaticInt("ALL_MODES"));
-            return objLookUp;
+            NiClass clzMH = loader.loadClass(CLZ_METHOD_HANDLES);
+            NiMethod lookUpMethod = clzMH.getMethod("lookup",
+                    "()Ljava/lang/invoke/MethodHandles$Lookup;");
+            Slot lookUp = NiThread.execMethodAtCurrent(frame, lookUpMethod);
+            return lookUp.getRef();
         }
 
         private NiObject getMethodType(NiFrame frame, String desc) {
@@ -601,10 +601,6 @@ public class CmdReferences {
             NiObject rClz = loader.loadClass(VMUtils.toClassname(ret)).getjClass();
 
             NiClass clzMethodType = loader.loadClass(CLZ_METHOD_TYPE);
-//            NiObject objMethodType = clzMethodType.newObject();
-//            objMethodType.setFieldRef("rtype", "Ljava/lang/Class;", rClz);
-//            objMethodType.setFieldRef("ptypes", "[Ljava/lang/Class;", pClzs);
-
             NiMethod methodTypeMethod = clzMethodType.getMethod("methodType",
                     "(Ljava/lang/Class;[Ljava/lang/Class;)Ljava/lang/invoke/MethodType;");
             Slot mt = NiThread.execMethodDirectly(methodTypeMethod,
