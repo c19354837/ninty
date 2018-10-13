@@ -20,7 +20,7 @@ public class BootStartup {
     private static final String CLZ_THREAD_GROUP = "java/lang/ThreadGroup";
 
     public BootStartup(String userCP, String className, String[] args) {
-        this.className = className;
+        this.className = className.replace('.', '/');
         cp = new ClassPath(null, userCP);
         resolveClass(args);
     }
