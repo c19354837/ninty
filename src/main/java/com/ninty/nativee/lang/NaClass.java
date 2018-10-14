@@ -100,7 +100,7 @@ public class NaClass {
         @Override
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getThis();
-            boolean isPrimitive = VMUtils.primitiveTypes.containsKey(self.getClz().getClassName());
+            boolean isPrimitive = VMUtils.primitiveTypes.containsKey(self.getClzByExtra().getClassName());
             frame.getOperandStack().pushBoolean(isPrimitive);
         }
     }
@@ -160,7 +160,7 @@ public class NaClass {
             LocalVars localVars = frame.getLocalVars();
             NiObject self = localVars.getThis();
             boolean publicOnly = localVars.getBoolean(1);
-            NiField[] fields = Arrays.stream(((NiClass) self.getExtra()).getFields()).filter((field) -> !publicOnly || field.isPublic()).toArray(NiField[]::new);
+            NiField[] fields = Arrays.stream(self.getClzByExtra().getFields()).filter((field) -> !publicOnly || field.isPublic()).toArray(NiField[]::new);
 
             NiClass clz = (NiClass) self.getExtra();
             NiClassLoader loader = clz.getLoader();
@@ -209,7 +209,7 @@ public class NaClass {
         @Override
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getThis();
-            frame.getOperandStack().pushRef(((NiClass)self.getExtra()).componentClass().getjClass());
+            frame.getOperandStack().pushRef(self.getClzByExtra().componentClass().getjClass());
         }
     }
 }
