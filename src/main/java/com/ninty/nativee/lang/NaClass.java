@@ -7,7 +7,6 @@ import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.Slot;
 import com.ninty.runtime.heap.*;
-import com.ninty.utils.VMUtils;
 
 import java.util.Arrays;
 
@@ -70,7 +69,21 @@ public class NaClass {
     public static class getDeclaringClass0 implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
-            frame.getOperandStack().pushRef(null);
+            NiObject self = frame.getLocalVars().getThis();
+            NiClass clz = self.getClzByExtra();
+            if (clz.isArray() || clz.isPrimitive()) {
+                frame.getOperandStack().pushRef(null);
+                return;
+            }
+            int innerClz = clz.getClassName().lastIndexOf('$');
+            if (innerClz < 0) {
+                frame.getOperandStack().pushRef(null);
+                return;
+            }
+
+            String declaringClzName = clz.getClassName().substring(0, innerClz);
+            NiClass declaringClz = frame.getMethod().getClz().getLoader().loadClass(declaringClzName);
+            frame.getOperandStack().pushRef(declaringClz.getjClass());
         }
     }
 
@@ -100,7 +113,7 @@ public class NaClass {
         @Override
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getThis();
-            boolean isPrimitive = VMUtils.primitiveTypes.containsKey(self.getClzByExtra().getClassName());
+            boolean isPrimitive = self.getClzByExtra().isPrimitive();
             frame.getOperandStack().pushBoolean(isPrimitive);
         }
     }

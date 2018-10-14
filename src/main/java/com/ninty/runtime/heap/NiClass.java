@@ -264,6 +264,10 @@ public class NiClass {
         return className.charAt(0) == '[';
     }
 
+    public boolean isPrimitive() {
+        return VMUtils.primitiveTypes.containsKey(className);
+    }
+
     /**
      * convert classname to Array class
      */
