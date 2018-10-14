@@ -603,7 +603,7 @@ public class CmdReferences {
             NiClass clzMethodType = loader.loadClass(CLZ_METHOD_TYPE);
             NiMethod methodTypeMethod = clzMethodType.getMethod("methodType",
                     "(Ljava/lang/Class;[Ljava/lang/Class;)Ljava/lang/invoke/MethodType;");
-            Slot mt = NiThread.execMethodDirectly(methodTypeMethod,
+            Slot mt = NiThread.execMethodAtCurrent(frame, methodTypeMethod,
                     new Slot(rClz),
                     new Slot(pClzs));
             return mt.getRef();
@@ -613,7 +613,7 @@ public class CmdReferences {
             NiClassLoader loader = frame.getMethod().getClz().getLoader();
             NiMethod findStatic = lookUp.getClz().getMethod("findStatic",
                     "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;");
-            Slot ret = NiThread.execMethodDirectly(findStatic,
+            Slot ret = NiThread.execMethodAtCurrent(frame, findStatic,
                     new Slot(lookUp),
                     new Slot(method.getClz().getjClass()),
                     new Slot(NiString.newString(loader, method.getName())),
