@@ -57,6 +57,8 @@ public class NaUnsafe {
                 new getObjectVolatile());
         NaMethodManager.register(className, "compareAndSwapLong", "(Ljava/lang/Object;JJJ)Z",
                 new compareAndSwapLong());
+        NaMethodManager.register(className, "shouldBeInitialized", "(Ljava/lang/Class;)Z",
+                new shouldBeInitialized());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -234,6 +236,13 @@ public class NaUnsafe {
                 LocalVars fields = obj.getFields();
                 frame.getOperandStack().pushRef(fields.getRef((int) offset));
             }
+        }
+    }
+
+    public static class shouldBeInitialized implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            frame.getOperandStack().pushBoolean(false);
         }
     }
 }
