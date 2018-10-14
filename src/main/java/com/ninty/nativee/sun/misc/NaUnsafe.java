@@ -55,6 +55,8 @@ public class NaUnsafe {
                 new getIntVolatile());
         NaMethodManager.register(className, "getObjectVolatile", "(Ljava/lang/Object;J)Ljava/lang/Object;",
                 new getObjectVolatile());
+        NaMethodManager.register(className, "putObjectVolatile", "(Ljava/lang/Object;JLjava/lang/Object;)V",
+                new putObjectVolatile());
         NaMethodManager.register(className, "compareAndSwapLong", "(Ljava/lang/Object;JJJ)Z",
                 new compareAndSwapLong());
         NaMethodManager.register(className, "shouldBeInitialized", "(Ljava/lang/Class;)Z",
@@ -235,6 +237,22 @@ public class NaUnsafe {
             } else {
                 LocalVars fields = obj.getFields();
                 frame.getOperandStack().pushRef(fields.getRef((int) offset));
+            }
+        }
+    }
+
+    public static class putObjectVolatile implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject obj = localVars.getRef(1);
+            long offset = localVars.getLong(2);
+            NiObject val = localVars.getRef(4);
+            if (obj.getClz().isArray()) {
+                obj.aobject()[(int) offset] = val;
+            } else {
+                LocalVars fields = obj.getFields();
+                fields.setRef((int) offset, val);
             }
         }
     }
