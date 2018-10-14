@@ -36,6 +36,13 @@ public class NiObject implements Cloneable {
         return clz;
     }
 
+    public NiClass getClzByExtra() {
+        if (extra != null && extra instanceof NiClass) {
+            return (NiClass) extra;
+        }
+        throw new UnsupportedOperationException("extra is not a NiClass: " + extra);
+    }
+
     public LocalVars getFields() {
         return fields;
     }
