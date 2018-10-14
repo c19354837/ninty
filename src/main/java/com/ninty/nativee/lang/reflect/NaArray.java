@@ -28,7 +28,7 @@ public class NaArray {
                 throw new NegativeArraySizeException(length + "");
             }
 
-            NiClass clz = clzObj.getClz().getArrayClass();
+            NiClass clz = ((NiClass)clzObj.getExtra()).getArrayClass();
             NiObject result = clz.newArray(length);
             frame.getOperandStack().pushRef(result);
         }
