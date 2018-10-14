@@ -5,6 +5,7 @@ import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiObject;
+import com.ninty.runtime.heap.NiString;
 
 public class NaMethodHandleNatives {
     private final static String className = "java/lang/invoke/MethodHandleNatives";
@@ -31,9 +32,12 @@ public class NaMethodHandleNatives {
         public void invoke(NiFrame frame) {
             NiObject memberName = frame.getLocalVars().getRef(0);
             NiObject caller = frame.getLocalVars().getRef(1);
-            NiClass callerClz = (NiClass) caller.getExtra();
-            int flags = memberName.getFieldInt("flags");
-            memberName.setFieldInt("flags", flags & callerClz.getAccessFlags());
+            if (caller != null) {
+                NiClass callerClz = (NiClass) caller.getExtra();
+                int flags = memberName.getFieldInt("flags");
+                String name = NiString.getString(memberName.getFieldRef("name", "Ljava/lang/String;"));
+                memberName.setFieldInt("flags", flags | callerClz.getMethod(name, "()V").getAccessFlags());
+            }
             frame.getOperandStack().pushRef(memberName);
         }
     }
