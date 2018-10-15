@@ -341,6 +341,7 @@ public class NiClass {
         for (int i = 0; i < attributeInfos.length; i++) {
             if (attributeInfos[i] instanceof AttributeInfo.AttrBootstrapMethods) {
                 bootstrapMethods = (AttributeInfo.AttrBootstrapMethods) attributeInfos[i];
+                break;
             }
         }
         if (bootstrapMethods == null) {
