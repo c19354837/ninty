@@ -37,6 +37,8 @@ public class AttributeInfo {
                 return new AnnotationAttr.RuntimeVisibleAnnotations(cps, bb);
             case "RuntimeInvisibleAnnotations":
                 return new AnnotationAttr.RuntimeInvisibleAnnotations(cps, bb);
+            case "InnerClasses":
+                return new AttrInnerClasses(cps, bb);
             default:
                 return new UnkonwAttr(name, bb);
         }
@@ -246,6 +248,39 @@ public class AttributeInfo {
             skipAttributeLen(bb);
             int index = bb.getChar();
             signature = cps.getUtf8(index);
+        }
+    }
+
+    public static class AttrInnerClasses extends AttributeInfo {
+        public InnerClass[] innerClasses;
+
+        AttrInnerClasses(ConstantPoolInfos cps, ByteBuffer bb) {
+            skipAttributeLen(bb);
+            int num = bb.getChar();
+            innerClasses = new InnerClass[num];
+            for (int i = 0; i < num; i++) {
+                innerClasses[i] = new InnerClass(cps, bb);
+            }
+        }
+    }
+
+    public static class InnerClass {
+        public String innerClassInfo;
+        public String outerClassInfo;
+        public String name;
+        public int accessFlags;
+
+        InnerClass(ConstantPoolInfos cps, ByteBuffer bb) {
+            innerClassInfo = ((ConstantInfo.CPClass) cps.get(bb.getChar())).className();
+            int outerClassIndex = bb.getChar();
+            if (outerClassIndex != 0) {
+                outerClassInfo = ((ConstantInfo.CPClass) cps.get(outerClassIndex)).className();
+            }
+            int nameIndex = bb.getChar();
+            if (nameIndex != 0) {
+                name = cps.getUtf8(nameIndex);
+            }
+            accessFlags = bb.getChar();
         }
     }
 }
