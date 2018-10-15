@@ -1,5 +1,6 @@
 package com.ninty.nativee.lang;
 
+import com.ninty.classfile.AttributeInfo;
 import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
@@ -8,7 +9,9 @@ import com.ninty.runtime.NiThread;
 import com.ninty.runtime.Slot;
 import com.ninty.runtime.heap.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by ninty on 2017/8/13.
@@ -35,6 +38,7 @@ public class NaClass {
         NaMethodManager.register(className, "getDeclaredFields0", "(Z)[Ljava/lang/reflect/Field;", new getDeclaredFields0());
         NaMethodManager.register(className, "isInterface", "()Z", new isInterface());
         NaMethodManager.register(className, "getComponentType", "()Ljava/lang/Class;", new getComponentType());
+        NaMethodManager.register(className, "getDeclaredClasses0", "()[Ljava/lang/Class;", new getDeclaredClasses0());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
@@ -218,11 +222,27 @@ public class NaClass {
     }
 
     public static class getComponentType implements INativeMethod {
-
         @Override
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getThis();
             frame.getOperandStack().pushRef(self.getClzByExtra().componentClass().getjClass());
+        }
+    }
+
+    public static class getDeclaredClasses0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            NiClass clz = self.getClzByExtra();
+            AttributeInfo.InnerClass[] innerClasses = clz.getInnerClasses();
+            List<NiClass> innerClzes = new ArrayList<>(innerClasses.length);
+            for (int i = 0; i < innerClasses.length; i++) {
+                if (clz.getClassName().equals(innerClasses[i].outerClassInfo)) {
+                    innerClzes.add(clz.getLoader().loadClass(innerClasses[i].innerClassInfo));
+                }
+            }
+            NiObject declaredClasses = clz.getArrayClass().newArray(innerClzes.size());
+            frame.getOperandStack().pushRef(declaredClasses);
         }
     }
 }

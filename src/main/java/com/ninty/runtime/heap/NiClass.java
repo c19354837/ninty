@@ -52,7 +52,6 @@ public class NiClass {
         initMethod(classFile);
         initSourceFile(classFile);
         initAnnotation(classFile);
-
     }
 
     public NiClass(int accessFlags, String className, String superClassName, String[] interfaceNames) {
@@ -139,7 +138,7 @@ public class NiClass {
                 return field;
             }
         }
-        if(this.superClass != null){
+        if (this.superClass != null) {
             return this.superClass.findField(name, desc);
         }
         return null;
@@ -348,6 +347,16 @@ public class NiClass {
             throw new ClassFormatError("can not find BootstrapMethods in: " + index + ", className: " + className);
         }
         return bootstrapMethods.bootstarpMethods[index];
+    }
+
+    public AttributeInfo.InnerClass[] getInnerClasses() {
+        for (int i = 0; i < attributeInfos.length; i++) {
+            if (attributeInfos[i] instanceof AttributeInfo.AttrInnerClasses) {
+                AttributeInfo.AttrInnerClasses attrInnerClasses = (AttributeInfo.AttrInnerClasses) attributeInfos[i];
+                return attrInnerClasses.innerClasses;
+            }
+        }
+        return new AttributeInfo.InnerClass[0];
     }
 
     public int getStaticInt(String name) {
