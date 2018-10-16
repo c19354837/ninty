@@ -230,19 +230,20 @@ public class NaClass {
         }
     }
 
+    // TODO: cache
     public static class getDeclaredClasses0 implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getThis();
             NiClass clz = self.getClzByExtra();
             AttributeInfo.InnerClass[] innerClasses = clz.getInnerClasses();
-            List<NiClass> innerClzes = new ArrayList<>(innerClasses.length);
+            List<NiObject> innerClzes = new ArrayList<>(innerClasses.length);
             for (int i = 0; i < innerClasses.length; i++) {
                 if (clz.getClassName().equals(innerClasses[i].outerClassInfo)) {
-                    innerClzes.add(clz.getLoader().loadClass(innerClasses[i].innerClassInfo));
+                    innerClzes.add(clz.getLoader().loadClass(innerClasses[i].innerClassInfo).getjClass());
                 }
             }
-            NiObject declaredClasses = clz.getArrayClass().newArray(innerClzes.size());
+            NiObject declaredClasses = new NiObject(clz.getArrayClass(), innerClzes.toArray(new NiObject[innerClzes.size()]));
             frame.getOperandStack().pushRef(declaredClasses);
         }
     }
