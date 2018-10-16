@@ -39,6 +39,7 @@ public class NaClass {
         NaMethodManager.register(className, "isInterface", "()Z", new isInterface());
         NaMethodManager.register(className, "getComponentType", "()Ljava/lang/Class;", new getComponentType());
         NaMethodManager.register(className, "getDeclaredClasses0", "()[Ljava/lang/Class;", new getDeclaredClasses0());
+        NaMethodManager.register(className, "isAssignableFrom", "(Ljava/lang/Class;)Z", new isAssignableFrom());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
@@ -243,6 +244,22 @@ public class NaClass {
             }
             NiObject declaredClasses = clz.getArrayClass().newArray(innerClzes.size());
             frame.getOperandStack().pushRef(declaredClasses);
+        }
+    }
+
+    public static class isAssignableFrom implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject self = localVars.getThis();
+            NiClass clz = self.getClzByExtra();
+            NiObject target = localVars.getRef(1);
+            NiClass targetClz = target.getClzByExtra();
+            if (clz.isPrimitive()) {
+                frame.getOperandStack().pushBoolean(clz == targetClz);
+            } else {
+                frame.getOperandStack().pushBoolean(clz.isAssignableFrom(targetClz));
+            }
         }
     }
 }
