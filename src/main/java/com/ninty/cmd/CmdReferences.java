@@ -139,7 +139,7 @@ public class CmdReferences {
 
             String desc = field.getDesc();
             int slotId = field.getSlotId();
-            LocalVars slots = clz.getStaticSlots();
+            LocalVars slots = field.getClz().getStaticSlots();
             OperandStack stack = frame.getOperandStack();
             switch (desc.charAt(0)) {
                 case 'Z':
@@ -187,7 +187,7 @@ public class CmdReferences {
 
             String desc = field.getDesc();
             int slotId = field.getSlotId();
-            LocalVars slots = clz.getStaticSlots();
+            LocalVars slots = field.getClz().getStaticSlots();
             OperandStack stack = frame.getOperandStack();
             switch (desc.charAt(0)) {
                 case 'Z':
