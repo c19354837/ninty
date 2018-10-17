@@ -4,6 +4,7 @@ import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiObject;
 import sun.misc.Unsafe;
 
@@ -61,6 +62,8 @@ public class NaUnsafe {
                 new compareAndSwapLong());
         NaMethodManager.register(className, "shouldBeInitialized", "(Ljava/lang/Class;)Z",
                 new shouldBeInitialized());
+        NaMethodManager.register(className, "ensureClassInitialized", "(Ljava/lang/Class;)V",
+                new ensureClassInitialized());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -261,6 +264,18 @@ public class NaUnsafe {
         @Override
         public void invoke(NiFrame frame) {
             frame.getOperandStack().pushBoolean(false);
+        }
+    }
+
+    public static class ensureClassInitialized implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject cObj = frame.getLocalVars().getRef(1);
+            NiClass clz = cObj.getClzByExtra();
+            if (!clz.isClinit()) {
+                frame.restorePostion();
+                clz.clinit(frame.getThread());
+            }
         }
     }
 }
