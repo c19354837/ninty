@@ -163,12 +163,14 @@ public class NaClass {
             String name = NiString.getString(classname);
             name = name.replace('.', '/');
             NiClass clz = frame.getMethod().getClz().getLoader().loadClass(name);
-            if (inited) {
-                frame.restorePostion();
-                clz.clinit(frame.getThread());
-            } else {
-                frame.getOperandStack().pushRef(clz.getjClass());
+            if (inited && !clz.isClinit()) {
+                int position = frame.getPosition();
+                if (clz.clinit(frame.getThread())) {
+                    frame.setPosition(position);
+                    return;
+                }
             }
+            frame.getOperandStack().pushRef(clz.getjClass());
         }
     }
 
@@ -265,7 +267,7 @@ public class NaClass {
         }
     }
 
-    public static class getSuperclass implements INativeMethod{
+    public static class getSuperclass implements INativeMethod {
         @Override
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getThis();
