@@ -273,8 +273,12 @@ public class NaClass {
         @Override
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getThis();
-            NiObject superClz = self.getClzByExtra().getSuperClass().getjClass();
-            frame.getOperandStack().pushRef(superClz);
+            NiClass superClz = self.getClzByExtra().getSuperClass();
+            if (superClz == null) {
+                frame.getOperandStack().pushRef(null);
+            } else {
+                frame.getOperandStack().pushRef(superClz.getjClass());
+            }
         }
     }
 
