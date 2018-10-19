@@ -8,6 +8,7 @@ import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.Slot;
 import com.ninty.runtime.heap.*;
+import com.ninty.utils.VMUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,7 @@ public class NaClass {
         NaMethodManager.register(className, "getDeclaredClasses0", "()[Ljava/lang/Class;", new getDeclaredClasses0());
         NaMethodManager.register(className, "isAssignableFrom", "(Ljava/lang/Class;)Z", new isAssignableFrom());
         NaMethodManager.register(className, "getSuperclass", "()Ljava/lang/Class;", new getSuperclass());
+        NaMethodManager.register(className, "getDeclaredConstructors0", "(Z)[Ljava/lang/reflect/Constructor;", new getDeclaredConstructors0());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
@@ -273,6 +275,70 @@ public class NaClass {
             NiObject self = frame.getLocalVars().getThis();
             NiObject superClz = self.getClzByExtra().getSuperClass().getjClass();
             frame.getOperandStack().pushRef(superClz);
+        }
+    }
+
+    public static class getDeclaredConstructors0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject self = localVars.getThis();
+            boolean publicOnly = localVars.getBoolean(1);
+            NiMethod[] constructors = Arrays.stream(self.getClzByExtra().getMethods()).filter((method) -> {
+                return method.getName().equals("<init>") && (!publicOnly || method.isPublic());
+            }).toArray(NiMethod[]::new);
+
+            NiClass clz = (NiClass) self.getExtra();
+            NiClassLoader loader = clz.getLoader();
+            NiClass constructorsClz = loader.loadClass("[Ljava/lang/reflect/Constructor;");
+            int count = constructors.length;
+            NiObject result = constructorsClz.newArray(count);
+            frame.getOperandStack().pushRef(result);
+
+            if (count == 0) {
+                return;
+            }
+
+            NiClass constructorClz = loader.loadClass("java/lang/reflect/Constructor");
+            for (int i = 0; i < count; i++) {
+                NiMethod constructor = constructors[i];
+
+                NiObject constructorObj = constructorClz.newObject();
+                NiMethod initMethod = constructorClz.getInitMethod("(Ljava/lang/Class;[Ljava/lang/Class;[Ljava/lang/Class;IILjava/lang/String;[B[B)V");
+                NiThread.execMethodDirectly(initMethod,
+                        new Slot(constructorObj),
+                        new Slot(self),
+                        new Slot(getParamsType(constructor)),
+                        new Slot(getExceptionsType(constructor)),
+                        new Slot(constructor.getAccessFlags()),
+                        new Slot(0),
+                        new Slot(NiString.newString(loader, constructor.getSignature())),
+                        new Slot(loader.loadClass("[B").newArray(0)), // TODO: annotation bytes
+                        new Slot(loader.loadClass("[B").newArray(0)) // TODO: annotation bytes
+                );
+                result.aobject()[i] = constructorObj;
+            }
+        }
+
+        private NiObject getParamsType(NiMethod method) {
+            String desc = method.getDesc();
+            int index = desc.indexOf(')');
+            desc = desc.substring(1, index);
+            String[] params = VMUtils.toParams(desc);
+            NiClassLoader loader = method.getClz().getLoader();
+            NiObject[] types = new NiObject[params.length];
+            for (int i = 0; i < params.length; i++) {
+                types[i] = loader.loadClass(params[i]).getjClass();
+            }
+            NiClass clzArr = loader.loadClass("[Ljava/lang/Class;");
+            return new NiObject(clzArr, types);
+        }
+
+        // TODO: implement
+        private NiObject getExceptionsType(NiMethod method) {
+            NiClassLoader loader = method.getClz().getLoader();
+            NiClass clzArr = loader.loadClass("[Ljava/lang/Class;");
+            return clzArr.newArray(0);
         }
     }
 }
