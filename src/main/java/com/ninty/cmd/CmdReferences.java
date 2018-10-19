@@ -594,7 +594,7 @@ public class CmdReferences {
                 objP[i] = loader.loadClass(params[i]).getjClass();
             }
 
-            NiClass clzA = loader.loadClass("[Ljava/lang/Class");
+            NiClass clzA = loader.loadClass("[Ljava/lang/Class;");
             NiObject pClzs = new NiObject(clzA, objP);
 
             String ret = desc.substring(index + 1);
