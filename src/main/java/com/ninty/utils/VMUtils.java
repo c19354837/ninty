@@ -1,5 +1,8 @@
 package com.ninty.utils;
 
+import com.ninty.runtime.heap.NiClass;
+import com.ninty.runtime.heap.NiObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,5 +76,17 @@ public class VMUtils {
             pos = end;
         }
         return params.toArray(new String[params.size()]);
+    }
+
+    public static String toDesc(NiObject params, String returnType) {
+        StringBuilder desc = new StringBuilder("(");
+        NiObject[] clzs = params.aobject();
+        for (int i = 0; i < clzs.length; i++) {
+            NiClass clz = clzs[i].getClzByExtra();
+            desc.append(clz.getClassName());
+        }
+        desc.append(')');
+        desc.append(returnType);
+        return desc.toString();
     }
 }
