@@ -59,6 +59,7 @@ public class NiClassLoader {
     }
 
     public NiClass loadClass(String className) {
+        className = VMUtils.normalizeClassName(className);
         if (classes.containsKey(className)) {
             return classes.get(className);
         }

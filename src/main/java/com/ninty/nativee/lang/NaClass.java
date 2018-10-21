@@ -163,7 +163,6 @@ public class NaClass {
 //            NiObject caller = localVars.getRef(3);
 
             String name = NiString.getString(classname);
-            name = name.replace('.', '/');
             NiClass clz = frame.getMethod().getClz().getLoader().loadClass(name);
             if (inited && !clz.isClinit()) {
                 int position = frame.getPosition();

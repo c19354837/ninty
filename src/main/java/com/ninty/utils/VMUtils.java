@@ -89,4 +89,8 @@ public class VMUtils {
         desc.append(returnType);
         return desc.toString();
     }
+
+    public static String normalizeClassName(String className) {
+        return className.replace('.', '/');
+    }
 }

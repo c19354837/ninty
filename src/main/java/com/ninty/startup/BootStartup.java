@@ -4,6 +4,7 @@ import com.ninty.classpath.ClassPath;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.Slot;
 import com.ninty.runtime.heap.*;
+import com.ninty.utils.VMUtils;
 
 /**
  * Created by ninty on 2017/7/5.
@@ -20,7 +21,7 @@ public class BootStartup {
     private static final String CLZ_THREAD_GROUP = "java/lang/ThreadGroup";
 
     public BootStartup(String userCP, String className, String[] args) {
-        this.className = className.replace('.', '/');
+        this.className = VMUtils.normalizeClassName(className);
         cp = new ClassPath(null, userCP);
         resolveClass(args);
     }
