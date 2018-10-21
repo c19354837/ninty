@@ -15,6 +15,8 @@ public class NaClassLoader {
     public static void init() {
         NaMethodManager.register(className, "findLoadedClass0", "(Ljava/lang/String;)Ljava/lang/Class;", new
                 findLoadedClass0());
+        NaMethodManager.register(className, "findBootstrapClass", "(Ljava/lang/String;)Ljava/lang/Class;", new
+                findBootstrapClass());
     }
 
     public static class findLoadedClass0 implements INativeMethod {
@@ -22,6 +24,15 @@ public class NaClassLoader {
         public void invoke(NiFrame frame) {
             String classname = NiString.getString(frame.getLocalVars().getRef(1));
             NiClass clz = frame.getMethod().getClz().getLoader().getClass(classname);
+            frame.getOperandStack().pushRef(clz != null ? clz.getjClass() : null);
+        }
+    }
+
+    public static class findBootstrapClass implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            String classname = NiString.getString(frame.getLocalVars().getRef(1));
+            NiClass clz = frame.getMethod().getClz().getLoader().loadClass(classname);
             frame.getOperandStack().pushRef(clz != null ? clz.getjClass() : null);
         }
     }
