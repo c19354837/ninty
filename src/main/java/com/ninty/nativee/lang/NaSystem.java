@@ -16,6 +16,7 @@ public class NaSystem {
     public static void init() {
         NaMethodManager.register(className, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", new arraycopy());
         NaMethodManager.register(className, "initProperties", "(Ljava/util/Properties;)Ljava/util/Properties;", new initProperties());
+        NaMethodManager.register(className, "nanoTime", "()J", new nanoTime());
     }
 
     public static class arraycopy implements INativeMethod {
@@ -39,6 +40,13 @@ public class NaSystem {
         public void invoke(NiFrame frame) {
             NiObject ref = frame.getLocalVars().getRef(0);
             frame.getOperandStack().pushRef(ref);
+        }
+    }
+
+    public static class nanoTime implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            frame.getOperandStack().pushLong(System.nanoTime());
         }
     }
 }
