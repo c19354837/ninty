@@ -50,6 +50,7 @@ public class NaMethodManager {
         NaArray.init();
         NaNativeConstructorAccessorImpl.init();
         NaURLClassPath.init();
+        NaClassLoader.init();
     }
 
     private final static INativeMethod EMPTY = (NiFrame frame) -> {

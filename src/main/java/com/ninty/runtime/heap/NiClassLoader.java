@@ -54,6 +54,10 @@ public class NiClassLoader {
         }
     }
 
+    public NiClass getClass(String className) {
+        return classes.get(className);
+    }
+
     public NiClass loadClass(String className) {
         if (classes.containsKey(className)) {
             return classes.get(className);
