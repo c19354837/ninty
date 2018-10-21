@@ -7,6 +7,7 @@ import com.ninty.nativee.lang.*;
 import com.ninty.nativee.lang.reflect.NaArray;
 import com.ninty.nativee.lang.invoke.NaMethodHandleNatives;
 import com.ninty.nativee.security.NaAccessController;
+import com.ninty.nativee.sun.misc.NaURLClassPath;
 import com.ninty.nativee.sun.misc.NaUnsafe;
 import com.ninty.nativee.sun.misc.NaVM;
 import com.ninty.nativee.sun.reflect.NaConstantPool;
@@ -48,6 +49,7 @@ public class NaMethodManager {
         NaRuntime.init();
         NaArray.init();
         NaNativeConstructorAccessorImpl.init();
+        NaURLClassPath.init();
     }
 
     private final static INativeMethod EMPTY = (NiFrame frame) -> {
