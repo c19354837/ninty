@@ -66,10 +66,12 @@ public class VMUtils {
                 end = desc.indexOf(';', pos + 1) + 1;
                 params.add(desc.substring(pos + 1, end - 1));
             } else {
+                String val = desc.substring(pos, pos + 1);
                 for (String key : primitiveTypes.keySet()) {
-                    if (primitiveTypes.get(key).equals(desc)) {
+                    if (primitiveTypes.get(key).equals(val)) {
                         end = pos + 1;
-                        params.add(desc.substring(pos, end));
+                        params.add(key);
+                        break;
                     }
                 }
             }
