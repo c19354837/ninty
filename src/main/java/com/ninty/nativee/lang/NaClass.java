@@ -8,7 +8,6 @@ import com.ninty.runtime.NiFrame;
 import com.ninty.runtime.NiThread;
 import com.ninty.runtime.Slot;
 import com.ninty.runtime.heap.*;
-import com.ninty.utils.VMUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +42,7 @@ public class NaClass {
         NaMethodManager.register(className, "isAssignableFrom", "(Ljava/lang/Class;)Z", new isAssignableFrom());
         NaMethodManager.register(className, "getSuperclass", "()Ljava/lang/Class;", new getSuperclass());
         NaMethodManager.register(className, "getDeclaredConstructors0", "(Z)[Ljava/lang/reflect/Constructor;", new getDeclaredConstructors0());
+        NaMethodManager.register(className, "getDeclaredMethods0", "(Z)[Ljava/lang/reflect/Method;", new getDeclaredMethods0());
     }
 
     public static class getPrimitiveClass implements INativeMethod {
@@ -311,8 +311,8 @@ public class NaClass {
                 NiThread.execMethodDirectly(initMethod,
                         new Slot(constructorObj),
                         new Slot(self),
-                        new Slot(getParamsType(constructor)),
-                        new Slot(getExceptionsType(constructor)),
+                        new Slot(constructor.getParamsType()),
+                        new Slot(constructor.getExceptionsType()),
                         new Slot(constructor.getAccessFlags()),
                         new Slot(0),
                         new Slot(NiString.newString(loader, constructor.getSignature())),
@@ -322,26 +322,49 @@ public class NaClass {
                 result.aobject()[i] = constructorObj;
             }
         }
+    }
 
-        private NiObject getParamsType(NiMethod method) {
-            String desc = method.getDesc();
-            int index = desc.indexOf(')');
-            desc = desc.substring(1, index);
-            String[] params = VMUtils.toParams(desc);
-            NiClassLoader loader = method.getClz().getLoader();
-            NiObject[] types = new NiObject[params.length];
-            for (int i = 0; i < params.length; i++) {
-                types[i] = loader.loadClass(params[i]).getjClass();
+    public static class getDeclaredMethods0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject self = localVars.getThis();
+            boolean publicOnly = localVars.getBoolean(1);
+            NiMethod[] methods = Arrays.stream(self.getClzByExtra().getMethods()).filter((method) -> !publicOnly || method.isPublic()).toArray(NiMethod[]::new);
+
+            NiClass clz = (NiClass) self.getExtra();
+            NiClassLoader loader = clz.getLoader();
+            NiClass methodsClz = loader.loadClass("[Ljava/lang/reflect/Method;");
+            int count = methods.length;
+            NiObject result = methodsClz.newArray(count);
+            frame.getOperandStack().pushRef(result);
+
+            if (count == 0) {
+                return;
             }
-            NiClass clzArr = loader.loadClass("[Ljava/lang/Class;");
-            return new NiObject(clzArr, types);
-        }
 
-        // TODO: implement
-        private NiObject getExceptionsType(NiMethod method) {
-            NiClassLoader loader = method.getClz().getLoader();
-            NiClass clzArr = loader.loadClass("[Ljava/lang/Class;");
-            return clzArr.newArray(0);
+            NiClass methodClz = loader.loadClass("java/lang/reflect/Method");
+            for (int i = 0; i < count; i++) {
+                NiMethod method = methods[i];
+
+                NiObject methodObj = methodClz.newObject();
+                NiMethod initMethod = methodClz.getInitMethod("(Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Class;Ljava/lang/Class;[Ljava/lang/Class;IILjava/lang/String;[B[B[B)V");
+                NiThread.execMethodDirectly(initMethod,
+                        new Slot(methodObj),
+                        new Slot(self),
+                        new Slot(NiString.newString(loader, method.getName())),
+                        new Slot(method.getParamsType()),
+                        new Slot(method.getReturnType()),
+                        new Slot(method.getExceptionsType()),
+                        new Slot(method.getAccessFlags()),
+                        new Slot(0),
+                        new Slot(NiString.newString(loader, method.getSignature())),
+                        new Slot(loader.loadClass("[B").newArray(0)), // TODO: annotation bytes
+                        new Slot(loader.loadClass("[B").newArray(0)), // TODO: annotation bytes
+                        new Slot(loader.loadClass("[B").newArray(0)) // TODO: annotation bytes
+                );
+                result.aobject()[i] = methodObj;
+            }
         }
     }
 }

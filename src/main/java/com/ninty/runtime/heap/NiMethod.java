@@ -4,6 +4,7 @@ import com.ninty.classfile.AttributeInfo;
 import com.ninty.classfile.MemberInfo;
 import com.ninty.runtime.heap.constantpool.ClassRef;
 import com.ninty.runtime.heap.constantpool.NiConstantPool;
+import com.ninty.utils.VMUtils;
 
 /**
  * Created by ninty on 2017/7/23.
@@ -157,6 +158,35 @@ public class NiMethod extends ClassMember {
     @Override
     public String toString() {
         return "NiMethod{" + "clz=" + clz + ", name='" + name + '\'' + ", desc='" + desc + '\'' + '}';
+    }
+
+    public NiObject getParamsType() {
+        String desc = getDesc();
+        int index = desc.indexOf(')');
+        desc = desc.substring(1, index);
+        String[] params = VMUtils.toParams(desc);
+        NiClassLoader loader = clz.getLoader();
+        NiObject[] types = new NiObject[params.length];
+        for (int i = 0; i < params.length; i++) {
+            types[i] = loader.loadClass(params[i]).getjClass();
+        }
+        NiClass clzArr = loader.loadClass("[Ljava/lang/Class;");
+        return new NiObject(clzArr, types);
+    }
+
+    public NiObject getReturnType() {
+        String desc = getDesc();
+        int index = desc.indexOf(')');
+        String returnType = desc.substring(index + 1);
+        String returnClassName = VMUtils.toClassname(returnType);
+        NiClass returnClz = clz.getLoader().loadClass(returnClassName);
+        return returnClz.getjClass();
+    }
+
+    // TODO: implement
+    public NiObject getExceptionsType() {
+        NiClass clzArr = clz.getLoader().loadClass("[Ljava/lang/Class;");
+        return clzArr.newArray(0);
     }
 
     private static class ExceptionTable {
