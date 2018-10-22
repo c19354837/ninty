@@ -21,7 +21,7 @@ public class VMUtils {
         primitiveTypes.put("short", "S");
         primitiveTypes.put("char", "C");
         primitiveTypes.put("int", "I");
-        primitiveTypes.put("long", "L");
+        primitiveTypes.put("long", "J");
         primitiveTypes.put("float", "F");
         primitiveTypes.put("double", "D");
     }
