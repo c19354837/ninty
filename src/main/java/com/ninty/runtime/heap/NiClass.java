@@ -132,6 +132,15 @@ public class NiClass {
         return null;
     }
 
+    public NiMethod getMethodByName(String name) {
+        for (NiMethod method : methods) {
+            if (method.getName().equals(name)) {
+                return method;
+            }
+        }
+        return null;
+    }
+
     public NiField findField(String name, String desc) {
         for (NiField field : fields) {
             if (field.getName().equals(name) && field.getDesc().equals(desc)) {

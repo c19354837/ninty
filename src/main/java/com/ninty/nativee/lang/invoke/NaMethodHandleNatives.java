@@ -32,12 +32,17 @@ public class NaMethodHandleNatives {
         public void invoke(NiFrame frame) {
             NiObject memberName = frame.getLocalVars().getRef(0);
             NiObject caller = frame.getLocalVars().getRef(1);
-            if (caller != null) {
-                NiClass callerClz = (NiClass) caller.getExtra();
-                int flags = memberName.getFieldInt("flags");
-                String name = NiString.getString(memberName.getFieldRef("name", "Ljava/lang/String;"));
-                memberName.setFieldInt("flags", flags | callerClz.getMethod(name, "()V").getAccessFlags());
+            if (caller == null) {
+                caller = memberName.getFieldRef("clazz", "Ljava/lang/Class;");
             }
+            // TODO: getMethod with name and desc
+//            NiObject type = memberName.getFieldRef("type", "Ljava/lang/Object;");
+//            NiObject rtypes = type.getFieldRef("rtype", "Ljava/lang/Class;");
+//            NiObject ptypes = type.getFieldRef("ptypes", "[Ljava/lang/Class;");
+            NiClass callerClz = caller.getClzByExtra();
+            int flags = memberName.getFieldInt("flags");
+            String name = NiString.getString(memberName.getFieldRef("name", "Ljava/lang/String;"));
+            memberName.setFieldInt("flags", flags | callerClz.getMethodByName(name).getAccessFlags());
             frame.getOperandStack().pushRef(memberName);
         }
     }
