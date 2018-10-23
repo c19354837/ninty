@@ -58,6 +58,13 @@ public class NiClassLoader {
         return classes.get(className);
     }
 
+    public NiClass loadClass(byte[] datas){
+        NiClass clz = definedClass(datas);
+        link(clz);
+        fillJClass(clz);
+        return clz;
+    }
+
     public NiClass loadClass(String className) {
         className = VMUtils.normalizeClassName(className);
         if (classes.containsKey(className)) {

@@ -68,6 +68,8 @@ public class NaUnsafe {
                 new staticFieldOffset());
         NaMethodManager.register(className, "staticFieldBase", "(Ljava/lang/reflect/Field;)Ljava/lang/Object;",
                 new staticFieldBase());
+        NaMethodManager.register(className, "defineAnonymousClass", "(Ljava/lang/Class;[B[Ljava/lang/Object;)Ljava/lang/Class;",
+                new defineAnonymousClass());
     }
 
     public static class arrayBaseOffset implements INativeMethod {
@@ -296,6 +298,17 @@ public class NaUnsafe {
         public void invoke(NiFrame frame) {
             NiObject fieldObj = frame.getLocalVars().getRef(1);
             frame.getOperandStack().pushRef(fieldObj.getClz().getjClass());
+        }
+    }
+
+    public static class defineAnonymousClass implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            LocalVars localVars = frame.getLocalVars();
+            NiObject hoster = localVars.getRef(1);
+            NiObject datas = localVars.getRef(2);
+            NiClass clz = hoster.getClz().getLoader().loadClass(datas.abyte());
+            frame.getOperandStack().pushRef(clz.getjClass());
         }
     }
 }
