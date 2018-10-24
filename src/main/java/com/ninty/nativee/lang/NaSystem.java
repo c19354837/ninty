@@ -25,6 +25,8 @@ public class NaSystem {
         NaMethodManager.register(className, "initProperties", "(Ljava/util/Properties;)Ljava/util/Properties;", new initProperties());
         NaMethodManager.register(className, "nanoTime", "()J", new nanoTime());
         NaMethodManager.register(className, "setIn0", "(Ljava/io/InputStream;)V", new setIn0());
+        NaMethodManager.register(className, "setOut0", "(Ljava/io/PrintStream;)V", new setOut0());
+        NaMethodManager.register(className, "setErr0", "(Ljava/io/PrintStream;)V", new setErr0());
     }
 
     public static class arraycopy implements INativeMethod {
@@ -72,7 +74,25 @@ public class NaSystem {
         public void invoke(NiFrame frame) {
             NiObject self = frame.getLocalVars().getThis();
             NiClass clz = frame.getMethod().getClz();
+            clz.setStaticRef("in", "Ljava/io/InputStream;", self);
+        }
+    }
+
+    public static class setOut0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            NiClass clz = frame.getMethod().getClz();
             clz.setStaticRef("out", "Ljava/io/PrintStream;", self);
+        }
+    }
+
+    public static class setErr0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            NiClass clz = frame.getMethod().getClz();
+            clz.setStaticRef("err", "Ljava/io/PrintStream;", self);
         }
     }
 }
