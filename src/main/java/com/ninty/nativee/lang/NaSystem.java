@@ -4,8 +4,14 @@ import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.NiThread;
+import com.ninty.runtime.Slot;
 import com.ninty.runtime.heap.NiClass;
+import com.ninty.runtime.heap.NiMethod;
 import com.ninty.runtime.heap.NiObject;
+import com.ninty.runtime.heap.NiString;
+
+import java.util.Properties;
 
 /**
  * Created by ninty on 2017/8/19.
@@ -42,6 +48,15 @@ public class NaSystem {
         public void invoke(NiFrame frame) {
             NiObject ref = frame.getLocalVars().getRef(0);
             frame.getOperandStack().pushRef(ref);
+
+            NiMethod setProperty = ref.getClz().getMethod("setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;");
+            Properties properties = System.getProperties();
+            for (String key : properties.stringPropertyNames()) {
+                NiThread.execMethodAtCurrent(frame, setProperty,
+                        new Slot(ref),
+                        new Slot(NiString.newString(ref.getClz().getLoader(), key)),
+                        new Slot(NiString.newString(ref.getClz().getLoader(), properties.getProperty(key))));
+            }
         }
     }
 
