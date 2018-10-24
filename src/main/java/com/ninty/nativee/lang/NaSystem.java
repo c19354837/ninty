@@ -27,6 +27,7 @@ public class NaSystem {
         NaMethodManager.register(className, "setIn0", "(Ljava/io/InputStream;)V", new setIn0());
         NaMethodManager.register(className, "setOut0", "(Ljava/io/PrintStream;)V", new setOut0());
         NaMethodManager.register(className, "setErr0", "(Ljava/io/PrintStream;)V", new setErr0());
+        NaMethodManager.register(className, "mapLibraryName", "(Ljava/lang/String;)Ljava/lang/String;", new mapLibraryName());
     }
 
     public static class arraycopy implements INativeMethod {
@@ -93,6 +94,15 @@ public class NaSystem {
             NiObject self = frame.getLocalVars().getThis();
             NiClass clz = frame.getMethod().getClz();
             clz.setStaticRef("err", "Ljava/io/PrintStream;", self);
+        }
+    }
+
+    public static class mapLibraryName implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            String libname = NiString.getString(frame.getLocalVars().getRef(0));
+            String result = System.mapLibraryName(libname);
+            frame.getOperandStack().pushRef(NiString.newString(frame.getMethod().getClz().getLoader(), result));
         }
     }
 }
