@@ -4,6 +4,7 @@ import com.ninty.nativee.INativeMethod;
 import com.ninty.nativee.NaMethodManager;
 import com.ninty.runtime.LocalVars;
 import com.ninty.runtime.NiFrame;
+import com.ninty.runtime.heap.NiClass;
 import com.ninty.runtime.heap.NiObject;
 
 /**
@@ -17,6 +18,7 @@ public class NaSystem {
         NaMethodManager.register(className, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", new arraycopy());
         NaMethodManager.register(className, "initProperties", "(Ljava/util/Properties;)Ljava/util/Properties;", new initProperties());
         NaMethodManager.register(className, "nanoTime", "()J", new nanoTime());
+        NaMethodManager.register(className, "setIn0", "(Ljava/io/InputStream;)V", new setIn0());
     }
 
     public static class arraycopy implements INativeMethod {
@@ -47,6 +49,15 @@ public class NaSystem {
         @Override
         public void invoke(NiFrame frame) {
             frame.getOperandStack().pushLong(System.nanoTime());
+        }
+    }
+
+    public static class setIn0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject self = frame.getLocalVars().getThis();
+            NiClass clz = frame.getMethod().getClz();
+            clz.setStaticRef("out", "Ljava/io/PrintStream;", self);
         }
     }
 }
