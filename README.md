@@ -35,15 +35,15 @@ $ java -jar ninty.jar       // print help
 
 关于 `System.out.println()` 这个方法，之前章节是用了 hack 的方式，使用的名称匹配的方式实现。最后一章通过实现 native 方法去掉了这个 hack。但我还是沿用了之前的方案来处理这个问题，主要还是发现我要实现的 native 方法远不止书本上的那几个，所以就放弃治疗。
 
-使用名称匹配的方式只能实现基本类型和字符串的打印，我扩展了下，实现对 Object 的打印。具体实现方法上，则是检测到参数为 Object 时，在当前调用栈中压入该 Object 的 `toString()` 方法，并且回退 `position` 位置到执行打印之前，这样当 `toString()` 方法执行完后，Object 已经被替换为 String，此时判断下类型即可完成打印。代码在 [com.ninty.cmd.CmdReferences#print](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/cmd/CmdReferences.java#L58)
+使用名称匹配的方式只能实现基本类型和字符串的打印，我扩展了下，实现对 Object 的打印。具体实现方法上，则是检测到参数为 Object 时，在当前调用栈中压入该 Object 的 `toString()` 方法，并且回退 `position` 位置到执行打印之前，这样当 `toString()` 方法执行完后，Object 已经被替换为 String，此时判断下类型即可完成打印。代码在 [com.ninty.cmd.CmdReferences#print](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/cmd/CmdReferences.java#L58-L66)
 
 ### 多线程
 
 从代码来看，线程的启动由 `thread.strat()` 开始，最终调用 `thread.start0()` 的本地方法，根据注释可以知道，该方法将创建线程，并且运行 `thread.run()` 。
 
-所以实现起来则是在 `thread.start0()` 中启动线程，并且将其 `run()` 方法入栈即可。代码在 [com.ninty.nativee.lang.NaThread.start0](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/nativee/lang/NaThread.java#L66)
+所以实现起来则是在 `thread.start0()` 中启动线程，并且将其 `run()` 方法入栈即可。代码在 [com.ninty.nativee.lang.NaThread.start0](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/nativee/lang/NaThread.java#L66-L79)
 
-实际情况则麻烦些，`new Thread()` 将调用 `Thread.currentThread()` 获取当前线程，接着调用 `thread.getThreadGroup()` 。 这两个是关键，这部分由虚拟机提供。在实现上，则是在运行目标代码前，先创建 thread 以及其 threadGroup，并记录下来作为主线程。代码在 [com.ninty.startup.BootStartup#prepare](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/startup/BootStartup.java#L57)
+实际情况则麻烦些，`new Thread()` 将调用 `Thread.currentThread()` 获取当前线程，接着调用 `thread.getThreadGroup()` 。 这两个是关键，这部分由虚拟机提供。在实现上，则是在运行目标代码前，先创建 thread 以及其 threadGroup，并记录下来作为主线程。代码在 [com.ninty.startup.BootStartup#prepare](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/startup/BootStartup.java#L58-L63)
 
 > 小插曲：关于字节码计数我没按书中单独定义变量，直接使用的 `ByteBuffer` 内置的 `position` 代替，这种偷懒行为在实现多线程时差点挂了。
 > 
@@ -71,7 +71,7 @@ void bar(){
 
 两种方式在字节码层面是不同的，第一种是在方法修饰符字段进行标识，第二种则是生成 `monitor_enter(0xc2)` 和 `monitor_exit(0xc3)` 两个指令。不过处理方法是一致的，区别只是竞争对象的确定，第一种对于静态方法，则是其 Class，非静态方法则是 this，第二种对象则是指令指定的。
 
-本来想管理竞争对象，后来发现，直接使用 Java 自带的 `ReentrantLock` 把对象锁住就好了，自然就实现了这个效果，算是偷了个懒。代码在 [[第一种]com.ninty.runtime.NiFrame#lockCheck](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/runtime/NiFrame.java#L96)，第二种搜索 monitor 指令即可
+本来想管理竞争对象，后来发现，直接使用 Java 自带的 `ReentrantLock` 把对象锁住就好了，自然就实现了这个效果，算是偷了个懒。代码在 [[第一种]com.ninty.runtime.NiFrame#lockCheck](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/runtime/NiFrame.java#L96-L100)，第二种搜索 monitor 指令即可
 
 ### Object.wait() & Object.notify()
 
