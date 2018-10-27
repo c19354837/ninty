@@ -189,6 +189,10 @@ public class NiMethod extends ClassMember {
         return clzArr.newArray(0);
     }
 
+    public void setCodes(CodeBytes codes) {
+        this.codes = codes;
+    }
+
     private static class ExceptionTable {
         int startPc;
         int endPc;

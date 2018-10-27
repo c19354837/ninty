@@ -58,7 +58,7 @@ public class NiClassLoader {
         return classes.get(className);
     }
 
-    public NiClass loadClass(byte[] datas){
+    public NiClass loadClass(byte[] datas) {
         NiClass clz = definedClass(datas);
         link(clz);
         fillJClass(clz);
@@ -76,11 +76,19 @@ public class NiClassLoader {
         } else {
             clz = loadNonArrayClass(className);
         }
+        hackClassloader(clz);
         if (classes.containsKey(J_CLASS)) {
             fillJClass(clz);
         }
         classes.put(className, clz);
         return clz;
+    }
+
+    private void hackClassloader(NiClass clz) {
+        if (clz.className.equals("java/lang/ClassLoader")) {
+            NiMethod loadLibrary = clz.getMethodByName("loadLibrary");
+            loadLibrary.setCodes(new CodeBytes(new byte[]{(byte) 0xb1}));
+        }
     }
 
     private NiClass loadArrayClass(String className) {
