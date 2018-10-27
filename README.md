@@ -37,6 +37,10 @@ $ java -jar ninty.jar       // print help
 
 使用名称匹配的方式只能实现基本类型和字符串的打印，我扩展了下，实现对 Object 的打印。具体实现方法上，则是检测到参数为 Object 时，在当前调用栈中压入该 Object 的 `toString()` 方法，并且回退 `position` 位置到执行打印之前，这样当 `toString()` 方法执行完后，Object 已经被替换为 String，此时判断下类型即可完成打印。代码在 [com.ninty.cmd.CmdReferences#print](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/cmd/CmdReferences.java#L58-L66)
 
+> update: 2018-10-27
+> 
+> 最后还是去掉了这个 hack。但也没有完美处理掉，`System.out` 在 `System.initializeSystemClass()` 中完成初始化，其中会调用 `loadLibrary("zip")`， 这部分涉及一些 native 方法调用，似乎和平台相关，不知道怎么实现，所以直接跳过了这部分代码，算是个遗憾 
+
 ### 多线程
 
 从代码来看，线程的启动由 `thread.strat()` 开始，最终调用 `thread.start0()` 的本地方法，根据注释可以知道，该方法将创建线程，并且运行 `thread.run()` 。
