@@ -5,9 +5,10 @@ import com.ninty.nativee.io.NaFileInputStream;
 import com.ninty.nativee.io.NaFileOutputStream;
 import com.ninty.nativee.io.NaUnixFileSystem;
 import com.ninty.nativee.lang.*;
-import com.ninty.nativee.lang.reflect.NaArray;
 import com.ninty.nativee.lang.invoke.NaMethodHandleNatives;
+import com.ninty.nativee.lang.reflect.NaArray;
 import com.ninty.nativee.security.NaAccessController;
+import com.ninty.nativee.sun.misc.NaSignal;
 import com.ninty.nativee.sun.misc.NaURLClassPath;
 import com.ninty.nativee.sun.misc.NaUnsafe;
 import com.ninty.nativee.sun.misc.NaVM;
@@ -53,6 +54,7 @@ public class NaMethodManager {
         NaURLClassPath.init();
         NaClassLoader.init();
         NaUnixFileSystem.init();
+        NaSignal.init();
     }
 
     private final static INativeMethod EMPTY = (NiFrame frame) -> {
