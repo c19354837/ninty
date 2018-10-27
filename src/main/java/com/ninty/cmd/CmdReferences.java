@@ -469,10 +469,10 @@ public class CmdReferences {
             NiObject ref = frame.getOperandStack().getRefFromTop(method.getArgsCount());
             if (ref == null) {
                 //hack
-                if (methodRef.getName().equals("println")) {
-                    print(frame, methodRef.getDesc());
-                    return;
-                }
+//                if (methodRef.getName().equals("println")) {
+//                    print(frame, methodRef.getDesc());
+//                    return;
+//                }
                 //hack end
                 throw new NullPointerException("this cannot be null");
             }

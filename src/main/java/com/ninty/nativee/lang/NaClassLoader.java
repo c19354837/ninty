@@ -17,6 +17,7 @@ public class NaClassLoader {
                 findLoadedClass0());
         NaMethodManager.register(className, "findBootstrapClass", "(Ljava/lang/String;)Ljava/lang/Class;", new
                 findBootstrapClass());
+        NaClassLoader$NativeLibrary.init();
     }
 
     public static class findLoadedClass0 implements INativeMethod {
