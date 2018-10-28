@@ -23,6 +23,8 @@ public class NaUnixFileSystem {
                 new getBooleanAttributes0());
         NaMethodManager.register(className, "list", "(Ljava/io/File;)[Ljava/lang/String;",
                 new list());
+        NaMethodManager.register(className, "canonicalize0", "(Ljava/lang/String;)Ljava/lang/String;",
+                new canonicalize0());
     }
 
     public static class initIDs implements INativeMethod {
@@ -45,7 +47,7 @@ public class NaUnixFileSystem {
             String path = NiString.getString(fileObj.getFieldRef("path", "Ljava/lang/String;"));
             File file = new File(path);
             String[] files = file.list();
-            if(files == null){
+            if (files == null) {
                 frame.getOperandStack().pushRef(null);
                 return;
             }
@@ -56,6 +58,14 @@ public class NaUnixFileSystem {
                 filesObj.aobject()[i] = NiString.newString(loader, files[i]);
             }
             frame.getOperandStack().pushRef(filesObj);
+        }
+    }
+
+    public static class canonicalize0 implements INativeMethod {
+        @Override
+        public void invoke(NiFrame frame) {
+            NiObject path = frame.getLocalVars().getRef(1);
+            frame.getOperandStack().pushRef(path);
         }
     }
 }
