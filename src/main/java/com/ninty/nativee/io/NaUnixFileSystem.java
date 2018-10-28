@@ -12,12 +12,21 @@ public class NaUnixFileSystem {
 
     public static void init() {
         NaMethodManager.register(className, "initIDs", "()V",
-                new NaFileOutputStream.initIDs());
+                new initIDs());
+        NaMethodManager.register(className, "getBooleanAttributes0", "(Ljava/io/File;)I",
+                new getBooleanAttributes0());
     }
 
     public static class initIDs implements INativeMethod{
         @Override
         public void invoke(NiFrame frame) {
+        }
+    }
+
+    public static class getBooleanAttributes0 implements INativeMethod{
+        @Override
+        public void invoke(NiFrame frame) {
+            frame.getOperandStack().pushInt(0);
         }
     }
 }
