@@ -45,7 +45,7 @@ $ java -jar ninty.jar       // print help
 
 从代码来看，线程的启动由 `thread.strat()` 开始，最终调用 `thread.start0()` 的本地方法，根据注释可以知道，该方法将创建线程，并且运行 `thread.run()` 。
 
-所以实现起来则是在 `thread.start0()` 中启动线程，并且将其 `run()` 方法入栈即可。代码在 [com.ninty.nativee.lang.NaThread.start0](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/nativee/lang/NaThread.java#L66-L79)
+所以实现起来则是在 `thread.start0()` 中启动线程，并且将其 `run()` 方法入栈即可。代码在 [com.ninty.nativee.lang.NaThread#start0](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/nativee/lang/NaThread.java#L66-L79)
 
 实际情况则麻烦些，`new Thread()` 将调用 `Thread.currentThread()` 获取当前线程，接着调用 `thread.getThreadGroup()` 。 这两个是关键，这部分由虚拟机提供。在实现上，则是在运行目标代码前，先创建 thread 以及其 threadGroup，并记录下来作为主线程。代码在 [com.ninty.startup.BootStartup#prepare](https://github.com/c19354837/ninty/blob/master/src/main/java/com/ninty/startup/BootStartup.java#L58-L63)
 
